@@ -115,7 +115,7 @@ export default function Footer() {
             </p>
             <div className="flex items-center gap-4">
               <Link 
-                href="https://www.instagram.com/saltfieldsbrewing/" 
+                href="https://instagram.com/saltfieldsbrewing/" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-600 hover:text-black transition-colors"

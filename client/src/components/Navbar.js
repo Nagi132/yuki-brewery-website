@@ -135,7 +135,7 @@ export default function Navbar() {
           {/* Right Links */}
           <div className="hidden md:flex items-center space-x-6">
             <Link
-              href="https://instagram.com/saltfields"
+              href="https://instagram.com/saltfieldsbrewing"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-800 hover:text-[#ffdd00] transition-colors transform hover:scale-110 duration-300"
