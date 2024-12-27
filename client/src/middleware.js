@@ -34,73 +34,81 @@ export function middleware(request) {
             width: auto;
             height: auto;
             z-index: -1;
-            transform: scale(1.5);
+            transform: scale(1.4);
             object-fit: cover;
+                        /* Add these properties to maintain aspect ratio */
+            aspect-ratio: 16/9; /* or whatever your video's native ratio is */
+            object-position: center; /* Keeps video centered */
           }
-          
-          .content-overlay {
+                    /* Add a media query for mobile */
+          @media (max-aspect-ratio: 16/9) {
+            .video-background {
+              width: 100%;
+              height: 100vh;
+              object-position: 50% 50%; /* Centers the video */
+              object-fit: cover;
+            }
+          }
+         .content-overlay {
             position: relative;
-            height: 90vh;
+            height: 100vh; /* Changed from 90vh to full height */
+            width: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
             z-index: 1;
-            gap: 0.5rem; /* Increased spacing between logo and text */
+          }
+          
+          .logo-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
           }
           
           .logo {
-            width: clamp(350px, 20vw, 180px);
+            width: clamp(220px, 20vw, 180px);
             height: auto;
           }
-          
+
+          .coming-soon-container {
+            position: fixed; /* Changed to fixed positioning */
+            bottom: 50px;    /* Specific distance from bottom */
+            right: 50px;     /* Specific distance from right */
+          }
+
           h1 {
             font-size: clamp(16px, 2vw, 20px);
-            color: white;
+            color: black;    /* Changed to black */
             margin: 0;
-            text-align: center;
-            letter-spacing: 0.5em; /* Added significant letter spacing */
+            text-align: right;
+            letter-spacing: 0.1em;
             font-weight: 300;
-            text-transform: uppercase;
-            font-family: serif; /* Changed to serif font */
-            padding-left:0.7em;
-          }
-                      .social-links {
-            margin-top: 2rem;
+            font-family: serif;
+            padding: 0.3em 0.6em;
+            background: none; 
+            display: inline-block;
           }
           
-          .social-links a {
-            color: white;
-            opacity: 0.8;
-            transition: opacity 0.2s ease;
-          }
-          
-          .social-links a:hover {
-            opacity: 1;
-          }
-          
-          .social-links svg {
-            width: 24px;
-            height: 24px;
+          /* Adjust for mobile */
+          @media (max-width: 768px) {
+            .coming-soon-container {
+              bottom: 150px;  /* Adjusted for mobile */
+              right: 30px;   /* Adjusted for mobile */
+            }
           }
         </style>
     </head>
-   <body>
+    <body>
         <video autoplay muted loop playsinline class="video-background">
             <source src="/images/beer.mp4" type="video/mp4">
         </video>
         
         <div class="content-overlay">
-            <img src="/images/saltfields_logo_wh.png" alt="Saltfields Brewing" class="logo">
-            <h1>COMING SOON</h1>
-             <div class="social-links">
-                <a href="https://instagram.com/saltfieldsbrewing" target="_blank" rel="noopener noreferrer">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-                    </svg>
-                </a>
+            <div class="logo-container">
+              <img src="/images/saltfields_logo_wh.png" alt="Saltfields Brewing" class="logo">
+            </div>
+            <div class="coming-soon-container">
+              <h1>Coming soon...</h1>
             </div>
         </div>
     </body>
