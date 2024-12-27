@@ -16,99 +16,107 @@ export function middleware(request) {
         <title>Coming Soon</title>
         <meta name="robots" content="noindex, nofollow">
         <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-          <style>
+                   <style>
           body, html {
             margin: 0;
             padding: 0;
             height: 100%;
             width: 100%;
             overflow: hidden;
+            background-color: #000000; /* Japanese ink black */
           }
           
-          .video-background {
-            position: fixed;
-            right: 0;
-            bottom: 0;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            z-index: -1;
-            transform: scale(1.4);
-            object-fit: cover;
-                        /* Add these properties to maintain aspect ratio */
-            aspect-ratio: 16/9; /* or whatever your video's native ratio is */
-            object-position: center; /* Keeps video centered */
-          }
-                    /* Add a media query for mobile */
-          @media (max-aspect-ratio: 16/9) {
-            .video-background {
-              width: 100%;
-              height: 100vh;
-              object-position: 50% 50%; /* Centers the video */
-              object-fit: cover;
-            }
-          }
-         .content-overlay {
+          .content-overlay {
             position: relative;
-            height: 100vh; /* Changed from 90vh to full height */
+            height: 100vh;
             width: 100%;
             display: flex;
             flex-direction: column;
             z-index: 1;
           }
           
-          .logo-container {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
-          
-          .logo {
-            width: clamp(220px, 20vw, 180px);
-            height: auto;
-          }
-
           .coming-soon-container {
-            position: fixed; /* Changed to fixed positioning */
-            bottom: 50px;    /* Specific distance from bottom */
-            right: 50px;     /* Specific distance from right */
+            position: fixed;
+            bottom: 50px;
+            right: 50px;
           }
 
           h1 {
             font-size: clamp(16px, 2vw, 20px);
-            color: black;    /* Changed to black */
+            color: white;    /* Changed to white */
             margin: 0;
             text-align: right;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.2em;
             font-weight: 300;
             font-family: serif;
             padding: 0.3em 0.6em;
-            background: none; 
             display: inline-block;
           }
+  .logo-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column; /* Changed to column to stack logo and icon */
+            align-items: center;
+            justify-content: center;
+            gap: 2rem; /* Space between logo and icon */
+          }
           
+          .logo {
+            width: clamp(150px, 20vw, 180px);
+            height: auto;
+          }
+
+          .social-links {
+            /* Removed fixed positioning */
+            color: white;
+          }
+          
+          .social-links a {
+            color: white;
+            opacity: 0.8;
+            transition: opacity 0.2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+          
+          .social-links a:hover {
+            opacity: 1;
+          }
+          
+          .social-links svg {
+            width: 20px;
+            height: 20px;
+          }
+
           /* Adjust for mobile */
           @media (max-width: 768px) {
             .coming-soon-container {
-              bottom: 150px;  /* Adjusted for mobile */
-              right: 30px;   /* Adjusted for mobile */
+              bottom: 30px;
+              right: 30px;
+            }
+            .social-links {
+              bottom: 30px;
             }
           }
         </style>
     </head>
     <body>
-        <video autoplay muted loop playsinline class="video-background">
-            <source src="/images/beer.mp4" type="video/mp4">
-        </video>
-        
         <div class="content-overlay">
             <div class="logo-container">
               <img src="/images/saltfields_logo_wh.png" alt="Saltfields Brewing" class="logo">
+              <div class="social-links">
+                  <a href="https://instagram.com/saltfieldsbrewing" target="_blank" rel="noopener noreferrer">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                      </svg>
+                  </a>
+              </div>
             </div>
             <div class="coming-soon-container">
-              <h1>Coming soon...</h1>
+              <h1>Coming soon.....</h1>
             </div>
         </div>
     </body>
