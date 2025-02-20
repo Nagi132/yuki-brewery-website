@@ -3,9 +3,12 @@ import { NextResponse } from 'next/server'
 
 export function middleware(request) {
     // Allow access to static files
-    if (request.nextUrl.pathname.startsWith('/images/')) {
-        return NextResponse.next()
-    }
+    if (
+      request.nextUrl.pathname.startsWith('/images/') ||
+      request.nextUrl.pathname.includes('google') // This allows the verification file
+  ) {
+      return NextResponse.next()
+  }
 
     const html = `
     <!DOCTYPE html>
