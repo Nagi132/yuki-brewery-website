@@ -41,7 +41,7 @@ export default function CartPage() {
     );
   }
   
-  if (!cart || !cart.lines || cart.lines.length === 0) {
+  if (!cart || cart.lines.length === 0) {
     return (
       <div className="min-h-screen bg-[#f0f8ff] py-16 px-4">
         <div className="container mx-auto max-w-4xl">

@@ -4,12 +4,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { FaBars, FaTimes, FaInstagram, FaShoppingCart } from 'react-icons/fa';
+import { useCart } from '@/context/CartContext';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [cartCount, setCartCount] = useState(0);
   const pathname = usePathname();
+  const { getCartCount } = useCart();
+  const cartCount = getCartCount();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -40,8 +42,8 @@ export default function Navbar() {
   const NavLink = ({ href, children }) => {
     const isActive = isActivePath(href);
     return (
-      <Link 
-        href={href} 
+      <Link
+        href={href}
         onClick={handleLinkClick}
         className={`group text-gray-800 font-medium tracking-wide transition-colors relative ${
           isActive ? 'text-[#ffdd00]' : ''
@@ -60,8 +62,8 @@ export default function Navbar() {
   const MobileNavLink = ({ href, children }) => {
     const isActive = isActivePath(href);
     return (
-      <Link 
-        href={href} 
+      <Link
+        href={href}
         onClick={handleLinkClick}
         className={`text-gray-800 font-medium p-3 rounded-md hover:bg-black/5 transition-all duration-300 ${
           isActive ? 'text-[#ffdd00] bg-black/5' : 'hover:text-[#ffdd00]'
@@ -80,10 +82,10 @@ export default function Navbar() {
   };
 
   return (
-    <nav 
+    <nav
       className={`sticky top-0 z-50 transition-all duration-500 ${
-        scrolled 
-          ? 'bg-white shadow-md' 
+        scrolled
+          ? 'bg-white shadow-md'
           : 'bg-[#f0f8ff]'
       }`}
     >
@@ -142,6 +144,8 @@ export default function Navbar() {
             >
               <FaInstagram size={24} />
             </Link>
+            
+            {/* Cart link - simplified without nesting issues */}
             <Link
               href="/cart"
               className="group relative flex items-center space-x-2 border border-black text-gray-900 px-6 py-2 rounded-md font-medium tracking-wide overflow-hidden"
@@ -160,7 +164,7 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         {isOpen && (
-          <div 
+          <div
             className="md:hidden absolute top-full left-0 right-0 bg-white shadow-lg border-t transform transition-transform duration-300"
             style={{ maxHeight: '80vh', overflowY: 'auto' }}
           >
@@ -169,8 +173,8 @@ export default function Navbar() {
               <MobileNavLink href="/our-beer">OUR BEER</MobileNavLink>
               <MobileNavLink href="/shop">SHOP</MobileNavLink>
               <MobileNavLink href="/contact">CONTACT</MobileNavLink>
-              <Link 
-                href="/cart" 
+              <Link
+                href="/cart"
                 onClick={handleLinkClick}
                 className="flex items-center space-x-2 border border-black text-gray-900 px-6 py-3 rounded-md font-medium hover:bg-black hover:text-white transition-all duration-300"
               >

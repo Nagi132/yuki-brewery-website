@@ -2,6 +2,7 @@ import { Inter } from 'next/font/google';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ScrollToTopProgress from '@/components/ScrollToTopProgress';
+import { CartProvider } from '@/context/CartContext';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -15,9 +16,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Navbar />
-        <ScrollToTopProgress />
-        {children}
+        <CartProvider>
+          <Navbar />
+          <ScrollToTopProgress />
+          {children}
+        </CartProvider>
         <Footer />
       </body>
     </html>
