@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { FaBars, FaTimes, FaInstagram, FaShoppingCart } from 'react-icons/fa';
+import { FaInstagram } from 'react-icons/fa';
 import { useCart } from '@/context/CartContext';
 
 export default function Navbar() {
@@ -22,183 +22,181 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (isOpen && !event.target.closest('nav')) {
+    // Prevent body scrolling when mobile menu is open
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      // If menu is open and click is outside the menu and not on the menu button
+      if (isOpen && 
+          !e.target.closest('.mobile-menu') && 
+          !e.target.closest('.menu-button')) {
         setIsOpen(false);
       }
     };
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen]);
 
   const handleLinkClick = () => {
     setIsOpen(false);
   };
 
-  const isActivePage = (path) => {
-    return pathname === path;
-  };
-
   const NavLink = ({ href, children }) => {
-    const isActive = isActivePath(href);
     return (
       <Link
         href={href}
         onClick={handleLinkClick}
-        className={`group text-gray-800 font-medium tracking-wide transition-colors relative ${
-          isActive ? 'text-[#ffdd00]' : ''
-        }`}
+        className="group relative h-full flex items-center px-4 xl:px-6"
       >
-        <span className={`hover:text-[#ffdd00] transition-colors ${
-          isActive ? 'text-[#ffdd00]' : ''
-        }`}>{children}</span>
-        <span className={`absolute inset-x-0 bottom-0 h-0.5 bg-[#ffdd00] transform transition-transform duration-300 ${
-          isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
-        }`}></span>
+        <span className="z-10 transition-colors duration-200 group-hover:text-white">
+          {children}
+        </span>
+        <span 
+          className="absolute inset-0 bg-black opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+        ></span>
       </Link>
     );
   };
 
   const MobileNavLink = ({ href, children }) => {
-    const isActive = isActivePath(href);
     return (
-      <Link
-        href={href}
-        onClick={handleLinkClick}
-        className={`text-gray-800 font-medium p-3 rounded-md hover:bg-black/5 transition-all duration-300 ${
-          isActive ? 'text-[#ffdd00] bg-black/5' : 'hover:text-[#ffdd00]'
-        }`}
-      >
-        {children}
-      </Link>
+      <div className="py-4">
+        <Link
+          href={href}
+          onClick={handleLinkClick}
+          className="text-black font-normal text-base"
+        >
+          {children}
+        </Link>
+      </div>
     );
   };
 
-  const isActivePath = (path) => {
-    if (path === '/') {
-      return pathname === path;
-    }
-    return pathname.startsWith(path);
-  };
+  // Cart link component for consistent styling
+  const CartLink = ({ className = "" }) => (
+    <Link
+      href="/cart"
+      className={`text-black tracking-wide ${className}`}
+    >
+      <span>CART</span><span className="ml-1">({cartCount})</span>
+    </Link>
+  );
 
   return (
-    <nav
-      className={`sticky top-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? 'bg-white shadow-md'
-          : 'bg-[#f0f8ff]'
-      }`}
-    >
-      <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center py-4">
-          {/* Left Links */}
-          <div className="hidden md:flex items-center space-x-8">
-            <NavLink href="/story">STORY</NavLink>
-            <NavLink href="/our-beer">OUR BEER</NavLink>
+    <nav className="sticky top-0 z-50 transition-all duration-500 bg-white border-b border-black">
+      <div className="w-full px-4 md:px-8">
+        <div className="flex justify-between items-center h-16">
+          {/* Left Links - Desktop */}
+          <div className="hidden md:flex items-center h-full space-x-2 md:space-x-4 lg:space-x-1 -ml-4">
+            <NavLink href="/about">ABOUT</NavLink>
+            <NavLink href="/beer">BEER</NavLink>
+            <NavLink href="/events">EVENTS</NavLink>
             <NavLink href="/shop">SHOP</NavLink>
-            <NavLink href="/contact">CONTACT</NavLink>
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="md:hidden">
+          {/* Mobile Menu Text Button */}
+          <div className="md:hidden ml-1">
             <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsOpen(!isOpen);
-              }}
-              className="text-gray-800 hover:text-[#ffdd00] focus:outline-none transition-colors p-2 rounded-md hover:bg-black/5"
-              aria-label="Toggle navigation menu"
+              onClick={() => setIsOpen(true)}
+              className="text-black font-medium focus:outline-none menu-button"
+              aria-label="Open navigation menu"
             >
-              {isOpen ? (
-                <FaTimes size={24} className="transform transition-transform duration-300 rotate-90" />
-              ) : (
-                <FaBars size={24} className="transform transition-transform duration-300" />
-              )}
+              MENU
             </button>
           </div>
 
           {/* Center Logo */}
-          <div className="flex-grow flex justify-center items-center h-20 mt-3 mr-48">
+          <div className="absolute left-1/2 transform -translate-x-1/2">
             <Link href="/" className="transform transition-all duration-300 hover:scale-105">
-              <div className="relative h-full">
+              <div className="relative">
                 <Image
                   src="/images/saltfields_logo.webp"
                   alt="Saltfields Brewing Logo"
-                  width={275}
-                  height={275}
+                  width={160}
+                  height={48}
                   priority
                   className="cursor-pointer object-contain"
-                  style={{ transform: 'scale(1.2)' }}
                 />
               </div>
             </Link>
           </div>
 
-          {/* Right Links */}
-          <div className="hidden md:flex items-center space-x-6">
+          {/* Right Links - Desktop */}
+          <div className="hidden md:flex items-center -mr-4">
             <Link
               href="https://instagram.com/saltfieldsbrewing"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-800 hover:text-[#ffdd00] transition-colors transform hover:scale-110 duration-300"
+              className="text-gray-800 hover:text-black transition-colors transform hover:scale-110 duration-300 mr-6"
             >
               <FaInstagram size={24} />
             </Link>
             
-            {/* Cart link - simplified without nesting issues */}
-            <Link
-              href="/cart"
-              className="group relative flex items-center space-x-2 border border-black text-gray-900 px-6 py-2 rounded-md font-medium tracking-wide overflow-hidden"
-            >
-              <span className="absolute inset-0 bg-black transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></span>
-              <FaShoppingCart size={18} className="relative z-10 group-hover:text-white transition-colors duration-300" />
-              <span className="relative z-10 group-hover:text-white transition-colors duration-300">CART</span>
-              {cartCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-[#ffdd00] text-black text-xs w-5 h-5 rounded-full flex items-center justify-center transform transition-transform duration-300 hover:scale-110">
-                  {cartCount}
-                </span>
-              )}
-            </Link>
+            {/* Desktop Cart - Now using same style as mobile */}
+            <CartLink className="mr-1" />
+          </div>
+
+          {/* Mobile Cart Text */}
+          <div className="md:hidden mr-1">
+            <CartLink />
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Overlay for background when menu is open */}
         {isOpen && (
-          <div
-            className="md:hidden absolute top-full left-0 right-0 bg-white shadow-lg border-t transform transition-transform duration-300"
-            style={{ maxHeight: '80vh', overflowY: 'auto' }}
-          >
-            <div className="flex flex-col py-4 px-4 space-y-3">
-              <MobileNavLink href="/story">STORY</MobileNavLink>
-              <MobileNavLink href="/our-beer">OUR BEER</MobileNavLink>
-              <MobileNavLink href="/shop">SHOP</MobileNavLink>
-              <MobileNavLink href="/contact">CONTACT</MobileNavLink>
-              <Link
-                href="/cart"
-                onClick={handleLinkClick}
-                className="flex items-center space-x-2 border border-black text-gray-900 px-6 py-3 rounded-md font-medium hover:bg-black hover:text-white transition-all duration-300"
+          <div className="md:hidden fixed inset-0 bg-black bg-opacity-25 z-40" />
+        )}
+
+        {/* Mobile Menu Slide-in */}
+        <div 
+          className={`md:hidden fixed top-0 left-0 h-full w-3/4 max-w-xs bg-white z-50 mobile-menu transition-transform duration-700 ease-in-out ${
+            isOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
+        >
+          <div className="h-full overflow-y-auto p-6 flex flex-col">
+            {/* Close Button */}
+            <div className="mb-10 -ml-1">
+              <button 
+                onClick={() => setIsOpen(false)}
+                className="text-black font-medium focus:outline-none"
               >
-                <FaShoppingCart size={18} />
-                <span>CART</span>
-                {cartCount > 0 && (
-                  <span className="bg-[#ffdd00] text-black text-xs px-2 py-1 rounded-full ml-2">
-                    {cartCount}
-                  </span>
-                )}
-              </Link>
+                Close
+              </button>
+            </div>
+            
+            {/* Menu Items (same as desktop) */}
+            <div className="space-y-4">
+              <MobileNavLink href="/about">ABOUT</MobileNavLink>
+              <MobileNavLink href="/beer">BEER</MobileNavLink>
+              <MobileNavLink href="/events">EVENTS</MobileNavLink>
+              <MobileNavLink href="/shop">SHOP</MobileNavLink>
+            </div>
+            
+            {/* Social Links - Using margin-top: auto to push to bottom */}
+            <div className="mt-auto mb-16">
               <Link
-                href="https://instagram.com/saltfields"
+                href="https://instagram.com/saltfieldsbrewing"
                 target="_blank"
                 rel="noopener noreferrer"
+                className="text-black inline-block"
                 onClick={handleLinkClick}
-                className="flex items-center space-x-2 text-gray-800 p-3 rounded-md hover:bg-black/5 transition-all duration-300"
               >
-                <FaInstagram size={20} />
-                <span>FOLLOW US</span>
+                <FaInstagram size={24} />
               </Link>
             </div>
           </div>
-        )}
+        </div>
       </div>
     </nav>
   );
