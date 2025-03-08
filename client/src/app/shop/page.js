@@ -1,73 +1,44 @@
-"use client";
+import { Suspense } from 'react';
+import ProductGrid from './ProductGrid'; 
+import { getAllProducts } from '@/lib/shopify';
 
-import React from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { useCart } from '@/context/CartContext';
-import { FaTrash, FaPlus, FaMinus } from 'react-icons/fa';
+export const metadata = {
+  title: 'Shop | Saltfields Brewing',
+  description: 'Official Saltfields Brewing merchandise. Wear your passion for craft beer.',
+};
 
-export default function CartPage() {
-  const { cart, isLoading, error, updateCartItem, removeFromCart, checkout } = useCart();
-  
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-[#f0f8ff] py-16 px-4">
-        <div className="container mx-auto max-w-4xl">
-          <h1 className="text-3xl font-bold mb-8 text-center">Your Cart</h1>
-          <div className="text-center py-12">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-black"></div>
-            <p className="mt-4 text-zinc-700">Loading your cart...</p>
+// Loading component
+function LoadingProducts() {
+  return (
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+      {[...Array(4)].map((_, i) => (
+        <div key={i} className="animate-pulse">
+          <div className="aspect-square bg-gray-200 rounded-md"></div>
+          <div className="space-y-2 mt-3">
+            <div className="h-4 bg-gray-200 rounded w-2/3 mx-auto"></div>
+            <div className="h-4 bg-gray-200 rounded w-1/3 mx-auto"></div>
           </div>
         </div>
-      </div>
-    );
+      ))}
+    </div>
+  );
+}
+
+// Products wrapper component
+async function ProductsWrapper() {
+  let products = [];
+  
+  try {
+    products = await getAllProducts();
+  } catch (error) {
+    console.error('Failed to load products:', error);
+    // Continue with empty products array
   }
   
-  if (error) {
-    return (
-      <div className="min-h-screen bg-[#f0f8ff] py-16 px-4">
-        <div className="container mx-auto max-w-4xl">
-          <h1 className="text-3xl font-bold mb-8 text-center">Your Cart</h1>
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
-            {error}
-          </div>
-          <div className="text-center">
-            <Link href="/shop" className="inline-block bg-black text-white px-6 py-3 rounded">
-              Continue Shopping
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
-  }
-  
-  if (!cart || !cart.lines || cart.lines.length === 0) {
-    return (
-      <div className="min-h-screen bg-[#f0f8ff] py-16 px-4">
-        <div className="container mx-auto max-w-4xl">
-          <h1 className="text-3xl font-bold mb-8 text-center">Your Cart</h1>
-          <div className="bg-white p-8 rounded-lg shadow-sm text-center">
-            <p className="text-xl mb-6">Your cart is empty</p>
-            <Link href="/shop" className="inline-block bg-black text-white px-6 py-3 rounded">
-              Continue Shopping
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
-  }
-  
-  // Handle quantity change
-  const handleQuantityChange = (lineId, currentQuantity, change) => {
-    const newQuantity = Math.max(0, currentQuantity + change);
-    
-    if (newQuantity === 0) {
-      removeFromCart(lineId);
-    } else {
-      updateCartItem(lineId, newQuantity);
-    }
-  };
-  
+  return <ProductGrid products={products} />;
+}
+
+export default function ShopPage() {
   return (
     <div className="min-h-screen bg-[#f0f8ff] relative">
       {/* Background Pattern */}
@@ -82,112 +53,27 @@ export default function CartPage() {
           backgroundPosition: '0 0, 20px 20px',
         }}
       />
-      
+
       <div className="relative py-16 px-4">
-        <div className="container mx-auto max-w-4xl">
-          <h1 className="text-3xl font-bold mb-8 text-center">Your Cart</h1>
-          
-          <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-            {/* Cart Items */}
-            <div className="divide-y divide-gray-100">
-              {cart.lines.map((item) => (
-                <div key={item.id} className="p-6 flex flex-col sm:flex-row gap-4">
-                  {/* Product Image */}
-                  <div className="w-full sm:w-24 h-24 bg-gray-50 relative flex-shrink-0">
-                    {item.image ? (
-                      <Image
-                        src={item.image}
-                        alt={item.title}
-                        fill
-                        className="object-contain"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <span className="text-gray-400 text-sm">No image</span>
-                      </div>
-                    )}
-                  </div>
-                  
-                  {/* Product Info */}
-                  <div className="flex-grow">
-                    <h3 className="font-medium">{item.title}</h3>
-                    {item.variantTitle !== 'Default' && (
-                      <p className="text-sm text-gray-500">{item.variantTitle}</p>
-                    )}
-                    <p className="text-zinc-900 mt-1">${item.price.toFixed(2)}</p>
-                  </div>
-                  
-                  {/* Quantity Controls */}
-                  <div className="flex items-center space-x-2">
-                    <button 
-                      onClick={() => handleQuantityChange(item.id, item.quantity, -1)}
-                      className="p-2 bg-gray-100 hover:bg-gray-200 rounded"
-                      aria-label="Decrease quantity"
-                    >
-                      <FaMinus className="w-3 h-3" />
-                    </button>
-                    
-                    <span className="w-8 text-center">{item.quantity}</span>
-                    
-                    <button 
-                      onClick={() => handleQuantityChange(item.id, item.quantity, 1)}
-                      className="p-2 bg-gray-100 hover:bg-gray-200 rounded"
-                      aria-label="Increase quantity"
-                    >
-                      <FaPlus className="w-3 h-3" />
-                    </button>
-                  </div>
-                  
-                  {/* Total Price */}
-                  <div className="text-right min-w-[80px]">
-                    <p className="font-medium">${(item.price * item.quantity).toFixed(2)}</p>
-                  </div>
-                  
-                  {/* Remove Button */}
-                  <button 
-                    onClick={() => removeFromCart(item.id)}
-                    className="text-gray-400 hover:text-red-500 transition-colors"
-                    aria-label="Remove item"
-                  >
-                    <FaTrash />
-                  </button>
-                </div>
-              ))}
-            </div>
-            
-            {/* Cart Summary */}
-            <div className="bg-gray-50 p-6">
-              <div className="flex justify-between mb-2">
-                <span>Subtotal</span>
-                <span>${cart.subtotal.toFixed(2)}</span>
-              </div>
-              
-              <div className="flex justify-between mb-4">
-                <span>Tax</span>
-                <span>${cart.tax.toFixed(2)}</span>
-              </div>
-              
-              <div className="flex justify-between text-lg font-bold">
-                <span>Total</span>
-                <span>${cart.total.toFixed(2)}</span>
-              </div>
-              
-              <div className="mt-6 space-y-4">
-                <button
-                  onClick={checkout}
-                  className="w-full bg-black text-white py-3 rounded font-medium hover:bg-zinc-800 transition-colors"
-                >
-                  Proceed to Checkout
-                </button>
-                
-                <Link 
-                  href="/shop"
-                  className="block text-center text-zinc-700 hover:text-zinc-900"
-                >
-                  Continue Shopping
-                </Link>
-              </div>
-            </div>
+        <div className="container mx-auto">
+          {/* Header */}
+          <div className="text-center mb-12">
+            <h1 className="text-4xl font-bold tracking-wide text-zinc-900 mb-4">SHOP</h1>
+            <p className="text-zinc-700 text-lg max-w-2xl mx-auto mb-8">
+              Official Saltfields Brewing merchandise. Wear your passion for craft beer.
+            </p>
+          </div>
+
+          {/* Products Grid with proper Suspense boundary */}
+          <Suspense fallback={<LoadingProducts />}>
+            <ProductsWrapper />
+          </Suspense>
+
+          {/* Shipping Notice */}
+          <div className="mt-16 text-center max-w-2xl mx-auto">
+            <p className="text-zinc-700">
+              Free shipping on all orders over $75. International shipping available.
+            </p>
           </div>
         </div>
       </div>

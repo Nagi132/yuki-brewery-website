@@ -1,3 +1,4 @@
+/* File path: client/src/app/globals.css */
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap');
 @tailwind base;
@@ -16,13 +17,40 @@
   }
 }
 
+/* Set default text color for the entire application */
+@layer base {
+  html {
+    @apply text-zinc-900;
+  }
+}
+
 body {
   @apply text-foreground bg-background;
   font-family: 'Montserrat', serif;
+  color: #171717; /* Fallback for browsers that don't support CSS variables */
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+/* Shopify description HTML formatting */
+.description-html ul {
+  list-style-type: disc;
+  padding-left: 1.25rem;
+}
+
+.description-html li {
+  margin-bottom: 0.5rem;
+}
+
+/* Handle Shopify's whitespace-normal and break-words classes */
+.whitespace-normal {
+  white-space: normal;
+}
+
+.break-words {
+  overflow-wrap: break-word;
 }

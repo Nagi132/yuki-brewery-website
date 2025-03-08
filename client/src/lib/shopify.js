@@ -1,3 +1,4 @@
+// File path: client/src/lib/shopify.js
 import { GraphQLClient } from 'graphql-request';
 
 // Check if environment variables are set
@@ -87,7 +88,7 @@ export async function getAllProducts() {
   }
 }
 
-// Fetch a single product by handle (slug)
+// Fetch a single product by handle (slug) with all variant details
 export async function getProductByHandle(handle) {
   if (!handle) {
     console.error('No handle provided to getProductByHandle');
@@ -113,7 +114,7 @@ export async function getProductByHandle(handle) {
             currencyCode
           }
         }
-        images(first: 5) {
+        images(first: 10) {
           edges {
             node {
               url
@@ -125,7 +126,7 @@ export async function getProductByHandle(handle) {
           name
           values
         }
-        variants(first: 20) {
+        variants(first: 50) {
           edges {
             node {
               id
@@ -142,6 +143,11 @@ export async function getProductByHandle(handle) {
                 amount
                 currencyCode
               }
+              compareAtPrice {
+                amount
+                currencyCode
+              }
+              quantityAvailable
             }
           }
         }
@@ -165,14 +171,14 @@ export async function getProductByHandle(handle) {
     
     // Extract color and size options
     const options = data.product.options || [];
-    const colorOptions = options.find(opt => opt.name === 'Color');
-    const sizeOptions = options.find(opt => opt.name === 'Size');
+    const colorOption = options.find(opt => opt.name.toLowerCase() === 'color');
+    const sizeOption = options.find(opt => opt.name.toLowerCase() === 'size');
     
-    const colors = colorOptions 
-      ? colorOptions.values.map(color => {
+    const colors = colorOption 
+      ? colorOption.values.map(color => {
           // Find variant with this color
           const colorVariant = variants.find(v => 
-            v.selectedOptions.some(opt => opt.name === 'Color' && opt.value === color)
+            v.selectedOptions.some(opt => opt.name.toLowerCase() === 'color' && opt.value.toLowerCase() === color.toLowerCase())
           );
           
           return {
@@ -184,7 +190,7 @@ export async function getProductByHandle(handle) {
         })
       : [];
     
-    const sizes = sizeOptions ? sizeOptions.values : [];
+    const sizes = sizeOption ? sizeOption.values : [];
     
     // Format the product data
     return {
@@ -200,12 +206,12 @@ export async function getProductByHandle(handle) {
       variants: variants.map(variant => ({
         id: variant.id,
         title: variant.title,
-        price: parseFloat(variant.price?.amount || 0),
+        price: variant.price,
+        compareAtPrice: variant.compareAtPrice,
+        quantityAvailable: variant.quantityAvailable,
         available: variant.availableForSale,
-        options: variant.selectedOptions.reduce((acc, opt) => {
-          acc[opt.name.toLowerCase()] = opt.value.toLowerCase();
-          return acc;
-        }, {})
+        image: variant.image,
+        selectedOptions: variant.selectedOptions
       }))
     };
   } catch (error) {
@@ -228,8 +234,33 @@ function getColorHex(colorName) {
     'Blue': '#0000FF',
     'Navy': '#000080',
     'Red': '#FF0000',
+    'Yellow': '#FFFF00',
+    'Orange': '#FFA500',
+    'Purple': '#800080',
+    'Pink': '#FFC0CB',
+    'Beige': '#F5F5DC',
+    'Tan': '#D2B48C',
+    'Gold': '#FFD700',
+    'Silver': '#C0C0C0',
+    'Teal': '#008080',
     // Add more as needed
   };
   
-  return colorMap[colorName] || '#CCCCCC';
+  // Try case-insensitive match
+  const normalizedColorName = colorName.toLowerCase();
+  for (const [key, value] of Object.entries(colorMap)) {
+    if (key.toLowerCase() === normalizedColorName) {
+      return value;
+    }
+  }
+  
+  // If no exact match, look for partial matches
+  for (const [key, value] of Object.entries(colorMap)) {
+    if (normalizedColorName.includes(key.toLowerCase()) || 
+        key.toLowerCase().includes(normalizedColorName)) {
+      return value;
+    }
+  }
+  
+  return '#CCCCCC'; // Default gray if no match found
 }
