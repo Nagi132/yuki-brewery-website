@@ -2,6 +2,7 @@ import { Inter } from 'next/font/google';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ScrollToTopProgress from '@/components/ScrollToTopProgress';
+import AgeVerificationModal from '@/components/AgeVerificationModal';
 import { CartProvider } from '@/context/CartContext';
 import './globals.css';
 
@@ -20,6 +21,7 @@ export default function RootLayout({ children }) {
           <Navbar />
           <ScrollToTopProgress />
           {children}
+          <AgeVerificationModal />
         </CartProvider>
         <Footer />
       </body>
