@@ -10,6 +10,7 @@ module.exports = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        'off-white': '#fefeff',
         lightBlue: "#f0f8ff",
         yellow: "#ffdd00",
       },

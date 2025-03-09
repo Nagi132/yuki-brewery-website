@@ -46,7 +46,7 @@ export default function CartPage() {
       <div className="min-h-screen bg-[#f0f8ff] py-16 px-4">
         <div className="container mx-auto max-w-4xl">
           <h1 className="text-3xl font-bold mb-8 text-center">Your Cart</h1>
-          <div className="bg-white p-8 rounded-lg shadow-sm text-center">
+          <div className="bg-off-white p-8 rounded-lg shadow-sm text-center">
             <p className="text-xl mb-6">Your cart is empty</p>
             <Link href="/shop" className="inline-block bg-black text-white px-6 py-3 rounded">
               Continue Shopping
@@ -87,7 +87,7 @@ export default function CartPage() {
         <div className="container mx-auto max-w-4xl">
           <h1 className="text-3xl font-bold mb-8 text-center">Your Cart</h1>
           
-          <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+          <div className="bg-off-white rounded-lg shadow-sm overflow-hidden">
             {/* Cart Items */}
             <div className="divide-y divide-gray-100">
               {cart.lines.map((item) => (

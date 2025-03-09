@@ -44,20 +44,7 @@ const beers = [
 
 export default function OurBeerPage() {
   return (
-    <main className="min-h-screen bg-[#f0f8ff] relative">
-      {/* Background Pattern */}
-      <div 
-        className="absolute inset-0 w-full h-full opacity-[0.07]" 
-        style={{
-          backgroundImage: `
-            radial-gradient(circle at 1px 1px, #000 1px, transparent 0),
-            radial-gradient(circle at 1px 1px, #000 1px, transparent 0)
-          `,
-          backgroundSize: '40px 40px',
-          backgroundPosition: '0 0, 20px 20px',
-        }}
-      />
-
+    <main className="min-h-screen bg-off-white relative">
       <div className="relative">
         {/* Header */}
         <div className="container mx-auto px-4 pt-16 pb-8">

@@ -1,9 +1,9 @@
+// client/src/components/Navbar.js
 "use client";
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { FaInstagram } from 'react-icons/fa';
 import { useCart } from '@/context/CartContext';
 
 export default function Navbar() {
@@ -52,12 +52,12 @@ export default function Navbar() {
     setIsOpen(false);
   };
 
-  const NavLink = ({ href, children }) => {
+  const NavLink = ({ href, children, className = "" }) => {
     return (
       <Link
         href={href}
         onClick={handleLinkClick}
-        className="group relative h-full flex items-center px-4 xl:px-6"
+        className={`group relative h-full flex items-center px-4 xl:px-6 ${className}`}
       >
         <span className="z-10 transition-colors duration-200 group-hover:text-white">
           {children}
@@ -83,22 +83,12 @@ export default function Navbar() {
     );
   };
 
-  // Cart link component for consistent styling
-  const CartLink = ({ className = "" }) => (
-    <Link
-      href="/cart"
-      className={`text-black tracking-wide ${className}`}
-    >
-      <span>CART</span><span className="ml-1">({cartCount})</span>
-    </Link>
-  );
-
   return (
-    <nav className="sticky top-0 z-50 transition-all duration-500 bg-white border-b border-black">
+    <nav className="sticky top-0 z-50 transition-all duration-500 bg-off-white border-b border-black">
       <div className="w-full px-4 md:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Left Links - Desktop */}
-          <div className="hidden md:flex items-center h-full space-x-2 md:space-x-4 lg:space-x-1 -ml-4">
+          <div className="hidden md:flex items-center h-full space-x-0 -ml-4">
             <NavLink href="/about">ABOUT</NavLink>
             <NavLink href="/beer">BEER</NavLink>
             <NavLink href="/events">EVENTS</NavLink>
@@ -133,23 +123,26 @@ export default function Navbar() {
           </div>
 
           {/* Right Links - Desktop */}
-          <div className="hidden md:flex items-center -mr-4">
-            <Link
-              href="https://instagram.com/saltfieldsbrewing"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-800 hover:text-black transition-colors transform hover:scale-110 duration-300 mr-6"
-            >
-              <FaInstagram size={24} />
-            </Link>
+          <div className="hidden md:flex items-center h-full -mr-4">
+            {/* CARRY SALTFIELDS link */}
+            <NavLink href="/carry">
+              CARRY SALTFIELDS
+            </NavLink>
             
-            {/* Desktop Cart - Now using same style as mobile */}
-            <CartLink className="mr-1" />
+            {/* Cart link */}
+            <NavLink href="/cart">
+              CART ({cartCount})
+            </NavLink>
           </div>
 
           {/* Mobile Cart Text */}
           <div className="md:hidden mr-1">
-            <CartLink />
+            <Link
+              href="/cart"
+              className="text-black tracking-wide"
+            >
+              <span>CART</span><span className="ml-1">({cartCount})</span>
+            </Link>
           </div>
         </div>
 
@@ -160,7 +153,7 @@ export default function Navbar() {
 
         {/* Mobile Menu Slide-in */}
         <div 
-          className={`md:hidden fixed top-0 left-0 h-full w-3/4 max-w-xs bg-white z-50 mobile-menu transition-transform duration-700 ease-in-out ${
+          className={`md:hidden fixed top-0 left-0 h-full w-3/4 max-w-xs bg-off-white z-50 mobile-menu transition-transform duration-700 ease-in-out ${
             isOpen ? 'translate-x-0' : '-translate-x-full'
           }`}
         >
@@ -171,30 +164,21 @@ export default function Navbar() {
                 onClick={() => setIsOpen(false)}
                 className="text-black font-medium focus:outline-none"
               >
-                Close
+                CLOSE
               </button>
             </div>
             
-            {/* Menu Items (same as desktop) */}
+            {/* Menu Items */}
             <div className="space-y-4">
               <MobileNavLink href="/about">ABOUT</MobileNavLink>
               <MobileNavLink href="/beer">BEER</MobileNavLink>
               <MobileNavLink href="/events">EVENTS</MobileNavLink>
               <MobileNavLink href="/shop">SHOP</MobileNavLink>
+              <MobileNavLink href="/carry">CARRY SALTFIELDS</MobileNavLink>
             </div>
             
-            {/* Social Links - Using margin-top: auto to push to bottom */}
-            <div className="mt-auto mb-16">
-              <Link
-                href="https://instagram.com/saltfieldsbrewing"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-black inline-block"
-                onClick={handleLinkClick}
-              >
-                <FaInstagram size={24} />
-              </Link>
-            </div>
+            {/* Footer area */}
+            <div className="mt-auto mb-16"></div>
           </div>
         </div>
       </div>

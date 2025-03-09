@@ -24,7 +24,7 @@ export default function Loading() {
               <div className="aspect-video bg-gray-200 rounded-lg"></div>
             </div>
             
-            <div className="bg-white rounded-lg p-8">
+            <div className="bg-off-white rounded-lg p-8">
               <div className="space-y-6">
                 {[...Array(4)].map((_, i) => (
                   <div key={i}>

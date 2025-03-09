@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import ProductGrid from './ProductGrid'; 
+import ProductGrid from '@/components/ProductGrid'; 
 import { getAllProducts } from '@/lib/shopify';
 
 export const metadata = {
@@ -10,13 +10,16 @@ export const metadata = {
 // Loading component
 function LoadingProducts() {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-full mx-auto">
       {[...Array(4)].map((_, i) => (
-        <div key={i} className="animate-pulse">
-          <div className="aspect-square bg-gray-200 rounded-md"></div>
-          <div className="space-y-2 mt-3">
-            <div className="h-4 bg-gray-200 rounded w-2/3 mx-auto"></div>
-            <div className="h-4 bg-gray-200 rounded w-1/3 mx-auto"></div>
+        <div key={i} className="animate-pulse bg-gray-50">
+          <div className="aspect-square bg-gray-200"></div>
+          <div className="mt-2 space-y-2">
+            <div className="flex justify-between">
+              <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+              <div className="h-4 bg-gray-200 rounded w-1/6"></div>
+            </div>
+            <div className="h-6 bg-gray-200 rounded w-full mt-2"></div>
           </div>
         </div>
       ))}
@@ -40,42 +43,19 @@ async function ProductsWrapper() {
 
 export default function ShopPage() {
   return (
-    <div className="min-h-screen bg-[#f0f8ff] relative">
-      {/* Background Pattern */}
-      <div 
-        className="absolute inset-0 w-full h-full opacity-[0.07]" 
-        style={{
-          backgroundImage: `
-            radial-gradient(circle at 1px 1px, #000 1px, transparent 0),
-            radial-gradient(circle at 1px 1px, #000 1px, transparent 0)
-          `,
-          backgroundSize: '40px 40px',
-          backgroundPosition: '0 0, 20px 20px',
-        }}
-      />
-
-      <div className="relative py-16 px-4">
-        <div className="container mx-auto">
-          {/* Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold tracking-wide text-zinc-900 mb-4">SHOP</h1>
-            <p className="text-zinc-700 text-lg max-w-2xl mx-auto mb-8">
-              Official Saltfields Brewing merchandise. Wear your passion for craft beer.
-            </p>
-          </div>
-
-          {/* Products Grid with proper Suspense boundary */}
-          <Suspense fallback={<LoadingProducts />}>
-            <ProductsWrapper />
-          </Suspense>
-
-          {/* Shipping Notice */}
-          <div className="mt-16 text-center max-w-2xl mx-auto">
-            <p className="text-zinc-700">
-              Free shipping on all orders over $75. International shipping available.
-            </p>
-          </div>
+    <div className="min-h-screen bg-off-white">
+      <div className="container mx-auto px-4 py-8">
+        {/* Filters Button */}
+        <div className="flex justify-end mb-6">
+          <button className="border border-black px-8 py-2 uppercase text-sm tracking-wider">
+            Filters
+          </button>
         </div>
+        
+        {/* Products Grid with proper Suspense boundary */}
+        <Suspense fallback={<LoadingProducts />}>
+          <ProductsWrapper />
+        </Suspense>
       </div>
     </div>
   );

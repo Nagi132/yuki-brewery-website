@@ -1,4 +1,3 @@
-// File path: client/src/components/ProductPage.js
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -22,7 +21,7 @@ export default function ProductPage({ initialProduct }) {
   const [expandShipping, setExpandShipping] = useState(false);
   const [showSizeChartLightbox, setShowSizeChartLightbox] = useState(false);
   const [showCartDrawer, setShowCartDrawer] = useState(false);
-  
+
   const { addToCart, isLoading } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [selectedVariantPrice, setSelectedVariantPrice] = useState(
@@ -31,55 +30,48 @@ export default function ProductPage({ initialProduct }) {
   const [availableSizes, setAvailableSizes] = useState({});
 
   useEffect(() => {
-    console.log("Product loaded:", product);
-    
     if (product?.price) {
       setSelectedVariantPrice(product.price);
-      console.log("Initial price set to:", product.price);
     }
-    
+
     // Build a map of available sizes based on inventory
     if (product?.variants && product.variants.length > 0) {
-      console.log(`Found ${product.variants.length} variants:`, product.variants);
-      
       // Create availability map for all sizes
       const sizeAvailability = {};
-      
+
       if (product.sizes) {
         // Initialize all sizes as unavailable
         product.sizes.forEach(size => {
           sizeAvailability[size] = false;
         });
-        
+
         // Mark sizes as available if they have inventory
         product.variants.forEach(variant => {
           if (variant.selectedOptions) {
             const sizeOption = variant.selectedOptions.find(
               opt => opt.name.toLowerCase() === "size"
             );
-            
+
             if (sizeOption && variant.available) {
               sizeAvailability[sizeOption.value] = true;
             }
           }
         });
-        
+
         setAvailableSizes(sizeAvailability);
-        console.log("Size availability:", sizeAvailability);
       }
     }
   }, [product]);
 
   // Handle size selection with Shopify variant support
   const handleSizeSelect = (size) => {
-    console.log(`Selecting size: ${size}`);
     setSelectedSize(size);
-    
+
     // Look for matching variant in Shopify data
     if (product.variants && product.variants.length > 0) {
       // First try to match both size and color if color is selected
       let variant = null;
-      
+
       if (selectedColor) {
         variant = product.variants.find(v => {
           if (v.selectedOptions) {
@@ -87,15 +79,15 @@ export default function ProductPage({ initialProduct }) {
               opt => opt.name.toLowerCase() === "size" && opt.value === size
             );
             const colorMatch = v.selectedOptions.some(
-              opt => opt.name.toLowerCase() === "color" && 
-                   opt.value.toLowerCase() === selectedColor.toLowerCase()
+              opt => opt.name.toLowerCase() === "color" &&
+                opt.value.toLowerCase() === selectedColor.toLowerCase()
             );
             return sizeMatch && colorMatch;
           }
           return false;
         });
       }
-      
+
       // If no match with color, try just size
       if (!variant) {
         variant = product.variants.find(v => {
@@ -107,14 +99,12 @@ export default function ProductPage({ initialProduct }) {
           return false;
         });
       }
-      
-      console.log("Found matching variant:", variant);
-      
+
       if (variant) {
         // Update price based on the found variant
         if (variant.price) {
           let newPrice;
-          
+
           // Handle Shopify price format
           if (typeof variant.price === 'object' && variant.price.amount) {
             newPrice = parseFloat(variant.price.amount);
@@ -122,10 +112,9 @@ export default function ProductPage({ initialProduct }) {
             // Direct price value
             newPrice = parseFloat(variant.price);
           }
-          
-          console.log(`Updating price to ${newPrice} for size ${size}`);
+
           setSelectedVariantPrice(newPrice);
-          
+
           // If variant has an image, select it
           if (variant.image && variant.image.url) {
             setSelectedImage(variant.image.url);
@@ -137,7 +126,7 @@ export default function ProductPage({ initialProduct }) {
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-[#f0f8ff] py-16 px-4 flex items-center justify-center">
+      <div className="min-h-screen bg-off-white py-16 px-4 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4">Product not found</h1>
           <Link href="/shop" className="text-blue-500 hover:underline">
@@ -168,20 +157,20 @@ export default function ProductPage({ initialProduct }) {
       .map(line => {
         const trimmedLine = line.trim();
         if (!trimmedLine) return '';
-        
+
         // Clean the line by removing existing bullet markers
         const cleanLine = trimmedLine.replace(/^[-•*]\s*/, '');
         if (!cleanLine) return '';
-        
+
         return `<li>${cleanLine}</li>`;
       })
       .filter(line => line !== '')
       .join('');
 
     return (
-      <div 
-        dangerouslySetInnerHTML={{ 
-          __html: `<ul style="list-style-type: disc; padding-left: 20px;">${htmlContent}</ul>` 
+      <div
+        dangerouslySetInnerHTML={{
+          __html: `<ul style="list-style-type: disc; padding-left: 20px;">${htmlContent}</ul>`
         }}
       />
     );
@@ -192,18 +181,18 @@ export default function ProductPage({ initialProduct }) {
     if (!selectedSize) {
       return null;
     }
-    
+
     // Try to find in Shopify variants first
     if (product.variants && product.variants.length) {
       // First try to find by both color and size
       let variant = null;
-      
+
       if (selectedColor) {
         variant = product.variants.find(v => {
           if (v.selectedOptions) {
             const colorMatch = v.selectedOptions.some(
-              opt => opt.name.toLowerCase() === "color" && 
-                    opt.value.toLowerCase() === selectedColor.toLowerCase()
+              opt => opt.name.toLowerCase() === "color" &&
+                opt.value.toLowerCase() === selectedColor.toLowerCase()
             );
             const sizeMatch = v.selectedOptions.some(
               opt => opt.name.toLowerCase() === "size" && opt.value === selectedSize
@@ -213,7 +202,7 @@ export default function ProductPage({ initialProduct }) {
           return false;
         });
       }
-      
+
       // If no match with color, try just with size
       if (!variant) {
         variant = product.variants.find(v => {
@@ -225,19 +214,19 @@ export default function ProductPage({ initialProduct }) {
           return false;
         });
       }
-      
+
       // If we found a Shopify variant, format it
       if (variant) {
         // Get image from variant or from selected color
-        const variantImage = variant.image?.url || 
-                            (selectedColor && product.colors.find(c => c.value === selectedColor)?.image) ||
-                            product.images[0];
-        
+        const variantImage = variant.image?.url ||
+          (selectedColor && product.colors.find(c => c.value === selectedColor)?.image) ||
+          product.images[0];
+
         // Format price based on Shopify structure
-        const price = typeof variant.price === 'object' ? 
-                      parseFloat(variant.price.amount) : 
-                      parseFloat(variant.price || selectedVariantPrice);
-        
+        const price = typeof variant.price === 'object' ?
+          parseFloat(variant.price.amount) :
+          parseFloat(variant.price || selectedVariantPrice);
+
         return {
           id: variant.id,
           title: variant.title || `${product.title} - ${selectedSize}`,
@@ -250,7 +239,7 @@ export default function ProductPage({ initialProduct }) {
         };
       }
     }
-    
+
     // Create our own variant object using the current price if no Shopify variant found
     return {
       id: `${product.id}-${selectedColor || 'default'}-${selectedSize}`,
@@ -271,7 +260,6 @@ export default function ProductPage({ initialProduct }) {
     }
 
     const variant = findVariant();
-    console.log("Adding to cart:", variant);
 
     try {
       const updatedCart = await addToCart(product, variant, quantity);
@@ -300,21 +288,8 @@ export default function ProductPage({ initialProduct }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#f0f8ff] relative">
-      {/* Background Pattern */}
-      <div
-        className="absolute inset-0 w-full h-full opacity-[0.07]"
-        style={{
-          backgroundImage: `
-            radial-gradient(circle at 1px 1px, #000 1px, transparent 0),
-            radial-gradient(circle at 1px 1px, #000 1px, transparent 0)
-          `,
-          backgroundSize: '40px 40px',
-          backgroundPosition: '0 0, 20px 20px',
-        }}
-      />
-
-      <div className="relative py-16 px-4">
+    <div className="min-h-screen bg-off-white">
+      <div className="py-16 px-4">
         <div className="container mx-auto max-w-6xl">
           {/* Breadcrumb */}
           <div className="mb-6">
@@ -332,42 +307,45 @@ export default function ProductPage({ initialProduct }) {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Product Images */}
             <div className="space-y-4">
-              {/* Main Image */}
-              <div className="relative aspect-square bg-white overflow-hidden shadow-sm">
-                <Image
-                  src={selectedImage || (product.images?.length ? product.images[0] : '/images/placeholder.jpg')}
-                  alt={product.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-contain p-4"
-                  priority
-                />
+              {/* Main Product Image - Respects natural proportions */}
+              <div className="relative bg-off-white overflow-hidden shadow-sm" style={{ maxHeight: '600px', width: '100%' }}>
+                <div className="relative w-full" style={{ paddingBottom: '120%' }}> {/* 4:5 aspect ratio container */}
+                  <Image
+                    src={selectedImage || (product.images?.length ? product.images[0] : '/images/placeholder.jpg')}
+                    alt={product.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-contain"
+                    priority
+                  />
+                </div>
               </div>
 
-              {/* Thumbnail Images - explicitly sized with inline styles */}
+              {/* Thumbnails with preserved aspect ratio */}
               {product.images && product.images.length > 1 && (
-                <div className="flex items-center space-x-4 pl-4 overflow-x-auto py-3">
+                <div className="flex items-center space-x-4 overflow-x-auto py-3">
                   {product.images.map((image, index) => (
                     <div
                       key={index}
-                      style={{ width: '160px', height: '160px', flexShrink: 0 }}
-                      className={`
-                        border overflow-hidden
-                        ${selectedImage === image ? 'border-2 border-black' : 'border border-gray-300'}
-                      `}
+                      className={`relative flex-shrink-0 w-24 border overflow-hidden
+          ${selectedImage === image ? 'border-1 border-black' : 'border border-gray-300'}
+        `}
+                      style={{ height: 'auto' }}
                     >
-                      <button
-                        onClick={() => handleImageClick(image)}
-                        aria-label={`View product image ${index + 1}`}
-                        style={{ width: '100%', height: '100%', position: 'relative', display: 'block' }}
-                      >
-                        <Image
-                          src={image}
-                          alt={`${product.title} - image ${index + 1}`}
-                          fill
-                          style={{ objectFit: 'contain' }}
-                        />
-                      </button>
+                      <div className="relative w-full" style={{ paddingBottom: '120%' }}> {/* Same aspect ratio as main image */}
+                        <button
+                          onClick={() => handleImageClick(image)}
+                          aria-label={`View product image ${index + 1}`}
+                          className="absolute inset-0 w-full h-full"
+                        >
+                          <Image
+                            src={image}
+                            alt={`${product.title} - image ${index + 1}`}
+                            fill
+                            className="object-contain"
+                          />
+                        </button>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -375,7 +353,7 @@ export default function ProductPage({ initialProduct }) {
             </div>
 
             {/* Product Details */}
-            <div className="bg-white p-8 shadow-sm border border-gray-100">
+            <div className="bg-off-white p-8 shadow-sm border border-gray-100">
               {/* Title and Price */}
               <h1 className="text-3xl font-medium mb-2">{product.title}</h1>
               <p className="text-2xl font-medium mb-4">${selectedVariantPrice.toFixed(2)}</p>
@@ -417,7 +395,7 @@ export default function ProductPage({ initialProduct }) {
                 <div className="mb-6" id="size-selector">
                   <div className="flex justify-between items-center mb-3">
                     <label className="block font-medium">Select Size</label>
-                    <button 
+                    <button
                       className="text-zinc-600 hover:text-black text-sm underline"
                       onClick={() => setShowSizeChartLightbox(true)}
                       aria-label="View size chart"
@@ -425,12 +403,12 @@ export default function ProductPage({ initialProduct }) {
                       Size Chart
                     </button>
                   </div>
-                  
+
                   <div className="grid grid-cols-5 gap-2">
                     {product.sizes.map((size) => {
                       // Check if size is available using the precomputed map
                       const isAvailable = availableSizes[size] !== false; // Default to true if not in map
-                      
+
                       return (
                         <button
                           key={size}
@@ -438,8 +416,8 @@ export default function ProductPage({ initialProduct }) {
                             py-3 border text-center transition-colors
                             ${selectedSize === size
                               ? 'bg-black text-white border-black'
-                              : isAvailable 
-                                ? 'bg-white border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                              : isAvailable
+                                ? 'bg-off-white border-gray-200 hover:border-gray-300 hover:bg-gray-50'
                                 : 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed opacity-60'}
                           `}
                           onClick={() => isAvailable && handleSizeSelect(size)}
@@ -463,7 +441,7 @@ export default function ProductPage({ initialProduct }) {
                   <button
                     onClick={() => handleQuantityChange(-1)}
                     disabled={quantity <= 1}
-                    className="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-l bg-white hover:bg-gray-50 disabled:opacity-50"
+                    className="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-l bg-off-white hover:bg-gray-50 disabled:opacity-50"
                   >
                     <FaMinus size={12} />
                   </button>
@@ -472,7 +450,7 @@ export default function ProductPage({ initialProduct }) {
                   </div>
                   <button
                     onClick={() => handleQuantityChange(1)}
-                    className="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-r bg-white hover:bg-gray-50"
+                    className="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-r bg-off-white hover:bg-gray-50"
                   >
                     <FaPlus size={12} />
                   </button>
@@ -494,38 +472,38 @@ export default function ProductPage({ initialProduct }) {
               </button>
 
               {/* Product Information with Dynamic Bullet Points */}
-<div className="mt-8 pt-6 border-t border-gray-200">
-  <h2 className="font-medium text-lg mb-4">Product Information</h2>
-  
-  {/* Option 1: If Shopify provides HTML, use it directly */}
-  {product.descriptionHtml ? (
-    <div 
-      className="description-html"
-      dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
-    />
-  ) : product.description ? (
-    /* Option 2: If we have plain text, try these formatting approaches */
-    <ul className="list-disc pl-5 space-y-2">
-      {/* Try to split by newlines first */}
-      {product.description.includes('\n') ? 
-        product.description.split('\n').map((line, index) => {
-          const trimmed = line.trim();
-          if (!trimmed) return null;
-          return <li key={index}>{trimmed.replace(/^[-•*]\s*/, '')}</li>;
-        })
-        :
-        /* If no newlines, try commas as separators */
-        product.description.split(',').map((item, index) => {
-          const trimmed = item.trim();
-          if (!trimmed) return null;
-          return <li key={index}>{trimmed.replace(/^[-•*]\s*/, '')}</li>;
-        })
-      }
-    </ul>
-  ) : (
-    <p>No description available.</p>
-  )}
-</div>
+              <div className="mt-8 pt-6 border-t border-gray-200">
+                <h2 className="font-medium text-lg mb-4">Product Information</h2>
+
+                {/* Option 1: If Shopify provides HTML, use it directly */}
+                {product.descriptionHtml ? (
+                  <div
+                    className="description-html"
+                    dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
+                  />
+                ) : product.description ? (
+                  /* Option 2: If we have plain text, try these formatting approaches */
+                  <ul className="list-disc pl-5 space-y-2">
+                    {/* Try to split by newlines first */}
+                    {product.description.includes('\n') ?
+                      product.description.split('\n').map((line, index) => {
+                        const trimmed = line.trim();
+                        if (!trimmed) return null;
+                        return <li key={index}>{trimmed.replace(/^[-•*]\s*/, '')}</li>;
+                      })
+                      :
+                      /* If no newlines, try commas as separators */
+                      product.description.split(',').map((item, index) => {
+                        const trimmed = item.trim();
+                        if (!trimmed) return null;
+                        return <li key={index}>{trimmed.replace(/^[-•*]\s*/, '')}</li>;
+                      })
+                    }
+                  </ul>
+                ) : (
+                  <p>No description available.</p>
+                )}
+              </div>
 
               {/* Shipping & Returns */}
               <div className="mt-4 border-t border-gray-200 pt-4">
@@ -567,7 +545,7 @@ export default function ProductPage({ initialProduct }) {
 
       {/* Size Chart Lightbox */}
       {showSizeChartLightbox && (
-        <div 
+        <div
           className="fixed inset-0 z-50 bg-black bg-opacity-75 flex items-center justify-center p-4"
           onClick={(e) => {
             // Close when clicking the background (but not when clicking inside the lightbox)
@@ -576,19 +554,19 @@ export default function ProductPage({ initialProduct }) {
             }
           }}
         >
-          <div className="relative bg-white max-w-3xl w-full max-h-[90vh] overflow-auto">
+          <div className="relative bg-off-white max-w-3xl w-full max-h-[90vh] overflow-auto">
             {/* Close button */}
-            <button 
+            <button
               onClick={() => setShowSizeChartLightbox(false)}
               className="absolute top-2 right-2 text-gray-500 hover:text-black z-10 p-2"
               aria-label="Close size chart"
             >
               <FaTimes size={20} />
             </button>
-            
+
             <div className="p-6">
               <h3 className="text-xl font-medium mb-4 text-center">Size Chart</h3>
-              
+
               <div className="relative w-full aspect-[4/3]">
                 <Image
                   src="/images/size-chart.webp"
@@ -603,9 +581,9 @@ export default function ProductPage({ initialProduct }) {
       )}
 
       {/* Cart Drawer */}
-      <CartDrawer 
-        isOpen={showCartDrawer} 
-        onClose={() => setShowCartDrawer(false)} 
+      <CartDrawer
+        isOpen={showCartDrawer}
+        onClose={() => setShowCartDrawer(false)}
       />
     </div>
   );
