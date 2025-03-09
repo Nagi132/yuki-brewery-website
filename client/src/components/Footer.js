@@ -1,32 +1,44 @@
-import React from 'react';
+// src/components/Footer.js
+"use client";
+
+import React, { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
-import { FaInstagram, FaTwitter } from 'react-icons/fa';
+import { FaInstagram } from 'react-icons/fa';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  
+  // Newsletter form state
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Get Shopify domain from environment variable or use placeholder
+  const shopifyDomain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN || 'w0gjqw-en.myshopify.com';
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    if (!email || !email.includes('@')) {
+      alert('Please enter a valid email address');
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
+    // Redirect to Shopify's customer signup page with the email pre-filled
+    // This guarantees the email is collected directly by Shopify
+    const signupUrl = `https://${shopifyDomain}/account/register?checkout%5Bemail%5D=${encodeURIComponent(email)}&checkout%5Bget_marketing_update%5D=true`;
+    window.location.href = signupUrl;
+  };
 
   return (
-    <footer className="bg-gray-100 pt-8 pb-6 px-4 md:px-6 lg:px-8">
+    <footer className="bg-white pt-8 pb-6 px-4 md:px-6 lg:px-8">
       {/* Top Border */}
       <div className="flex justify-center">
         <hr className="w-full my-3 -mt-3 border-0 h-[1px] bg-black" />
       </div>
 
       <div className="container mx-auto">
-        {/* Logo Section */}
-        <div className="flex justify-center mb-10">
-          <div className="h-12 relative">
-            <Image
-              src="/images/saltfields_logo.webp"
-              alt="Saltfields Logo"
-              width={180}
-              height={48}
-              className="object-contain"
-            />
-          </div>
-        </div>
-
         {/* Main Content */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-10 text-sm text-black">
           {/* Hours & Location */}
@@ -46,14 +58,14 @@ export default function Footer() {
             <div>
               <p className="font-medium tracking-wider mb-3">LOCATION</p>
               <div className="space-y-1.5 text-gray-700">
-                <p>43 CANAL STREET</p>
-                <p>NEW YORK, NY 10002</p>
-                <p className="mt-3">(212) 226-2545</p>
+                <p>123 ABC STREET</p>
+                <p>NEW YORK, NY 12345</p>
+                <p className="mt-3">(123) 456-7890</p>
                 <Link 
-                  href="mailto:hello@saltfields.com" 
+                  href="mailto:email@saltfields.com" 
                   className="block mt-3 hover:text-black transition-colors"
                 >
-                  hello@saltfields.com
+                  email@saltfields.com
                 </Link>
               </div>
             </div>
@@ -64,14 +76,14 @@ export default function Footer() {
             <div>
               <p className="font-medium tracking-wider mb-3">MENU</p>
               <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-gray-700">
-                <Link href="/story" className="hover:text-black transition-colors">
-                  STORY
+                <Link href="/about" className="hover:text-black transition-colors">
+                  ABOUT
                 </Link>
                 <Link href="/shop" className="hover:text-black transition-colors">
                   SHOP
                 </Link>
-                <Link href="/our-beer" className="hover:text-black transition-colors">
-                  OUR BEER
+                <Link href="/beer" className="hover:text-black transition-colors">
+                  BEER
                 </Link>
                 <Link href="/events" className="hover:text-black transition-colors">
                   EVENTS
@@ -79,9 +91,12 @@ export default function Footer() {
                 <Link href="/contact" className="hover:text-black transition-colors">
                   CONTACT
                 </Link>
-                <Link href="/wholesale" className="hover:text-black transition-colors">
+                <a 
+                  href="mailto:wholesale@saltfields.com" 
+                  className="hover:text-black transition-colors"
+                >
                   WHOLESALE
-                </Link>
+                </a>
               </div>
             </div>
           </div>
@@ -91,17 +106,25 @@ export default function Footer() {
         <div className="mt-12 mb-10">
           <div className="max-w-md mx-auto text-center">
             <p className="text-sm mb-4 text-zinc-900">Stay updated with new releases and events.</p>
-            <form className="flex gap-2">
+            
+            <form onSubmit={handleSubmit} className="flex gap-2">
               <input
                 type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email address"
                 className="flex-1 px-4 py-2 text-sm border border-gray-300 rounded-sm focus:outline-none focus:border-black"
+                required
+                disabled={isSubmitting}
               />
               <button
                 type="submit"
-                className="px-6 py-2 bg-black text-white text-sm rounded-sm hover:bg-gray-800 transition-colors"
+                className={`px-6 py-2 bg-black text-white text-sm rounded-sm transition-colors ${
+                  isSubmitting ? 'opacity-70 cursor-wait' : 'hover:bg-gray-800'
+                }`}
+                disabled={isSubmitting}
               >
-                Sign Up
+                {isSubmitting ? 'Signing Up...' : 'Sign Up'}
               </button>
             </form>
           </div>
@@ -121,14 +144,6 @@ export default function Footer() {
                 className="text-gray-600 hover:text-black transition-colors"
               >
                 <FaInstagram size={20} />
-              </Link>
-              <Link 
-                href="https://www.twitter.com/saltfields/" 
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-600 hover:text-black transition-colors"
-              >
-                <FaTwitter size={20} />
               </Link>
             </div>
           </div>
