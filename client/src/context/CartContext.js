@@ -41,6 +41,39 @@ export function CartProvider({ children }) {
     }
   }, [cart]);
   
+  // Create a Shopify cart using the API
+  const createShopifyCart = async () => {
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+      // Create a cart with Shopify that includes our items
+      const response = await fetch('/api/cart/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        // Send current cart items to sync with Shopify
+        body: JSON.stringify({ items: cart.lines })
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to create Shopify cart');
+      }
+      
+      const data = await response.json();
+      console.log('Shopify cart created successfully:', data.cart);
+      return data.cart;
+    } catch (err) {
+      console.error('Error creating Shopify cart:', err);
+      setError('Failed to create checkout');
+      return null;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
   // Simplified addToCart function that works without API
   const addToCart = async (product, variant, quantity = 1) => {
     setIsLoading(true);
@@ -79,10 +112,20 @@ export function CartProvider({ children }) {
       updatedCart.tax = 0; // Simplified: would normally calculate based on location
       updatedCart.total = updatedCart.subtotal + updatedCart.tax;
       
+      // Try to create/update Shopify cart and get the checkout URL
+      try {
+        const shopifyCart = await createShopifyCart();
+        if (shopifyCart) {
+          updatedCart.id = shopifyCart.id;
+          updatedCart.checkoutUrl = shopifyCart.checkoutUrl;
+          console.log('Saved checkout URL:', shopifyCart.checkoutUrl);
+        }
+      } catch (shopifyErr) {
+        console.warn('Using local cart only:', shopifyErr);
+      }
+      
       // Update cart state
       setCart(updatedCart);
-      
-      // TODO: When your API routes are working, you'll synchronize with Shopify here
       
       return updatedCart;
     } catch (err) {
@@ -121,6 +164,9 @@ export function CartProvider({ children }) {
       );
       updatedCart.tax = 0;
       updatedCart.total = updatedCart.subtotal;
+
+      // Clear checkout URL since cart contents changed
+      updatedCart.checkoutUrl = null;
       
       // Update cart state
       setCart(updatedCart);
@@ -158,12 +204,49 @@ export function CartProvider({ children }) {
     });
   };
   
-  // Redirect to Shopify checkout - this is just a placeholder
-  // since we don't have real Shopify integration yet
-  const checkout = () => {
-    // When properly integrated with Shopify, you would redirect to the checkout URL
-    // For now, just show an alert
-    alert('In a production setup, you would be redirected to Shopify checkout');
+  // Redirect to Shopify checkout
+  const checkout = async () => {
+    if (!cart || cart.lines.length === 0) {
+      setError('Your cart is empty');
+      return;
+    }
+    
+    try {
+      setIsLoading(true);
+      
+      // Check if we already have a checkout URL
+      if (cart.checkoutUrl) {
+        console.log('Using existing checkout URL:', cart.checkoutUrl);
+        window.location.href = cart.checkoutUrl;
+        return;
+      }
+      
+      // Try to create a Shopify cart and get checkout URL
+      const shopifyCart = await createShopifyCart();
+      
+      if (shopifyCart && shopifyCart.checkoutUrl) {
+        console.log('Redirecting to checkout URL:', shopifyCart.checkoutUrl);
+        
+        // Save the checkout URL to our cart
+        const updatedCart = { ...cart, checkoutUrl: shopifyCart.checkoutUrl };
+        setCart(updatedCart);
+        
+        // Redirect to Shopify checkout
+        window.location.href = shopifyCart.checkoutUrl;
+      } else {
+        throw new Error('No checkout URL received from Shopify');
+      }
+    } catch (err) {
+      console.error('Checkout error:', err);
+      setError('Failed to process checkout. Please try again.');
+      
+      // Fallback for development
+      if (process.env.NODE_ENV === 'development') {
+        alert('In a production setup, you would be redirected to Shopify checkout');
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
   
   // Context value

@@ -5,13 +5,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useCart } from '@/context/CartContext';
 import { FaTrash, FaPlus, FaMinus } from 'react-icons/fa';
+import CheckoutButton from '@/components/CheckoutButton';
 
 export default function CartPage() {
   const { cart, isLoading, error, updateCartItem, removeFromCart, checkout } = useCart();
   
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#f0f8ff] py-16 px-4">
+      <div className="min-h-screen bg-off-white py-16 px-4">
         <div className="container mx-auto max-w-4xl">
           <h1 className="text-3xl font-bold mb-8 text-center">Your Cart</h1>
           <div className="text-center py-12">
@@ -25,7 +26,7 @@ export default function CartPage() {
   
   if (error) {
     return (
-      <div className="min-h-screen bg-[#f0f8ff] py-16 px-4">
+      <div className="min-h-screen bg-off-white py-16 px-4">
         <div className="container mx-auto max-w-4xl">
           <h1 className="text-3xl font-bold mb-8 text-center">Your Cart</h1>
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 mb-6">
@@ -43,7 +44,7 @@ export default function CartPage() {
   
   if (!cart || cart.lines.length === 0) {
     return (
-      <div className="min-h-screen bg-[#f0f8ff] py-16 px-4">
+      <div className="min-h-screen bg-off-white py-16 px-4">
         <div className="container mx-auto max-w-4xl">
           <h1 className="text-3xl font-bold mb-8 text-center">Your Cart</h1>
           <div className="bg-off-white p-8 shadow-sm text-center">
@@ -69,7 +70,7 @@ export default function CartPage() {
   };
   
   return (
-    <div className="min-h-screen bg-[#f0f8ff] relative">
+    <div className="min-h-screen bg-off-white relative">
       {/* Background Pattern */}
       <div 
         className="absolute inset-0 w-full h-full opacity-[0.07]" 
@@ -173,12 +174,7 @@ export default function CartPage() {
               </div>
               
               <div className="mt-6 space-y-4">
-                <button
-                  onClick={checkout}
-                  className="w-full bg-black text-white py-3 font-medium hover:bg-zinc-800 transition-colors"
-                >
-                  Proceed to Checkout
-                </button>
+              <CheckoutButton />
                 
                 <Link 
                   href="/shop"

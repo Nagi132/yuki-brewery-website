@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FaTimes, FaPlus, FaMinus } from 'react-icons/fa';
 import { useCart } from '@/context/CartContext';
-
+import CheckoutButton from '@/components/CheckoutButton';
 const RecommendedProduct = ({ product, onClose }) => (
   <div className="w-full bg-white p-2 flex flex-col">
     <div className="relative w-full aspect-square bg-gray-50">
@@ -216,12 +216,7 @@ export default function CartDrawer({ isOpen, onClose }) {
               </div>
               
               {/* Checkout button */}
-              <button
-                onClick={checkout}
-                className="w-full py-3 bg-black text-white font-medium uppercase tracking-wider"
-              >
-                Checkout
-              </button>
+              <CheckoutButton buttonText="CHECKOUT" />
             </>
           )}
           
