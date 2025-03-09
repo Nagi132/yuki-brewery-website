@@ -65,7 +65,7 @@ export default function OurBeerPage() {
                 }`}
               >
                 {/* Beer Image */}
-                <div className="relative aspect-square lg:aspect-auto lg:h-[600px] bg-white/80 backdrop-blur-sm rounded-lg overflow-hidden group">
+                <div className="relative aspect-square lg:aspect-auto lg:h-[600px] bg-white/80 backdrop-blur-sm overflow-hidden group">
                   <Image
                     src={beer.image}
                     alt={beer.name}
@@ -91,7 +91,7 @@ export default function OurBeerPage() {
                     {beer.description}
                   </p>
 
-                  <div className="space-y-4 bg-white/80 backdrop-blur-sm rounded-lg p-6 border border-black/5">
+                  <div className="space-y-4 bg-white/80 backdrop-blur-sm p-6 border border-black/5">
                     <div>
                       <h3 className="text-sm font-medium text-amber-500 mb-1">MADE WITH</h3>
                       <p className="text-zinc-900">{beer.madeWith}</p>

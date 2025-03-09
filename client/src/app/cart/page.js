@@ -15,7 +15,7 @@ export default function CartPage() {
         <div className="container mx-auto max-w-4xl">
           <h1 className="text-3xl font-bold mb-8 text-center">Your Cart</h1>
           <div className="text-center py-12">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-black"></div>
+            <div className="inline-block animate-spin h-12 w-12 border-t-2 border-b-2 border-black"></div>
             <p className="mt-4 text-zinc-700">Loading your cart...</p>
           </div>
         </div>
@@ -28,11 +28,11 @@ export default function CartPage() {
       <div className="min-h-screen bg-[#f0f8ff] py-16 px-4">
         <div className="container mx-auto max-w-4xl">
           <h1 className="text-3xl font-bold mb-8 text-center">Your Cart</h1>
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 mb-6">
             {error}
           </div>
           <div className="text-center">
-            <Link href="/shop" className="inline-block bg-black text-white px-6 py-3 rounded">
+            <Link href="/shop" className="inline-block bg-black text-white px-6 py-3">
               Continue Shopping
             </Link>
           </div>
@@ -46,9 +46,9 @@ export default function CartPage() {
       <div className="min-h-screen bg-[#f0f8ff] py-16 px-4">
         <div className="container mx-auto max-w-4xl">
           <h1 className="text-3xl font-bold mb-8 text-center">Your Cart</h1>
-          <div className="bg-off-white p-8 rounded-lg shadow-sm text-center">
+          <div className="bg-off-white p-8 shadow-sm text-center">
             <p className="text-xl mb-6">Your cart is empty</p>
-            <Link href="/shop" className="inline-block bg-black text-white px-6 py-3 rounded">
+            <Link href="/shop" className="inline-block bg-black text-white px-6 py-3">
               Continue Shopping
             </Link>
           </div>
@@ -87,7 +87,7 @@ export default function CartPage() {
         <div className="container mx-auto max-w-4xl">
           <h1 className="text-3xl font-bold mb-8 text-center">Your Cart</h1>
           
-          <div className="bg-off-white rounded-lg shadow-sm overflow-hidden">
+          <div className="bg-off-white shadow-sm overflow-hidden">
             {/* Cart Items */}
             <div className="divide-y divide-gray-100">
               {cart.lines.map((item) => (
@@ -121,7 +121,7 @@ export default function CartPage() {
                   <div className="flex items-center space-x-2">
                     <button 
                       onClick={() => handleQuantityChange(item.id, item.quantity, -1)}
-                      className="p-2 bg-gray-100 hover:bg-gray-200 rounded"
+                      className="p-2 bg-gray-100 hover:bg-gray-200"
                       aria-label="Decrease quantity"
                     >
                       <FaMinus className="w-3 h-3" />
@@ -131,7 +131,7 @@ export default function CartPage() {
                     
                     <button 
                       onClick={() => handleQuantityChange(item.id, item.quantity, 1)}
-                      className="p-2 bg-gray-100 hover:bg-gray-200 rounded"
+                      className="p-2 bg-gray-100 hover:bg-gray-200"
                       aria-label="Increase quantity"
                     >
                       <FaPlus className="w-3 h-3" />
@@ -175,7 +175,7 @@ export default function CartPage() {
               <div className="mt-6 space-y-4">
                 <button
                   onClick={checkout}
-                  className="w-full bg-black text-white py-3 rounded font-medium hover:bg-zinc-800 transition-colors"
+                  className="w-full bg-black text-white py-3 font-medium hover:bg-zinc-800 transition-colors"
                 >
                   Proceed to Checkout
                 </button>

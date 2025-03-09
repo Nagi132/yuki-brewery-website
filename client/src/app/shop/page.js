@@ -45,12 +45,12 @@ export default function ShopPage() {
   return (
     <div className="min-h-screen bg-off-white">
       <div className="container mx-auto px-4 py-8">
-        {/* Filters Button */}
+        {/* Filters Button *
         <div className="flex justify-end mb-6">
           <button className="border border-black px-8 py-2 uppercase text-sm tracking-wider">
             Filters
           </button>
-        </div>
+        </div>/}
         
         {/* Products Grid with proper Suspense boundary */}
         <Suspense fallback={<LoadingProducts />}>
