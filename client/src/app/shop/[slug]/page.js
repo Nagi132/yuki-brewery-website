@@ -111,7 +111,7 @@ export default async function ProductPageRoute({ params }) {
     
     // Return a simple error UI
     return (
-      <div className="min-h-screen bg-[#f0f8ff] py-16 px-4 flex items-center justify-center">
+      <div className="min-h-screen bg-off-white py-16 px-4 flex items-center justify-center">
         <div className="text-center bg-white p-8 rounded-lg shadow-sm max-w-md mx-auto">
           <h1 className="text-2xl font-bold mb-4 text-zinc-900">Something went wrong</h1>
           <p className="mb-6 text-zinc-700">There was an error loading this product.</p>

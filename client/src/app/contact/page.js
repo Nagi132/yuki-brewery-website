@@ -24,7 +24,7 @@ export default function ContactPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#f0f8ff] relative">
+    <main className="min-h-screen bg-off-white relative">
       {/* Background Pattern */}
       <div 
         className="absolute inset-0 w-full h-full opacity-[0.07]" 

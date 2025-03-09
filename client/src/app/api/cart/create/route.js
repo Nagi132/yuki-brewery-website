@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { GraphQLClient } from 'graphql-request';
+import { GraphQLClient, gql } from 'graphql-request';
 
 // Set up GraphQL client for Shopify
 const shopifyClient = new GraphQLClient(
@@ -11,66 +11,145 @@ const shopifyClient = new GraphQLClient(
   }
 );
 
-export async function POST() {
+export async function POST(request) {
   try {
+    // Get items from request body if present
+    const { items } = await request.json().catch(() => ({ items: [] }));
+
     // GraphQL mutation to create a cart
-    const mutation = `
-      mutation cartCreate {
-        cartCreate {
-          cart {
-            id
-            createdAt
-            updatedAt
-            lines(first: 10) {
-              edges {
-                node {
-                  id
-                  quantity
-                  merchandise {
-                    ... on ProductVariant {
-                      id
-                      title
-                      product {
+    let mutation;
+    let variables = {};
+
+    if (items && items.length > 0) {
+      // Create cart with items
+      mutation = gql`
+        mutation cartCreate($input: CartInput!) {
+          cartCreate(input: $input) {
+            cart {
+              id
+              createdAt
+              updatedAt
+              lines(first: 20) {
+                edges {
+                  node {
+                    id
+                    quantity
+                    merchandise {
+                      ... on ProductVariant {
+                        id
                         title
-                        handle
-                      }
-                      image {
-                        url
-                      }
-                      price {
-                        amount
-                        currencyCode
+                        product {
+                          title
+                          handle
+                        }
+                        image {
+                          url
+                        }
+                        price {
+                          amount
+                          currencyCode
+                        }
                       }
                     }
                   }
                 }
               }
+              estimatedCost {
+                subtotalAmount {
+                  amount
+                  currencyCode
+                }
+                totalAmount {
+                  amount
+                  currencyCode
+                }
+                totalTaxAmount {
+                  amount
+                  currencyCode
+                }
+              }
+              checkoutUrl
             }
-            estimatedCost {
-              subtotalAmount {
-                amount
-                currencyCode
-              }
-              totalAmount {
-                amount
-                currencyCode
-              }
-              totalTaxAmount {
-                amount
-                currencyCode
-              }
-            }
-            checkoutUrl
           }
         }
-      }
-    `;
+      `;
+
+      // Prepare cart lines for Shopify
+      const lines = items.map(item => ({
+        quantity: item.quantity,
+        merchandiseId: item.variantId
+      }));
+
+      variables = {
+        input: {
+          lines: lines
+        }
+      };
+    } else {
+      // Create empty cart
+      mutation = gql`
+        mutation cartCreate {
+          cartCreate {
+            cart {
+              id
+              createdAt
+              updatedAt
+              lines(first: 10) {
+                edges {
+                  node {
+                    id
+                    quantity
+                    merchandise {
+                      ... on ProductVariant {
+                        id
+                        title
+                        product {
+                          title
+                          handle
+                        }
+                        image {
+                          url
+                        }
+                        price {
+                          amount
+                          currencyCode
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+              estimatedCost {
+                subtotalAmount {
+                  amount
+                  currencyCode
+                }
+                totalAmount {
+                  amount
+                  currencyCode
+                }
+                totalTaxAmount {
+                  amount
+                  currencyCode
+                }
+              }
+              checkoutUrl
+            }
+          }
+        }
+      `;
+    }
 
     // Execute the mutation
-    const data = await shopifyClient.request(mutation);
+    const data = await shopifyClient.request(mutation, variables);
+    
+    // Get cart data from response
+    const cartData = items.length > 0 
+      ? data.cartCreate.cart
+      : data.cartCreate.cart;
 
     // Format the cart data for easier consumption
-    const cart = formatCart(data.cartCreate.cart);
+    const cart = formatCart(cartData);
 
     return NextResponse.json({ cart }, { status: 200 });
   } catch (error) {
@@ -84,9 +163,25 @@ export async function POST() {
 
 // Helper function to format cart data
 function formatCart(shopifyCart) {
+  // Get the base URL for your Next.js app - fallback to localhost for development
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+  
+  // Add return_to parameter to the checkout URL to redirect after completion
+  let checkoutUrl = shopifyCart.checkoutUrl;
+  if (checkoutUrl) {
+    // Determine if we need to add a ? or & character
+    const separator = checkoutUrl.includes('?') ? '&' : '?';
+    
+    // Add the return_to parameter to redirect after checkout
+    const returnUrl = `${appUrl}/thank-you`;
+    checkoutUrl = `${checkoutUrl}${separator}return_to=${encodeURIComponent(returnUrl)}`;
+    
+    console.log('Checkout URL with redirect:', checkoutUrl);
+  }
+  
   return {
     id: shopifyCart.id,
-    checkoutUrl: shopifyCart.checkoutUrl,
+    checkoutUrl: checkoutUrl,
     lines: shopifyCart.lines.edges.map(({ node }) => ({
       id: node.id,
       quantity: node.quantity,

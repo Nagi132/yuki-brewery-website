@@ -1,6 +1,6 @@
 export default function Loading() {
     return (
-      <div className="min-h-screen bg-[#f0f8ff] py-16 px-4">
+      <div className="min-h-screen bg-off-white py-16 px-4">
         <div className="container mx-auto">
           {/* Header Skeleton */}
           <div className="text-center mb-16">
