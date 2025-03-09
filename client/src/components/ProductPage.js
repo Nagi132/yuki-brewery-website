@@ -1,6 +1,7 @@
+// File path: client/src/components/ProductPage.js
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaShoppingCart, FaArrowLeft, FaTruck, FaShieldAlt, FaPlus, FaMinus, FaTimes } from 'react-icons/fa';
@@ -21,6 +22,8 @@ export default function ProductPage({ initialProduct }) {
   const [expandShipping, setExpandShipping] = useState(false);
   const [showSizeChartLightbox, setShowSizeChartLightbox] = useState(false);
   const [showCartDrawer, setShowCartDrawer] = useState(false);
+  const [drawerMounted, setDrawerMounted] = useState(false);
+  const drawerInitializedRef = useRef(false);
 
   const { addToCart, isLoading } = useCart();
   const [quantity, setQuantity] = useState(1);
@@ -28,6 +31,18 @@ export default function ProductPage({ initialProduct }) {
     product?.price || 0
   );
   const [availableSizes, setAvailableSizes] = useState({});
+
+  // Handle drawer mounting/unmounting when opening/closing
+  useEffect(() => {
+    if (!showCartDrawer && drawerMounted) {
+      // Keep drawer mounted during closing animation
+      const timer = setTimeout(() => {
+        setDrawerMounted(false);
+        drawerInitializedRef.current = false;
+      }, 800); // Slightly longer than animation duration
+      return () => clearTimeout(timer);
+    }
+  }, [showCartDrawer, drawerMounted]);
 
   useEffect(() => {
     if (product?.price) {
@@ -264,8 +279,18 @@ export default function ProductPage({ initialProduct }) {
     try {
       const updatedCart = await addToCart(product, variant, quantity);
       if (updatedCart) {
-        // Open the cart drawer instead of showing notification
-        setShowCartDrawer(true);
+        // First mount the drawer in a definitely closed state
+        setDrawerMounted(true);
+        drawerInitializedRef.current = false;
+        
+        // Force a browser repaint to ensure drawer is rendered in closed state
+        // This is done in a separate render cycle for reliability
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            drawerInitializedRef.current = true;
+            setShowCartDrawer(true);
+          });
+        });
       }
     } catch (error) {
       console.error('Error adding to cart:', error);
@@ -580,11 +605,14 @@ export default function ProductPage({ initialProduct }) {
         </div>
       )}
 
-      {/* Cart Drawer */}
-      <CartDrawer
-        isOpen={showCartDrawer}
-        onClose={() => setShowCartDrawer(false)}
-      />
+      {/* Cart Drawer - Only mount when needed */}
+      {drawerMounted && (
+        <CartDrawer
+          isOpen={showCartDrawer}
+          onClose={() => setShowCartDrawer(false)}
+          isInitialized={drawerInitializedRef.current}
+        />
+      )}
     </div>
   );
 }
