@@ -25,8 +25,8 @@ export default function EventsPage() {
       <div className="relative py-16 px-4">
         <div className="container mx-auto max-w-6xl">
           {/* Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold tracking-wide text-zinc-900 mb-4">UPCOMING EVENTS</h1>
+          <div className="text-center mb-12 mt-8">
+            <h1 className="text-4xl font-normal tracking-wide text-zinc-900 mb-4">UPCOMING EVENTS</h1>
             <p className="text-zinc-700 max-w-2xl mx-auto text-lg">
               Join us for special releases, tastings, and community gatherings.
             </p>

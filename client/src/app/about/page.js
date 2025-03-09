@@ -9,8 +9,8 @@ export default function StoryPage() {
 
       <div className="relative">
         {/* Hero Section */}
-        <div className="container mx-auto px-4 pt-16 pb-8">
-          <h1 className="text-4xl font-bold tracking-wide text-zinc-900 text-center mb-4">OUR STORY</h1>
+        <div className="container mx-auto px-4 pt-16 pb-8 mt-8">
+          <h1 className="text-4xl font-normal tracking-wide text-zinc-900 text-center mb-4">ABOUT</h1>
           <p className="text-zinc-700 text-lg text-center max-w-2xl mx-auto mb-16">
             From street culture to craft beer, our journey of bringing together two worlds.
           </p>

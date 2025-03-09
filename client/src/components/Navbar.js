@@ -99,7 +99,7 @@ export default function Navbar() {
           <div className="md:hidden ml-1">
             <button
               onClick={() => setIsOpen(true)}
-              className="text-black font-medium focus:outline-none menu-button"
+              className="text-black font-normal focus:outline-none menu-button"
               aria-label="Open navigation menu"
             >
               MENU
@@ -162,7 +162,7 @@ export default function Navbar() {
             <div className="mb-10 -ml-1">
               <button 
                 onClick={() => setIsOpen(false)}
-                className="text-black font-medium focus:outline-none"
+                className="text-black font-normal focus:outline-none"
               >
                 CLOSE
               </button>

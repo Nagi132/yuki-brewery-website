@@ -47,8 +47,8 @@ export default function OurBeerPage() {
     <main className="min-h-screen bg-off-white relative">
       <div className="relative">
         {/* Header */}
-        <div className="container mx-auto px-4 pt-16 pb-8">
-          <h1 className="text-4xl font-bold tracking-wide text-zinc-900 text-center mb-4">OUR BEER</h1>
+        <div className="container mx-auto px-4 pt-16 pb-8 mt-8">
+          <h1 className="text-4xl font-normal tracking-wide text-zinc-900 text-center mb-4">OUR BEER</h1>
           <p className="text-zinc-700 text-lg text-center max-w-2xl mx-auto mb-16">
             Craft beers inspired by street culture, brewed with precision and attitude.
           </p>

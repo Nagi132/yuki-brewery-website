@@ -1,12 +1,10 @@
-import { Inter } from 'next/font/google';
+// src/app/layout.js
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ScrollToTopProgress from '@/components/ScrollToTopProgress';
 import AgeVerificationModal from '@/components/AgeVerificationModal';
 import { CartProvider } from '@/context/CartContext';
 import './globals.css';
-
-const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
   title: 'Saltfields Brewing',
@@ -16,7 +14,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body>
         <CartProvider>
           <Navbar />
           <ScrollToTopProgress />

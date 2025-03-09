@@ -20,7 +20,7 @@ export default function CartNotification({ isVisible, onClose, productName }) {
 
   return (
     <div className="fixed bottom-8 right-8 z-50 max-w-md w-full md:w-96 bg-white shadow-lg rounded-lg overflow-hidden transform transition-all duration-500 ease-in-out">
-      <div className="p-4 bg-off-white border-b">
+      <div className="p-4 bg-[#f0f8ff] border-b">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
             <FaShoppingCart className="text-green-500 mr-2" />

@@ -14,7 +14,7 @@ export default function CartPage() {
     return (
       <div className="min-h-screen bg-off-white py-16 px-4">
         <div className="container mx-auto max-w-4xl">
-          <h1 className="text-3xl font-bold mb-8 text-center">Your Cart</h1>
+          <h1 className="text-3xl font-normal mb-8 text-center">Your Cart</h1>
           <div className="text-center py-12">
             <div className="inline-block animate-spin h-12 w-12 border-t-2 border-b-2 border-black"></div>
             <p className="mt-4 text-zinc-700">Loading your cart...</p>
@@ -84,9 +84,9 @@ export default function CartPage() {
         }}
       />
       
-      <div className="relative py-16 px-4">
+      <div className="relative py-16 px-4 mt-8">
         <div className="container mx-auto max-w-4xl">
-          <h1 className="text-3xl font-bold mb-8 text-center">Your Cart</h1>
+          <h1 className="text-3xl font-normal mb-8 text-center">Your Cart</h1>
           
           <div className="bg-off-white shadow-sm overflow-hidden">
             {/* Cart Items */}
