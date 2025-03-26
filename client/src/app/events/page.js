@@ -3,8 +3,6 @@
 
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
-import { FaCalendarAlt, FaMapMarkerAlt, FaClock } from 'react-icons/fa';
 
 export default function EventsPage() {
   return (
@@ -56,7 +54,6 @@ export default function EventsPage() {
             
             <div className="space-y-4 mb-8">
               <div className="flex items-start">
-                <FaCalendarAlt className="text-amber-500 mt-1 mr-4" />
                 <div>
                   <p className="font-medium text-zinc-900">DATE</p>
                   <p className="text-zinc-700">SATURDAY, JUNE 15, 2025</p>
@@ -64,7 +61,6 @@ export default function EventsPage() {
               </div>
               
               <div className="flex items-start">
-                <FaClock className="text-amber-500 mt-1 mr-4" />
                 <div>
                   <p className="font-medium text-zinc-900">TIME</p>
                   <p className="text-zinc-700">12:00 PM - 8:00 PM</p>
@@ -72,7 +68,6 @@ export default function EventsPage() {
               </div>
               
               <div className="flex items-start">
-                <FaMapMarkerAlt className="text-amber-500 mt-1 mr-4" />
                 <div>
                   <p className="font-medium text-zinc-900">LOCATION</p>
                   <p className="text-zinc-700">SALTFIELDS BREWING</p>
