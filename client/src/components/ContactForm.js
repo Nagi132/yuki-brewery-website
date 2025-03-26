@@ -1,8 +1,9 @@
 // src/components/ContactForm.js
 "use client";
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function ContactForm({
     variant = "default", // "default", "inline", "compact"
@@ -27,8 +28,9 @@ export default function ContactForm({
     hideAfterSubmit = true,
     nameLastNameGrid = false // Support for firstName/lastName grid layout
 }) {
-    // Create refs for form
+    // Create refs for form and recaptcha
     const formRef = useRef(null);
+    const recaptchaRef = useRef(null);
 
     // Form state
     const initialFormData = {
@@ -41,6 +43,7 @@ export default function ContactForm({
     };
 
     const [formData, setFormData] = useState(initialFormData);
+    const [recaptchaToken, setRecaptchaToken] = useState("");
 
     // Status state
     const [status, setStatus] = useState({
@@ -48,6 +51,26 @@ export default function ContactForm({
         submitted: false,
         error: null
     });
+
+    // Handle recaptcha token expiry
+    useEffect(() => {
+        // Set up a token refresh interval (tokens expire after 2 minutes)
+        const refreshToken = () => {
+            if (recaptchaRef.current) {
+                recaptchaRef.current.reset();
+                recaptchaRef.current.execute();
+            }
+        };
+
+        const intervalId = setInterval(refreshToken, 110000); // Refresh slightly before expiry (2min = 120000ms)
+
+        return () => clearInterval(intervalId);
+    }, []);
+
+    // Handle recaptcha change
+    const handleRecaptchaChange = (token) => {
+        setRecaptchaToken(token);
+    };
 
     // Handle input change
     const handleChange = (e) => {
@@ -72,6 +95,21 @@ export default function ContactForm({
             return;
         }
 
+        // Execute recaptcha if not already done
+        if (!recaptchaToken && recaptchaRef.current) {
+            try {
+                await recaptchaRef.current.execute();
+            } catch (error) {
+                console.error('ReCAPTCHA execution failed:', error);
+                setStatus({
+                    submitting: false,
+                    submitted: false,
+                    error: "ReCAPTCHA verification failed. Please try again."
+                });
+                return;
+            }
+        }
+
         setStatus({
             submitting: true,
             submitted: false,
@@ -84,6 +122,14 @@ export default function ContactForm({
             const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || 'YOUR_TEMPLATE_ID';
             const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || 'YOUR_PUBLIC_KEY';
 
+            // Add recaptcha token to form data
+            const formElement = formRef.current;
+            const recaptchaInput = document.createElement('input');
+            recaptchaInput.type = 'hidden';
+            recaptchaInput.name = 'g-recaptcha-response';
+            recaptchaInput.value = recaptchaToken;
+            formElement.appendChild(recaptchaInput);
+
             // Send email using EmailJS
             const result = await emailjs.sendForm(
                 serviceId,
@@ -93,6 +139,9 @@ export default function ContactForm({
             );
 
             console.log('Email sent successfully:', result.text);
+
+            // Remove the recaptcha input we added
+            formElement.removeChild(recaptchaInput);
 
             // Update status
             setStatus({
@@ -353,6 +402,14 @@ export default function ContactForm({
                         ></textarea>
                     </div>
                 )}
+
+                {/* Invisible reCAPTCHA */}
+                <ReCAPTCHA
+                    ref={recaptchaRef}
+                    size="invisible"
+                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "YOUR_RECAPTCHA_SITE_KEY"}
+                    onChange={handleRecaptchaChange}
+                />
 
                 {/* Submit Button */}
                 <div className={buttonWrapperClassName || (variant === "inline" ? "flex-none" : "")}>
