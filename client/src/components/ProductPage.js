@@ -6,8 +6,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FaShoppingCart, FaArrowLeft, FaTruck, FaShieldAlt, FaPlus, FaMinus, FaTimes } from 'react-icons/fa';
 import { useCart } from '@/context/CartContext';
-import CartNotification from '@/components/CartNotification';
 import CartDrawer from '@/components/CartDrawer';
+import SizeChartButton from '@/components/SizeChartButton';
+
 
 export default function ProductPage({ initialProduct }) {
   const [product] = useState(initialProduct);
@@ -282,7 +283,7 @@ export default function ProductPage({ initialProduct }) {
         // First mount the drawer in a definitely closed state
         setDrawerMounted(true);
         drawerInitializedRef.current = false;
-        
+
         // Force a browser repaint to ensure drawer is rendered in closed state
         // This is done in a separate render cycle for reliability
         requestAnimationFrame(() => {
@@ -417,47 +418,43 @@ export default function ProductPage({ initialProduct }) {
 
               {/* Size Selection */}
               {product.sizes && product.sizes.length > 0 && (
-                <div className="mb-6" id="size-selector">
-                  <div className="flex justify-between items-center mb-3">
-                    <label className="block font-medium">Select Size</label>
-                    <button
-                      className="text-zinc-600 hover:text-black text-sm underline"
-                      onClick={() => setShowSizeChartLightbox(true)}
-                      aria-label="View size chart"
-                    >
-                      Size Chart
-                    </button>
-                  </div>
+  <div className="mb-6" id="size-selector">
+    <div className="flex justify-between items-center mb-3">
+      <label className="block font-medium">Select Size</label>
+      
+      {/* Replace the old size chart button with our new component */}
+      <SizeChartButton product={product.title} />
+    </div>
 
-                  <div className="grid grid-cols-5 gap-2">
-                    {product.sizes.map((size) => {
-                      // Check if size is available using the precomputed map
-                      const isAvailable = availableSizes[size] !== false; // Default to true if not in map
+    <div className="grid grid-cols-5 gap-2">
+      {product.sizes.map((size) => {
+        // Check if size is available using the precomputed map
+        const isAvailable = availableSizes[size] !== false; // Default to true if not in map
 
-                      return (
-                        <button
-                          key={size}
-                          className={`
-                            py-3 border text-center transition-colors
-                            ${selectedSize === size
-                              ? 'bg-black text-white border-black'
-                              : isAvailable
-                                ? 'bg-off-white border-gray-200 hover:border-gray-300 hover:bg-gray-50'
-                                : 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed opacity-60'}
-                          `}
-                          onClick={() => isAvailable && handleSizeSelect(size)}
-                          disabled={!isAvailable}
-                        >
-                          {size}
-                        </button>
-                      );
-                    })}
-                  </div>
-                  {!selectedSize && (
-                    <p className="mt-2 text-sm text-amber-600">Please select a size</p>
-                  )}
-                </div>
-              )}
+        return (
+          <button
+            key={size}
+            className={`
+              py-3 border text-center transition-colors
+              ${selectedSize === size
+                ? 'bg-black text-white border-black'
+                : isAvailable
+                  ? 'bg-off-white border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                  : 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed opacity-60'}
+            `}
+            onClick={() => isAvailable && handleSizeSelect(size)}
+            disabled={!isAvailable}
+          >
+            {size}
+          </button>
+        );
+      })}
+    </div>
+    {!selectedSize && (
+      <p className="mt-2 text-sm text-amber-600">Please select a size</p>
+    )}
+  </div>
+)}
 
               {/* Quantity Selection */}
               <div className="mb-6">
@@ -567,44 +564,7 @@ export default function ProductPage({ initialProduct }) {
           </div>
         </div>
       </div>
-
-      {/* Size Chart Lightbox */}
-      {showSizeChartLightbox && (
-        <div
-          className="fixed inset-0 z-50 bg-black bg-opacity-75 flex items-center justify-center p-4"
-          onClick={(e) => {
-            // Close when clicking the background (but not when clicking inside the lightbox)
-            if (e.target === e.currentTarget) {
-              setShowSizeChartLightbox(false);
-            }
-          }}
-        >
-          <div className="relative bg-off-white max-w-3xl w-full max-h-[90vh] overflow-auto">
-            {/* Close button */}
-            <button
-              onClick={() => setShowSizeChartLightbox(false)}
-              className="absolute top-2 right-2 text-gray-500 hover:text-black z-10 p-2"
-              aria-label="Close size chart"
-            >
-              <FaTimes size={20} />
-            </button>
-
-            <div className="p-6">
-              <h3 className="text-xl font-medium mb-4 text-center">Size Chart</h3>
-
-              <div className="relative w-full aspect-[4/3]">
-                <Image
-                  src="/images/size-chart.webp"
-                  alt="Size Chart"
-                  fill
-                  className="object-contain"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
+      
       {/* Cart Drawer - Only mount when needed */}
       {drawerMounted && (
         <CartDrawer

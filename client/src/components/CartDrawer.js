@@ -3,7 +3,6 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 import { useCart } from '@/context/CartContext';
 import CheckoutButton from '@/components/CheckoutButton';

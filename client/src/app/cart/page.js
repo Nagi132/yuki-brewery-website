@@ -1,3 +1,4 @@
+// client/src/app/cart/page.js
 "use client";
 
 import React from 'react';
@@ -6,6 +7,7 @@ import Image from 'next/image';
 import { useCart } from '@/context/CartContext';
 import { FaTrash, FaPlus, FaMinus } from 'react-icons/fa';
 import CheckoutButton from '@/components/CheckoutButton';
+import SizeChartButton from '@/components/SizeChartButton'; 
 
 export default function CartPage() {
   const { cart, isLoading, error, updateCartItem, removeFromCart, checkout } = useCart();
@@ -113,7 +115,15 @@ export default function CartPage() {
                   <div className="flex-grow">
                     <h3 className="font-medium">{item.title}</h3>
                     {item.variantTitle !== 'Default' && (
-                      <p className="text-sm text-gray-500">{item.variantTitle}</p>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <p className="text-sm text-gray-500">{item.variantTitle}</p>
+                        {/* Add Size Chart Button here */}
+                        <SizeChartButton 
+                          product={item.title} 
+                          label="Size Chart" 
+                          className="text-xs text-gray-500 hover:text-black" 
+                        />
+                      </div>
                     )}
                     <p className="text-zinc-900 mt-1">${item.price.toFixed(2)}</p>
                   </div>
