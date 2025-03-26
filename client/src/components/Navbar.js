@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
+import { FaInstagram } from 'react-icons/fa';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,13 +38,13 @@ export default function Navbar() {
   useEffect(() => {
     const handleClickOutside = (e) => {
       // If menu is open and click is outside the menu and not on the menu button
-      if (isOpen && 
-          !e.target.closest('.mobile-menu') && 
-          !e.target.closest('.menu-button')) {
+      if (isOpen &&
+        !e.target.closest('.mobile-menu') &&
+        !e.target.closest('.menu-button')) {
         setIsOpen(false);
       }
     };
-    
+
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen]);
@@ -62,7 +63,7 @@ export default function Navbar() {
         <span className="z-10 transition-colors duration-200 group-hover:text-white">
           {children}
         </span>
-        <span 
+        <span
           className="absolute inset-0 bg-black opacity-0 transition-opacity duration-200 group-hover:opacity-100"
         ></span>
       </Link>
@@ -128,7 +129,7 @@ export default function Navbar() {
             <NavLink href="/carry">
               CARRY SALTFIELDS
             </NavLink>
-            
+
             {/* Cart link */}
             <NavLink href="/cart">
               CART ({cartCount})
@@ -152,22 +153,21 @@ export default function Navbar() {
         )}
 
         {/* Mobile Menu Slide-in */}
-        <div 
-          className={`md:hidden fixed top-0 left-0 h-full w-3/4 max-w-xs bg-off-white z-50 mobile-menu transition-transform duration-700 ease-in-out ${
-            isOpen ? 'translate-x-0' : '-translate-x-full'
-          }`}
+        <div
+          className={`md:hidden fixed top-0 left-0 h-full w-3/4 max-w-xs bg-off-white z-50 mobile-menu transition-transform duration-700 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'
+            }`}
         >
           <div className="h-full overflow-y-auto p-6 flex flex-col">
             {/* Close Button */}
             <div className="mb-10 -ml-1">
-              <button 
+              <button
                 onClick={() => setIsOpen(false)}
                 className="text-black font-normal focus:outline-none"
               >
                 CLOSE
               </button>
             </div>
-            
+
             {/* Menu Items */}
             <div className="space-y-4">
               <MobileNavLink href="/about">ABOUT</MobileNavLink>
@@ -176,9 +176,23 @@ export default function Navbar() {
               <MobileNavLink href="/shop">SHOP</MobileNavLink>
               <MobileNavLink href="/carry">CARRY SALTFIELDS</MobileNavLink>
             </div>
-            
+
             {/* Footer area */}
-            <div className="mt-auto mb-16"></div>
+            <div className="mt-auto mb-16">
+              {/* Footer area */}
+              <div className="mt-auto mb-16">
+                <div className="flex items-center  mt-6">
+                  <a
+                    href="https://instagram.com/saltfieldsbrewing/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-black"
+                  >
+                    <FaInstagram size={24} />
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
