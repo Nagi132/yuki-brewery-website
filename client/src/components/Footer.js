@@ -4,97 +4,31 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { FaInstagram, FaEnvelope } from 'react-icons/fa';
+import ContactForm from '@/components/ContactForm';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
-  
+
   // Newsletter form state
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
-  // Contact form state
-  const [contactForm, setContactForm] = useState({
-    name: '',
-    email: '',
-    message: ''
-  });
-  const [contactStatus, setContactStatus] = useState({
-    isSubmitting: false,
-    isSubmitted: false,
-    error: null
-  });
-  
+
   // Get Shopify domain from environment variable or use placeholder
   const shopifyDomain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN || 'w0gjqw-en.myshopify.com';
 
   const handleNewsletterSubmit = (e) => {
     e.preventDefault();
-    
+
     if (!email || !email.includes('@')) {
       alert('Please enter a valid email address');
       return;
     }
-    
+
     setIsSubmitting(true);
-    
+
     // Redirect to Shopify's customer signup page with the email pre-filled
     const signupUrl = `https://${shopifyDomain}/account/register?checkout%5Bemail%5D=${encodeURIComponent(email)}&checkout%5Bget_marketing_update%5D=true`;
     window.location.href = signupUrl;
-  };
-
-  const handleContactChange = (e) => {
-    const { name, value } = e.target;
-    setContactForm({
-      ...contactForm,
-      [name]: value
-    });
-  };
-
-  const handleContactSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (!contactForm.email || !contactForm.email.includes('@')) {
-      alert('Please enter a valid email address');
-      return;
-    }
-    
-    setContactStatus({
-      ...contactStatus,
-      isSubmitting: true
-    });
-    
-    try {
-      // This is where you would normally send the data to your backend
-      // For now, we'll just simulate a successful submission
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Clear form and show success message
-      setContactForm({
-        name: '',
-        email: '',
-        message: ''
-      });
-      
-      setContactStatus({
-        isSubmitting: false,
-        isSubmitted: true,
-        error: null
-      });
-      
-      // Reset the success message after 5 seconds
-      setTimeout(() => {
-        setContactStatus(prev => ({
-          ...prev,
-          isSubmitted: false
-        }));
-      }, 5000);
-    } catch (error) {
-      setContactStatus({
-        isSubmitting: false,
-        isSubmitted: false,
-        error: 'Failed to send message. Please try again.'
-      });
-    }
   };
 
   return (
@@ -113,64 +47,30 @@ export default function Footer() {
             <p className="text-sm mb-4 text-gray-700">
               Send us a message. We'd love to hear from you.
             </p>
-            
-            {contactStatus.isSubmitted ? (
-              <div className="bg-green-50 border border-green-200 text-green-800 p-4 rounded">
-                Thank you for your message! We'll be in touch soon.
-              </div>
-            ) : (
-              <form onSubmit={handleContactSubmit} className="space-y-3">
-                <input
-                  type="text"
-                  name="name"
-                  value={contactForm.name}
-                  onChange={handleContactChange}
-                  placeholder="Your name"
-                  className="w-full px-4 py-2 text-sm border border-gray-300 focus:outline-none focus:border-black"
-                  required
-                  disabled={contactStatus.isSubmitting}
-                />
-                <input
-                  type="email"
-                  name="email"
-                  value={contactForm.email}
-                  onChange={handleContactChange}
-                  placeholder="Your email"
-                  className="w-full px-4 py-2 text-sm border border-gray-300 focus:outline-none focus:border-black"
-                  required
-                  disabled={contactStatus.isSubmitting}
-                />
-                <textarea
-                  name="message"
-                  value={contactForm.message}
-                  onChange={handleContactChange}
-                  placeholder="Your message"
-                  rows={7}
-                  className="w-full px-4 py-2 text-sm border border-gray-300 focus:outline-none focus:border-black resize-none"
-                  required
-                  disabled={contactStatus.isSubmitting}
-                ></textarea>
-                
-                {/* Smaller Send Button */}
-                <div className="flex justify-start">
-                  <button
-                    type="submit"
-                    className={`px-8 py-2 bg-black text-white text-sm transition-colors ${
-                      contactStatus.isSubmitting ? 'opacity-70 cursor-wait' : 'hover:bg-gray-800'
-                    }`}
-                    disabled={contactStatus.isSubmitting}
-                  >
-                    {contactStatus.isSubmitting ? 'Sending...' : 'Send'}
-                  </button>
-                </div>
-                
-                {contactStatus.error && (
-                  <p className="text-red-600 text-xs">{contactStatus.error}</p>
-                )}
-              </form>
-            )}
+
+            <ContactForm
+              variant="default"
+              fields={["name", "email", "message"]}
+              nameLastNameGrid={true}
+              buttonText="Send"
+              hideAfterSubmit={false}
+              className="w-full"
+              formClassName="space-y-3"
+              inputClassName="w-full px-4 py-2 text-sm border border-gray-300 focus:outline-none focus:border-black"
+              textareaRows={7}
+              buttonWrapperClassName="flex justify-start"
+              buttonClassName="px-8 py-2 bg-black text-white text-sm transition-colors hover:bg-gray-800"
+              placeholders={{
+                name: "First Name",
+                lastName: "Last Name",
+                email: "Your email",
+                message: "Your message"
+              }}
+              successMessage="Thank you for your message! We'll be in touch soon."
+              errorMessage="Failed to send message. Please try again."
+            />
           </div>
-          
+
           {/* Right Column - Menu, Social, and Newsletter */}
           <div>
             {/* Menu Section */}
@@ -202,12 +102,12 @@ export default function Footer() {
                 </Link>
               </div>
             </div>
-            
+
             {/* Social Links */}
             <div className="mb-2">
               <div className="flex items-center gap-4">
-                <Link 
-                  href="https://instagram.com/saltfieldsbrewing/" 
+                <Link
+                  href="https://instagram.com/saltfieldsbrewing/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-600 hover:text-black transition-colors"
@@ -215,8 +115,8 @@ export default function Footer() {
                 >
                   <FaInstagram size={20} />
                 </Link>
-                <Link 
-                  href="mailto:hello@saltfields.com" 
+                <Link
+                  href="mailto:hello@saltfields.com"
                   className="text-gray-600 hover:text-black transition-colors"
                   aria-label="Email"
                 >
@@ -224,27 +124,26 @@ export default function Footer() {
                 </Link>
               </div>
             </div>
-            
+
             {/* Newsletter Section - Inline form with narrower signup button */}
             <div>
               <p className="font-medium tracking-wider mb-2">NEWSLETTER</p>
               <p className="text-sm mb-4 text-gray-700">Stay updated with new releases and events.</p>
-              
+
               <form onSubmit={handleNewsletterSubmit} className="flex">
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Email address"
-                  className="w-1/2 px-4 py-2 text-sm border border-r-0 border-gray-300 focus:outline-none focus:border-black"
+                  className="w-3/4 px-4 py-2 text-sm border border-r-0 border-gray-300 focus:outline-none focus:border-black"
                   required
                   disabled={isSubmitting}
                 />
                 <button
                   type="submit"
-                  className={`w-24 px-4 py-2 bg-black text-white text-sm transition-colors ${
-                    isSubmitting ? 'opacity-70 cursor-wait' : 'hover:bg-gray-800'
-                  }`}
+                  className={`w-24 px-4 py-2 bg-black text-white text-sm transition-colors ${isSubmitting ? 'opacity-70 cursor-wait' : 'hover:bg-gray-800'
+                    }`}
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? 'Signing...' : 'Sign Up'}
