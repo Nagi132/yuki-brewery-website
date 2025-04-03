@@ -1,35 +1,13 @@
-// src/components/Footer.js
 "use client";
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { FaInstagram, FaEnvelope } from 'react-icons/fa';
 import ContactForm from '@/components/ContactForm';
+import NewsletterForm from '@/components/NewsletterForm';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
-
-  // Newsletter form state
-  const [email, setEmail] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // Get Shopify domain from environment variable or use placeholder
-  const shopifyDomain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN || 'w0gjqw-en.myshopify.com';
-
-  const handleNewsletterSubmit = (e) => {
-    e.preventDefault();
-
-    if (!email || !email.includes('@')) {
-      alert('Please enter a valid email address');
-      return;
-    }
-
-    setIsSubmitting(true);
-
-    // Redirect to Shopify's customer signup page with the email pre-filled
-    const signupUrl = `https://${shopifyDomain}/account/register?checkout%5Bemail%5D=${encodeURIComponent(email)}&checkout%5Bget_marketing_update%5D=true`;
-    window.location.href = signupUrl;
-  };
 
   return (
     <footer className="bg-[#F3F4F6] pt-8 pb-6 px-4 md:px-6 lg:px-8">
@@ -125,30 +103,13 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* Newsletter Section - Inline form with narrower signup button */}
+            {/* Newsletter Section - using our custom NewsletterForm component */}
             <div>
               <p className="font-medium tracking-wider mb-2">NEWSLETTER</p>
               <p className="text-sm mb-4 text-gray-700">Stay updated with new releases and events.</p>
-
-              <form onSubmit={handleNewsletterSubmit} className="flex">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Email address"
-                  className="w-3/4 px-4 py-2 text-sm border border-r-0 border-gray-300 focus:outline-none focus:border-black"
-                  required
-                  disabled={isSubmitting}
-                />
-                <button
-                  type="submit"
-                  className={`w-24 px-4 py-2 bg-black text-white text-sm transition-colors ${isSubmitting ? 'opacity-70 cursor-wait' : 'hover:bg-gray-800'
-                    }`}
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? 'Signing...' : 'Sign Up'}
-                </button>
-              </form>
+              
+              {/* Replace the old form with our new component */}
+              <NewsletterForm />
             </div>
           </div>
         </div>
