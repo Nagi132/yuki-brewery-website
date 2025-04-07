@@ -1,120 +1,222 @@
+// client/src/app/rice-lager/page.js
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
 
-const beers = [
-  {
-    id: 1,
-    name: "STREET HAZE",
-    type: "IPA",
-    abv: "6.8%",
-    description: "A hazy New England IPA that embodies the bold spirit of street culture.",
-    madeWith: "Citra, Mosaic, and Galaxy hops, Premium 2-row malt, Flaked oats",
-    tastesLike: "Tropical fruit, citrus zest, stone fruit, soft pine",
-    pairsWith: "Spicy tacos, grilled chicken, sharp cheddar, street corn",
-    vibeIs: "Skateboard on concrete at sunset",
-    image: "/images/10.jpg"
-  },
-  {
-    id: 2,
-    name: "RAIL RIDER",
-    type: "Pilsner",
-    abv: "5.2%",
-    description: "Crisp, clean pilsner that rewards you after a long session.",
-    madeWith: "Noble hops, German pilsner malt, Traditional lager yeast",
-    tastesLike: "Fresh bread, honey, lemon, subtle spice",
-    pairsWith: "Burgers, pizza, fish tacos, mild gouda",
-    vibeIs: "Perfect landing after trying all day",
-    image: "/images/11.jpg"
-  },
-  {
-    id: 3,
-    name: "DECK PAINT",
-    type: "Stout",
-    abv: "7.4%",
-    description: "Dark and smooth like fresh paint on a new deck.",
-    madeWith: "Roasted barley, Chocolate malt, Fuggle hops, Coffee beans",
-    tastesLike: "Dark chocolate, espresso, roasted nuts, vanilla",
-    pairsWith: "BBQ ribs, dark chocolate, blue cheese, tiramisu",
-    vibeIs: "Late night street sessions",
-    image: "/images/12.jpg"
-  }
-];
+export default function RiceLagerPage() {
+  // State for image rotation and content tab
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [activeTab, setActiveTab] = useState('beer'); // 'beer' or 'story'
 
-export default function OurBeerPage() {
+  // Can images array
+  const canImages = [
+    '/images/Saltfields_Brewing_Can_Front.webp',
+    '/images/Saltfields_Brewing_Can_Left.webp',
+    '/images/Saltfields_Brewing_Can_Right.webp'
+  ];
+
+  // Function to rotate images
+  const rotateImage = (direction) => {
+    if (direction === 'next') {
+      setCurrentImageIndex((prev) => (prev + 1) % canImages.length);
+    } else {
+      setCurrentImageIndex((prev) => (prev - 1 + canImages.length) % canImages.length);
+    }
+  };
+
   return (
-    <main className="min-h-screen bg-off-white relative">
-      <div className="relative">
-        {/* Header */}
-        <div className="container mx-auto px-4 pt-16 pb-8 mt-8">
-          <h1 className="text-4xl font-normal tracking-wide text-zinc-900 text-center mb-4">OUR BEER</h1>
-          <p className="text-zinc-700 text-lg text-center max-w-2xl mx-auto mb-16">
-            Craft beers inspired by street culture, brewed with precision and attitude.
-          </p>
-        </div>
+    <main className="min-h-screen bg-off-white  md:pt-6">
+      <div className="container mx-auto px-4 py-8 max-w-6xl">
+        <div className="bg-white p-8 shadow-sm rounded-lg">
+          {/* Rice Lager Beer Section */}
+          <div className="flex flex-col md:flex-row gap-1 mx-auto mt-8">
+            {/* Beer Image with Custom Rotation */}
+            <div className="flex-1 flex justify-center">
+              <div className="relative w-full max-w-md">
+                {/* Image container with arrows */}
+                <div className="relative aspect-[3/4] w-full">
+                  <button
+                    onClick={() => rotateImage('prev')}
+                    className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-white/70 rounded-full hover:bg-white transition-colors"
+                    aria-label="Previous image"
+                  >
+                    <svg fill="#000000" height="24px" width="24px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 330.002 330.002" xmlSpace="preserve" transform="matrix(-1, 0, 0, 1, 0, 0)">
+                      <path id="XMLID_226_" d="M233.252,155.997L120.752,6.001c-4.972-6.628-14.372-7.97-21-3c-6.628,4.971-7.971,14.373-3,21 l105.75,140.997L96.752,306.001c-4.971,6.627-3.627,16.03,3,21c2.698,2.024,5.856,3.001,8.988,3.001 c4.561,0,9.065-2.072,12.012-6.001l112.5-150.004C237.252,168.664,237.252,161.33,233.252,155.997z"></path>
+                    </svg>
+                  </button>
 
-        {/* Beer List */}
-        <div className="container mx-auto px-4 pb-24">
-          <div className="space-y-24">
-            {beers.map((beer, index) => (
-              <div 
-                key={beer.id} 
-                className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${
-                  index % 2 === 1 ? 'lg:flex-row-reverse' : ''
-                }`}
-              >
-                {/* Beer Image */}
-                <div className="relative aspect-square lg:aspect-auto lg:h-[600px] bg-white/80 backdrop-blur-sm overflow-hidden group">
-                  <Image
-                    src={beer.image}
-                    alt={beer.name}
-                    fill
-                    className="object-contain p-8 transition-transform duration-700 group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
+                  {/* Main Image */}
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={currentImageIndex}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="absolute inset-0"
+                    >
+                      <Image
+                        src={canImages[currentImageIndex]}
+                        alt={`Saltfields Rice Lager ${currentImageIndex === 0 ? 'Front' : currentImageIndex === 1 ? 'Left View' : 'Right View'}`}
+                        fill
+                        className="object-contain"
+                        priority
+                      />
+                    </motion.div>
+                  </AnimatePresence>
+
+                  {/* Right Arrow */}
+                  <button
+                    onClick={() => rotateImage('next')}
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-white/70 rounded-full hover:bg-white transition-colors"
+                    aria-label="Next image"
+                  >
+                    <svg fill="#000000" height="24px" width="24px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 330.002 330.002" xmlSpace="preserve">
+                      <path id="XMLID_226_" d="M233.252,155.997L120.752,6.001c-4.972-6.628-14.372-7.97-21-3c-6.628,4.971-7.971,14.373-3,21 l105.75,140.997L96.752,306.001c-4.971,6.627-3.627,16.03,3,21c2.698,2.024,5.856,3.001,8.988,3.001 c4.561,0,9.065-2.072,12.012-6.001l112.5-150.004C237.252,168.664,237.252,161.33,233.252,155.997z"></path>
+                    </svg>
+                  </button>
                 </div>
 
-                {/* Beer Details */}
-                <div className={`space-y-6 ${index % 2 === 1 ? 'lg:pr-12' : 'lg:pl-12'}`}>
-                  <div>
-                    <h2 className="text-3xl font-bold tracking-wide text-zinc-900">
-                      {beer.name}
-                    </h2>
-                    <div className="flex items-center space-x-4 mt-2">
-                      <span className="text-zinc-600 font-medium">{beer.type}</span>
-                      <span className="text-amber-500 font-medium">{beer.abv} ABV</span>
-                    </div>
-                  </div>
-
-                  <p className="text-zinc-700 text-lg">
-                    {beer.description}
-                  </p>
-
-                  <div className="space-y-4 bg-white/80 backdrop-blur-sm p-6 border border-black/5">
-                    <div>
-                      <h3 className="text-sm font-medium text-amber-500 mb-1">MADE WITH</h3>
-                      <p className="text-zinc-900">{beer.madeWith}</p>
-                    </div>
-
-                    <div>
-                      <h3 className="text-sm font-medium text-amber-500 mb-1">TASTES LIKE</h3>
-                      <p className="text-zinc-900">{beer.tastesLike}</p>
-                    </div>
-
-                    <div>
-                      <h3 className="text-sm font-medium text-amber-500 mb-1">PAIRS WITH</h3>
-                      <p className="text-zinc-900">{beer.pairsWith}</p>
-                    </div>
-
-                    <div>
-                      <h3 className="text-sm font-medium text-amber-500 mb-1">VIBE IS</h3>
-                      <p className="text-zinc-900">{beer.vibeIs}</p>
-                    </div>
-                  </div>
-                </div>
+                {/* Image number indicators 
+                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                  {canImages.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentImageIndex(index)}
+                      className={`w-2 h-2 rounded-full ${currentImageIndex === index ? 'bg-black' : 'bg-gray-300'}`}
+                      aria-label={`View image ${index + 1}`}
+                    />
+                  ))}
+                </div>*/}
               </div>
-            ))}
+            </div>
+
+            {/* Content Section with Tabs */}
+            <div className="flex-1 pt-8 md:ml-8">
+              {/* Tab Navigation */}
+              <div className="flex border-b border-gray-200 mb-6">
+                <button
+                  onClick={() => setActiveTab('beer')}
+                  className={`pb-1 px-4 text-sm font-medium relative ${activeTab === 'beer' ? 'bg-black text-white' : 'text-gray-500 hover:text-gray-700'}`}
+                >
+                  THE BEER
+                  {activeTab === 'beer' && (
+                    <motion.div 
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-white" 
+                      layoutId="underline"
+                    />
+                  )}
+                </button>
+                <button
+                  onClick={() => setActiveTab('story')}
+                  className={`pb-1 px-4 text-sm font-medium relative ${activeTab === 'story' ? 'bg-black text-white' : 'text-gray-500 hover:text-gray-700'}`}
+                >
+                  THE STORY BEHIND THE LABEL
+                  {activeTab === 'story' && (
+                    <motion.div 
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-white" 
+                      layoutId="underline"
+                    />
+                  )}
+                </button>
+              </div>
+
+              {/* Content Area */}
+              <div className="min-h-[600px]">
+                <AnimatePresence mode="wait">
+                  {activeTab === 'beer' ? (
+                    <motion.div
+                      key="beer-content"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      {/* Beer Title */}
+                      <div className="mb-6">
+                        <h1 className="text-3xl font-normal tracking-wide mb-1">
+                          <span className="text-base font-normal opacity-80">SALTFIELDS</span> RICE LAGER
+                        </h1>
+                        <div className="w-11/12 h-0.5 bg-black md:w-3/4"></div>
+                      </div>
+
+                      {/* Beer Specs */}
+                      <div className="mb-8 space-y-1 text-sm">
+                        <p><span className="font-medium">"NODOGOSHI"</span> Supremely Dry and Delicious</p>
+                        <p>Brewed with Rice and Koji</p>
+                        <p>1 Pint 4.7% ALC/VOL</p>
+                      </div>
+
+                      {/* Beer Description */}
+                      <div className="space-y-4 max-w-xl">
+                        <p className="text-justify text-sm">
+                          Crisp, dry, and endlessly refreshing, this Japanese-inspired Rice Lager brings together tradition and innovation in every sip. Brewed with a base of German Pilsner malt, a blend of flaked rice and whole grain Calrose rice, and a touch of white Koji, this beer develops a delicate acidity that enhances its clean, snappy finish.
+                        </p>
+
+                        <p className="text-justify text-sm">
+                          We brew with Calrose rice, a grain first carried to American soil by Japanese hands, then lovingly refined over time. We, too, are travelers from Japan, drawn across the ocean by hope and purpose. In reverence to that journey, we chose this rice as the heart of our very first beer, a quiet tribute to our heritage and roots.
+                        </p>
+
+                        <p className="text-justify text-sm">
+                          Noble hops Perle, Hallertau, and Tettnang provide a soft floral and spicy balance, while 34/70 German lager yeast ensures a crisp fermentation with high attenuation. The result is a brilliantly bright, supremely crushable lager beer.
+                        </p>
+
+                        <p className="text-justify text-sm">
+                          Best enjoyed ice cold, this beer is perfect for hot beach days, late-night Izakaya sessions, and pairing with fresh seafood or crispy Karaage (Japanese fried chicken).
+                        </p>
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="story-content"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      {/* Story Title */}
+                      <div className="mb-6">
+                        <h1 className="text-3xl font-normal tracking-wide mb-1">
+                          The Story Behind the Label
+                        </h1>
+                      </div>
+
+                      {/* Subtitle */}
+                      <p className="mb-4 text-sm font-bold">Yosemoji × Graffiti — A Fusion of Japan and New York</p>
+
+                      {/* Story Description */}
+                      <div className="space-y-4 max-w-xl">
+                        <p className="text-justify text-sm">
+                          By blending the elegance of traditional Japanese calligraphy with the raw energy of New York street graffiti, we've created a bold new form of visual expression, one that bridges two distinct cultures and tells our story.
+                        </p>
+
+                        <p className="text-justify text-sm">
+                          At the heart of this fusion is Yosemoji, a calligraphic style born in the Edo period. Known for its rich, ink-laden strokes and upward-slanting form, Yosemoji was traditionally used on theater posters and shop signs. Its purpose was more than aesthetic, it was symbolic.
+                        </p>
+
+                        <p className="text-justify text-sm">
+                          Its bold, ink-laden strokes, written to minimize empty space, expressed a wish to fill seats. The upward angle expressed a wish to grow. Over time, Yosemoji became known as a lucky script, a style tied to prosperity and connection.
+                        </p>
+
+                        <p className="text-justify text-sm">
+                          This spirit aligns with Saltfields Brewing's vision: to create a place where people gather, connect, and cultivate culture.
+                        </p>
+
+                        <p className="text-justify text-sm">
+                          With <span className="italic">Yosemoji Graffiti</span>, we aim to establish a visual identity that is distinctly our own, one that echoes our roots in both Japan and New York. We hope to make this a signature style of Saltfields Brewing, leaving a lasting impression of the world we're building.
+                        </p>
+
+                        <p className="text-justify text-sm">
+                          For our first label, we collaborated with a calligrapher friend to bring this vision to life. The result: a striking rendering of 米麦酒 (Rice Beer) in Yosemoji Graffiti, our tribute to tradition, reimagined.
+                        </p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </div>
           </div>
         </div>
       </div>
