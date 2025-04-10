@@ -30,7 +30,7 @@ export default function CartPage() {
     return (
       <div className="min-h-screen bg-off-white py-16 px-4">
         <div className="container mx-auto max-w-4xl">
-          <h1 className="text-3xl font-bold mb-8 text-center">Your Cart</h1>
+          <h1 className="text-3xl font-normal mb-8 text-center">Your Cart</h1>
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 mb-6">
             {error}
           </div>
@@ -48,7 +48,7 @@ export default function CartPage() {
     return (
       <div className="min-h-screen bg-off-white py-16 px-4">
         <div className="container mx-auto max-w-4xl">
-          <h1 className="text-3xl font-bold mb-8 text-center">Your Cart</h1>
+          <h1 className="text-3xl font-normal mb-8 text-center">Your Cart</h1>
           <div className="bg-off-white p-8 shadow-sm text-center">
             <p className="text-xl mb-6">Your cart is empty</p>
             <Link href="/shop" className="inline-block bg-black text-white px-6 py-3">
@@ -73,18 +73,6 @@ export default function CartPage() {
   
   return (
     <div className="min-h-screen bg-off-white relative">
-      {/* Background Pattern */}
-      <div 
-        className="absolute inset-0 w-full h-full opacity-[0.07]" 
-        style={{
-          backgroundImage: `
-            radial-gradient(circle at 1px 1px, #000 1px, transparent 0),
-            radial-gradient(circle at 1px 1px, #000 1px, transparent 0)
-          `,
-          backgroundSize: '40px 40px',
-          backgroundPosition: '0 0, 20px 20px',
-        }}
-      />
       
       <div className="relative py-16 px-4 mt-8">
         <div className="container mx-auto max-w-4xl">

@@ -7,18 +7,6 @@ import Image from 'next/image';
 export default function EventsPage() {
   return (
     <main className="min-h-screen bg-off-white relative">
-      {/* Background Pattern */}
-      <div 
-        className="absolute inset-0 w-full h-full opacity-[0.07]" 
-        style={{
-          backgroundImage: `
-            radial-gradient(circle at 1px 1px, #000 1px, transparent 0),
-            radial-gradient(circle at 1px 1px, #000 1px, transparent 0)
-          `,
-          backgroundSize: '40px 40px',
-          backgroundPosition: '0 0, 20px 20px',
-        }}
-      />
 
       <div className="relative py-16 px-4">
         <div className="container mx-auto max-w-6xl">
