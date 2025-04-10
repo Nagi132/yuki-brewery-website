@@ -40,7 +40,7 @@ export default function CartDrawer({ isOpen, onClose }) {
   const drawerRef = useRef(null);
 
   const subtotal = cart?.subtotal || 0;
-  const freeShippingThreshold = 75;
+  const freeShippingThreshold = 150;
   const amountToFreeShipping = freeShippingThreshold - subtotal > 0
     ? freeShippingThreshold - subtotal
     : 0;
@@ -51,22 +51,22 @@ export default function CartDrawer({ isOpen, onClose }) {
     if (isOpen) {
       // First frame: ensure we're in the DOM with translate-x-full
       document.body.style.overflow = 'hidden';
-      
+
       // Second frame: start the animation by removing the transform
       const timer = setTimeout(() => {
         setAnimationClass('translate-x-0');
       }, 50); // Small delay to ensure browser has rendered the initial state
-      
+
       return () => clearTimeout(timer);
     } else {
       // When closing, first update the class
       setAnimationClass('translate-x-full');
-      
+
       // Then re-enable scrolling after animation finishes
       const timer = setTimeout(() => {
         document.body.style.overflow = 'unset';
       }, 700); // Match this to your transition duration
-      
+
       return () => clearTimeout(timer);
     }
   }, [isOpen]);
@@ -118,7 +118,7 @@ export default function CartDrawer({ isOpen, onClose }) {
       />
 
       {/* Drawer panel */}
-      <div 
+      <div
         ref={drawerRef}
         className={`fixed inset-y-0 right-0 max-w-md w-full bg-white shadow-xl transform transition-transform duration-700 ease-in-out ${animationClass}`}
         style={{ willChange: 'transform' }}
@@ -249,6 +249,7 @@ export default function CartDrawer({ isOpen, onClose }) {
           )}
 
           {/* You may also like */}
+          {/*
           {recommendedProducts.length > 0 && (
             <div className="mt-8">
               <h3 className="text-lg font-medium mb-4 uppercase">You may also like</h3>
@@ -263,6 +264,7 @@ export default function CartDrawer({ isOpen, onClose }) {
               </div>
             </div>
           )}
+          */}
         </div>
       </div>
     </div>

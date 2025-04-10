@@ -418,43 +418,43 @@ export default function ProductPage({ initialProduct }) {
 
               {/* Size Selection */}
               {product.sizes && product.sizes.length > 0 && (
-  <div className="mb-6" id="size-selector">
-    <div className="flex justify-between items-center mb-3">
-      <label className="block font-medium">Select Size</label>
-      
-      {/* Replace the old size chart button with our new component */}
-      <SizeChartButton product={product.title} />
-    </div>
+                <div className="mb-6" id="size-selector">
+                  <div className="flex justify-between items-center mb-3">
+                    <label className="block font-medium">Select Size</label>
 
-    <div className="grid grid-cols-5 gap-2">
-      {product.sizes.map((size) => {
-        // Check if size is available using the precomputed map
-        const isAvailable = availableSizes[size] !== false; // Default to true if not in map
+                    {/* Replace the old size chart button with our new component */}
+                    <SizeChartButton product={product.title} />
+                  </div>
 
-        return (
-          <button
-            key={size}
-            className={`
+                  <div className="grid grid-cols-5 gap-2">
+                    {product.sizes.map((size) => {
+                      // Check if size is available using the precomputed map
+                      const isAvailable = availableSizes[size] !== false; // Default to true if not in map
+
+                      return (
+                        <button
+                          key={size}
+                          className={`
               py-3 border text-center transition-colors
               ${selectedSize === size
-                ? 'bg-black text-white border-black'
-                : isAvailable
-                  ? 'bg-off-white border-gray-200 hover:border-gray-300 hover:bg-gray-50'
-                  : 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed opacity-60'}
+                              ? 'bg-black text-white border-black'
+                              : isAvailable
+                                ? 'bg-off-white border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                                : 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed opacity-60'}
             `}
-            onClick={() => isAvailable && handleSizeSelect(size)}
-            disabled={!isAvailable}
-          >
-            {size}
-          </button>
-        );
-      })}
-    </div>
-    {!selectedSize && (
-      <p className="mt-2 text-sm text-amber-600">Please select a size</p>
-    )}
-  </div>
-)}
+                          onClick={() => isAvailable && handleSizeSelect(size)}
+                          disabled={!isAvailable}
+                        >
+                          {size}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {!selectedSize && (
+                    <p className="mt-2 text-sm text-amber-600">Please select a size</p>
+                  )}
+                </div>
+              )}
 
               {/* Quantity Selection */}
               <div className="mb-6">
@@ -539,21 +539,21 @@ export default function ProductPage({ initialProduct }) {
 
                 {expandShipping && (
                   <div className="mt-4 text-sm">
-                    <p>Free Domestic Shipping on orders over $75. Purchases returned within 14 days of their original shipment date that are in new, unworn, and original condition are eligible for a full refund or for an exchange through the return center.</p>
+                    <p>Free Domestic Shipping on orders over $150. A full refund or exchange is available within 14 days of purchase, but only if the item is defective or damaged. <Link href="/returns" className="hover:underline">Learn more</Link></p>
 
                     <div className="mt-4 space-y-4">
                       <div className="flex items-start">
                         <FaTruck className="text-zinc-600 mt-1 mr-3" />
                         <div>
                           <p className="text-sm font-medium">Standard Shipping (3-5 business days)</p>
-                          <p className="text-xs text-zinc-600">$7.95 or FREE on orders over $75</p>
+                          <p className="text-xs text-zinc-600">FREE on orders over $150</p>
                         </div>
                       </div>
                       <div className="flex items-start">
                         <FaShieldAlt className="text-zinc-600 mt-1 mr-3" />
                         <div>
-                          <p className="text-sm font-medium">Easy Returns</p>
-                          <p className="text-xs text-zinc-600">Return within 14 days of delivery</p>
+                          <p className="text-sm font-medium">Limited Returns</p>
+                          <p className="text-xs text-zinc-600">For defective or damaged items only</p>
                         </div>
                       </div>
                     </div>
@@ -564,7 +564,7 @@ export default function ProductPage({ initialProduct }) {
           </div>
         </div>
       </div>
-      
+
       {/* Cart Drawer - Only mount when needed */}
       {drawerMounted && (
         <CartDrawer
