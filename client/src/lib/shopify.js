@@ -38,6 +38,8 @@ export async function getAllProducts() {
             title
             handle
             description
+            productType
+            tags
             priceRange {
               minVariantPrice {
                 amount
@@ -79,7 +81,9 @@ export async function getAllProducts() {
         price: parseFloat(node.priceRange?.minVariantPrice?.amount || 0),
         frontImage: images[0] || '/images/placeholder.jpg',
         backImage: images[1] || null, // Back image (optional)
-        description: node.description || ''
+        description: node.description || '',
+        productType: node.productType,
+        tags: node.tags
       };
     });
   } catch (error) {

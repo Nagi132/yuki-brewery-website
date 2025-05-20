@@ -44,10 +44,10 @@ export default function HeroSection() {
     }, []);
 
     return (
-        <div className="relative w-full h-[70vh] md:h-[80vh] lg:h-[100vh] overflow-hidden bg-off-white">
+        <div className="relative w-full h-[80vh] md:h-[80vh] lg:h-[100vh] overflow-hidden bg-off-white">
             {/* Container with fixed width and padding */}
             <div className="absolute inset-0 w-full h-full">
-                <div className="relative h-full max-w-[calc(100%-50px)] mx-auto">
+                <div className="relative h-full max-w-[calc(100%-20px)] mx-auto">
                     {/* Video Element */}
                     <video
                         ref={videoRef}
@@ -61,7 +61,7 @@ export default function HeroSection() {
                             transform: `translateY(${scrollPosition * 0.15}px)`,
                         }}
                     >
-                        <source src="/videos/video.mp4" type="video/mp4" />
+                        <source src="/videos/30sec_11mb_1080p.mp4" type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>
                     
@@ -74,6 +74,7 @@ export default function HeroSection() {
                                     src="/images/saltfields_logo.webp"
                                     alt="Saltfields Brewing"
                                     fill
+                                    sizes="96px"
                                     className="object-contain animate-pulse"
                                 />
                             </div>

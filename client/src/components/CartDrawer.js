@@ -176,6 +176,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                           src={item.image}
                           alt={item.title}
                           fill
+                          sizes="80px"
                           className="object-contain p-2"
                         />
                       ) : (

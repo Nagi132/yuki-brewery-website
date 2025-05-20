@@ -368,6 +368,7 @@ export default function ProductPage({ initialProduct }) {
                             src={image}
                             alt={`${product.title} - image ${index + 1}`}
                             fill
+                            sizes="(max-width: 768px) 20vw, 96px"
                             className="object-contain"
                           />
                         </button>

@@ -57,7 +57,7 @@ export default function ProductGrid({ products }) {
             <div className="w-full block sm:hidden">
               <Link 
                 href={`/shop/${product.slug}`} 
-                className="block bg-gray-100 w-full"
+                className="block overflow-hidden w-full"
                 onMouseEnter={() => setHoveredProduct(product.id)}
                 onMouseLeave={() => setHoveredProduct(null)}
               >
@@ -66,7 +66,7 @@ export default function ProductGrid({ products }) {
                     src={product.frontImage || '/images/placeholder.jpg'}
                     alt={product.title}
                     fill
-                    className="object-contain"
+                    className="object-cover"
                     sizes="50vw"
                     priority
                   />
@@ -100,7 +100,7 @@ export default function ProductGrid({ products }) {
             <div className="hidden sm:block lg:hidden w-full">
               <Link 
                 href={`/shop/${product.slug}`} 
-                className="block bg-gray-100"
+                className="block overflow-hidden"
                 onMouseEnter={() => setHoveredProduct(product.id)}
                 onMouseLeave={() => setHoveredProduct(null)}
               >
@@ -114,7 +114,7 @@ export default function ProductGrid({ products }) {
                     src={product.frontImage || '/images/placeholder.jpg'}
                     alt={product.title}
                     fill
-                    className={`object-contain transition-opacity duration-500 ${
+                    className={`object-cover transition-opacity duration-500 ${
                       hoveredProduct === product.id && product.backImage ? 'opacity-0' : 'opacity-100'
                     }`}
                     sizes="(max-width: 768px) 33vw, 25vw"
@@ -126,7 +126,7 @@ export default function ProductGrid({ products }) {
                       src={product.backImage}
                       alt={`${product.title} - alternate view`}
                       fill
-                      className={`object-contain absolute top-0 left-0 transition-opacity duration-500 ${
+                      className={`object-cover absolute top-0 left-0 transition-opacity duration-500 ${
                         hoveredProduct === product.id ? 'opacity-100' : 'opacity-0'
                       }`}
                       sizes="(max-width: 768px) 33vw, 25vw"
@@ -164,20 +164,21 @@ export default function ProductGrid({ products }) {
             <div className="hidden lg:block">
               <Link 
                 href={`/shop/${product.slug}`} 
-                className="block bg-gray-100"
+                className="block overflow-hidden"
                 onMouseEnter={() => setHoveredProduct(product.id)}
                 onMouseLeave={() => setHoveredProduct(null)}
               >
-                <div className="relative overflow-hidden" style={{ width: imageWidth, height: imageHeight }}>
+                <div className="relative" style={{ width: imageWidth, height: imageHeight }}>
                   {/* Front Image */}
                   <Image
                     src={product.frontImage || '/images/placeholder.jpg'}
                     alt={product.title}
-                    width={imageWidth}
-                    height={imageHeight}
-                    className={`object-contain transition-opacity duration-500 ${
+                    fill
+                    style={{ objectFit: 'cover' }}
+                    className={`transition-opacity duration-500 ${
                       hoveredProduct === product.id && product.backImage ? 'opacity-0' : 'opacity-100'
                     }`}
+                    sizes={`${imageWidth}px`}
                     priority
                   />
                   
@@ -186,11 +187,12 @@ export default function ProductGrid({ products }) {
                     <Image
                       src={product.backImage}
                       alt={`${product.title} - alternate view`}
-                      width={imageWidth}
-                      height={imageHeight}
-                      className={`object-contain absolute top-0 left-0 transition-opacity duration-500 ${
+                      fill
+                      style={{ objectFit: 'cover' }}
+                      className={`absolute top-0 left-0 transition-opacity duration-500 ${
                         hoveredProduct === product.id ? 'opacity-100' : 'opacity-0'
                       }`}
+                      sizes={`${imageWidth}px`}
                     />
                   )}
                 </div>

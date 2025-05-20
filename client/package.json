@@ -6,7 +6,15 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "analyze": "cross-env ANALYZE=true next build",
+    "analyze:server": "cross-env BUNDLE_ANALYZE=server next build",
+    "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build",
+    "find:unused": "npx depcheck",
+    "optimize:images": "next-image-optimize",
+    "lint:unused-imports": "eslint --ext .js,.jsx,.ts,.tsx --rule 'unused-imports/no-unused-imports: error' src/",
+    "audit:performance": "npm run analyze && npm run find:unused",
+    "deps:graph": "depcruise --exclude \"node_modules|.next\" --output-type dot . | dot -T svg > dependency-graph.svg"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
@@ -14,15 +22,20 @@
     "framer-motion": "^12.6.0",
     "graphql": "^16.10.0",
     "graphql-request": "^7.1.2",
-    "next": "^15.0.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "next": "^15.3.2",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "react-google-recaptcha": "^3.1.0",
     "react-icons": "^5.3.0"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^15.0.1",
+    "cross-env": "^7.0.3",
+    "depcheck": "^1.4.7",
+    "dependency-cruiser": "^16.10.1",
     "eslint": "^9.13.0",
     "eslint-config-next": "^15.0.1",
+    "eslint-plugin-unused-imports": "^4.1.4",
     "postcss": "^8",
     "tailwindcss": "^3.4.1"
   }
