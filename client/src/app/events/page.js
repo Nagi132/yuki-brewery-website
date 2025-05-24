@@ -1,30 +1,71 @@
 // client/src/app/events/page.js
-"use client";
+// "use client"; // This directive is removed to make it a Server Component.
 
 import React from 'react';
-import Image from 'next/image';
+// Removed Image and Link as they are now handled by ScrollableEventList for past events
+import { getUpcomingEvent, getPastEvents } from '@/lib/shopify'; // Adjust path if needed
+// import ScrollableEventList from '@/components/ScrollableEventList'; // No longer needed
+import EventCarousel3D from '@/components/EventCarousel3D'; // Import the new 3D carousel component
+import Image from 'next/image'; // Keep for upcoming event
+import Link from 'next/link'; // Keep for potential future use or if upcoming becomes a link
 
-export default function EventsPage() {
+export const metadata = {
+  title: 'Events - Saltfields Brewing',
+  description: 'Join Saltfields Brewing at our upcoming events. Check out past event highlights and see what\'s new.',
+  openGraph: {
+    title: 'Events at Saltfields Brewing',
+    description: 'Stay updated with the latest events, tastings, and gatherings from Saltfields Brewing.',
+    url: 'https://saltfieldsbrewing.com/events',
+  },
+};
+
+// Convert to an async server component
+export default async function EventsPage() {
+  // Fetch upcoming and past events in parallel
+  const [upcomingEvent, pastEvents] = await Promise.all([
+    getUpcomingEvent('events'), // Use your actual blog handle
+    getPastEvents('events', { limit: 10 }) // Keep fetching a decent number for the carousel
+  ]);
+
+  if (!upcomingEvent) {
+    // If no upcoming event, you might still want to show past events or a different message
+    return (
+      <main className="min-h-screen bg-off-white relative py-16 px-4 flex flex-col items-center">
+        <div className="text-center mb-12 w-full max-w-6xl">
+          <h1 className="text-3xl font-normal tracking-wide text-zinc-900 mb-4">EVENTS</h1>
+          <p className="text-zinc-700 text-lg">
+            No upcoming events at the moment. Sign up to our newsletter to stay up to date!
+          </p>
+        </div>
+        {/* Display past events even if no upcoming event is found */}
+        {pastEvents && pastEvents.length > 0 && (
+          <div className="w-full max-w-6xl pt-12 mt-12 border-t border-zinc-200">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-normal tracking-wide text-zinc-900">PAST EVENTS</h2>
+            </div>
+            <EventCarousel3D events={pastEvents} />
+          </div>
+        )}
+      </main>
+    );
+  }
+
   return (
     <main className="min-h-screen bg-off-white relative">
-
       <div className="relative py-16 px-4">
         <div className="container mx-auto max-w-6xl">
-          {/* Header */}
+          {/* Header for Upcoming Event */}
           <div className="text-center mb-12 mt-8">
-            <h1 className="text-4xl font-normal tracking-wide text-zinc-900 mb-4">UPCOMING EVENTS</h1>
-            <p className="text-zinc-700 max-w-2xl mx-auto text-lg">
-              Join us for special releases, tastings, and community gatherings.
-            </p>
+            <h1 className="text-4xl font-normal tracking-wide text-zinc-900 mb-4">UPCOMING EVENT</h1>
           </div>
 
-          {/* Featured Event Flyer */}
-          <div className="flex flex-col items-center justify-center mb-16">
-            <div className="relative w-full max-w-2xl bg-white/80 backdrop-blur-sm p-4shadow-sm border border-black/5 overflow-hidden">
-              <div className="relative aspect-[3/4] w-full">
+          {/* Upcoming Event Section */}
+          <div className="mb-16">
+            <div className="flex flex-col items-center justify-center">
+              <div className="relative aspect-[3/4] w-full max-w-2xl overflow-hidden shadow-xl">
                 <Image
-                  src="/images/event.webp"
-                  alt="Saltfields Summer Brew Festival"
+                  src={upcomingEvent.imageUrl}
+                  alt={upcomingEvent.imageAlt}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
                   className="object-contain"
@@ -32,50 +73,51 @@ export default function EventsPage() {
                 />
               </div>
             </div>
+            <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+              <div 
+                className="space-y-4 text-zinc-700 prose lg:prose-lg max-w-none mb-8"
+                dangerouslySetInnerHTML={{ __html: upcomingEvent.descriptionHtml }}
+              />
+              <div> 
+                <h2 className="text-2xl font-semibold tracking-wide text-zinc-900 mb-6">
+                  {upcomingEvent.title}
+                </h2>
+                <div className="space-y-4 mb-8">
+                  <div className="flex items-start">
+                    <div>
+                      <p className="font-medium text-zinc-900">DATE</p>
+                      <p className="text-zinc-700">{upcomingEvent.date}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start">
+                    <div>
+                      <p className="font-medium text-zinc-900">TIME</p>
+                      <p className="text-zinc-700">{upcomingEvent.time}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start">
+                    <div>
+                      <p className="font-medium text-zinc-900">LOCATION</p>
+                      <p className="text-zinc-700">{upcomingEvent.locationName}</p>
+                      {upcomingEvent.locationAddress && (
+                        <p className="text-zinc-700">{upcomingEvent.locationAddress}</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Event Details */}
-          <div className="max-w-2xl mx-auto bg-white/80 backdrop-blur-sm shadow-sm p-8 border border-black/5">
-            <h2 className="text-2xl font-bold tracking-wide text-zinc-900 mb-6">
-              SUMMER BREW FESTIVAL
-            </h2>
-            
-            <div className="space-y-4 mb-8">
-              <div className="flex items-start">
-                <div>
-                  <p className="font-medium text-zinc-900">DATE</p>
-                  <p className="text-zinc-700">SATURDAY, JUNE 15, 2025</p>
-                </div>
+          {/* Past Events Section */}
+          {pastEvents && pastEvents.length > 0 && (
+            <div className="pt-16 border-t border-zinc-200">
+              <div className="text-center mb-12">
+                <h1 className="text-3xl font-normal tracking-wide text-zinc-900">PAST EVENTS</h1>
               </div>
-              
-              <div className="flex items-start">
-                <div>
-                  <p className="font-medium text-zinc-900">TIME</p>
-                  <p className="text-zinc-700">12:00 PM - 8:00 PM</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start">
-                <div>
-                  <p className="font-medium text-zinc-900">LOCATION</p>
-                  <p className="text-zinc-700">SALTFIELDS BREWING</p>
-                  <p className="text-zinc-700">123 ABC STREET, NEW YORK, NY 12345</p>
-                </div>
-              </div>
+              <EventCarousel3D events={pastEvents} />
             </div>
-            
-            <div className="space-y-4 text-zinc-700">
-              <p>
-                Join us for our annual Summer Brew Festival celebrating the release of our seasonal brews. This year features our new Street Haze Summer IPA and limited edition collaborations with local artists.
-              </p>
-              <p>
-                The event includes tastings of all our signature beers, food from local vendors, live music, and exclusive merchandise drops. Skate demonstrations will be happening throughout the day at our custom-built mini ramp.
-              </p>
-              <p>
-                Tickets include entry, a commemorative tasting glass, and four 5oz pours. Additional tasting tokens available for purchase. This is a 21+ event.
-              </p>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </main>

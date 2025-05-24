@@ -54,7 +54,7 @@ export default function PrivacyPolicy() {
           </p>
           
           <p className="mt-10">
-            Please contact us with any questions or concerns at hello@saltfields.com.
+            Please contact us with any questions or concerns at yumi@saltfields.com.
           </p>
         </div>
         

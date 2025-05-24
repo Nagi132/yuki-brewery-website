@@ -1,88 +1,31 @@
-'use client'; // Need this for client-side hover state
+import { Suspense } from 'react';
+import CategoryGrid, { LoadingCategories } from '@/components/CategoryGrid';
 
-import { Suspense, useState } from 'react';
-import Link from 'next/link';
-
-// Category configuration - update image paths with your actual images
-const CATEGORIES = [
-  { 
-    name: 'T-Shirts', 
-    productType: 'T-Shirts', 
-    imageUrl: '/images/t-shirts_front.jpg',
-    backImageUrl: '/images/t-shirts_back.jpg',
-    description: 'Our premium tees featuring the Saltfields Brewing logo'
+export const metadata = {
+  title: 'Shop All Collections - Saltfields Brewing',
+  description: 'Browse all collections at Saltfields Brewing. Shop our exclusive Japanese Rice Lager inspired t-shirts, hoodies, hats, stickers, and more quality merchandise.',
+  keywords: ['Saltfields Brewing shop', 'Saltfields Brewing merchandise', 'Japanese beer apparel', 'craft beer t-shirts', 'brewery hoodies', 'beer stickers', 'Saltfields Brewing collections'],
+  openGraph: {
+    title: 'Shop Saltfields Brewing Collections',
+    description: 'Explore unique merchandise from Saltfields Brewing, including apparel and accessories inspired by Japanese Rice Lager.',
+    url: 'https://saltfieldsbrewing.com/shop',
+    images: [
+      {
+        url: '/og-shop-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Saltfields Brewing Shop - T-shirts, Hoodies, and More',
+      },
+    ],
   },
-  { 
-    name: 'Hoodies', 
-    productType: 'Hoodies', 
-    imageUrl: '/images/hoodies_front.jpg',
-    backImageUrl: '/images/hoodies_back.jpg', 
-    description: 'Stay warm in our Champion® Reverse Weave hoodies'
-  },
-  // Add more categories as needed
-];
-
-// Loading component for categories
-function LoadingCategories() {
-  return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-full mx-auto">
-      {[...Array(CATEGORIES.length || 2)].map((_, i) => (
-        <div key={i} className="animate-pulse bg-gray-50">
-          <div className="aspect-square bg-gray-200"></div>
-          <div className="mt-2 h-4 bg-gray-200 rounded w-3/4 mx-auto"></div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-// Component that displays just the category grid
-function CategoryGrid() {
-  const [hoveredCategory, setHoveredCategory] = useState(null);
-
-  return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {CATEGORIES.map((category) => (
-        <Link 
-          key={category.productType} 
-          href={`/shop/category/${encodeURIComponent(category.productType)}`}
-          className="block transition-opacity hover:opacity-100"
-          onMouseEnter={() => setHoveredCategory(category.productType)}
-          onMouseLeave={() => setHoveredCategory(null)}
-        >
-          <div className="bg-gray-100 overflow-hidden">
-            <div className="aspect-square relative">
-              {/* Front Image */}
-              <img
-                src={category.imageUrl}
-                alt={category.name}
-                className={`w-full h-full object-cover absolute top-0 left-0 right-0 bottom-0 transition-opacity duration-300 ${
-                  hoveredCategory === category.productType && category.backImageUrl 
-                    ? 'opacity-0' 
-                    : 'opacity-100'
-                }`}
-              />
-              
-              {/* Back Image (shown on hover) */}
-              {category.backImageUrl && (
-                <img
-                  src={category.backImageUrl}
-                  alt={`${category.name} alternate view`}
-                  className={`w-full h-full object-cover absolute top-0 left-0 right-0 bottom-0 transition-opacity duration-300 ${
-                    hoveredCategory === category.productType ? 'opacity-100' : 'opacity-0'
-                  }`}
-                />
-              )}
-            </div>
-          </div>
-          <div className="mt-2">
-            <span className="text-sm uppercase tracking-wide">{category.name}</span>
-          </div>
-        </Link>
-      ))}
-    </div>
-  );
-}
+  // Twitter metadata removed
+  // twitter: {
+  //   card: 'summary_large_image',
+  //   title: 'Shop Saltfields Brewing - T-Shirts, Hoodies & More',
+  //   description: 'Find the latest apparel and accessories at the official Saltfields Brewing shop.',
+  //   images: ['/twitter-shop-image.jpg'],
+  // },
+};
 
 export default function ShopPage() {
   return (

@@ -68,8 +68,8 @@ export default function ThankYouPage() {
             <div className="text-center text-sm text-gray-500 mt-6">
               <p>
                 If you have any questions about your order, please contact us at{' '}
-                <a href="mailto:hello@saltfields.com" className="text-amber-500 hover:underline">
-                  hello@saltfields.com
+                <a href="mailto:yumi@saltfields.com" className="text-amber-500 hover:underline">
+                  yumi@saltfields.com
                 </a>
               </p>
             </div>

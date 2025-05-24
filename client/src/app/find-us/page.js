@@ -3,12 +3,14 @@
 import React from 'react';
 import MapDisplay from '@/components/MapDisplay'; 
 
+// Metadata has been moved to client/src/app/find-us/layout.js
+
 export default function FindUsPage() {
   return (
     <main className="min-h-screen bg-off-white">
       <div className="container mx-auto px-4 py-16 max-w-7xl mt-8"> {/* max-w-7xl for a wider map area */}
         <h1 className="text-4xl text-center font-normal">Find Our Beer</h1>
-        <p className="text-center mb-12">Discover local spots where you can enjoy Saltfields Brewery's finest.</p>
+        <p className="text-center mb-12">Discover local spots where you can enjoy Saltfields Brewing's finest.</p>
         
         <div className="h-[600px] w-full rounded-lg shadow overflow-hidden"> {/* Container for the map */}
           <MapDisplay />

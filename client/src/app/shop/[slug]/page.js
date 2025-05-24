@@ -10,28 +10,107 @@ import { getProductByHandle } from '@/lib/shopify';
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }) {
-  // Await params before accessing properties (Next.js 15 requirement)
-  const { slug } = await params;
-  
+  const { slug } = await params; // No need to await params if already an object
+
   try {
-    // Fetch product data from Shopify
     const product = await getProductByHandle(slug);
-    
+
     if (product) {
+      const pageTitle = `${product.title}`;
+      const pageDescription = product.description || `Shop ${product.title} and other exclusive merchandise from Saltfields Brewing. High-quality Japanese Rice Lager inspired apparel and accessories.`;
+      const imageUrl = product.images && product.images.length > 0 ? product.images[0] : '/og-image.jpg'; // Fallback to default OG image
+
       return {
-        title: `${product.title} | Saltfields Brewing`,
-        description: product.description || 'Shop our merchandise from Saltfields Brewing.'
+        title: pageTitle,
+        description: pageDescription,
+        openGraph: {
+          title: pageTitle,
+          description: pageDescription,
+          url: `https://saltfieldsbrewing.com/shop/${slug}`, // Updated domain
+          images: [imageUrl], // Simplified to an array of URL strings
+          // type: product.title,
+          siteName: 'Saltfields Brewing',
+        },
       };
     }
   } catch (error) {
-    console.error('Error fetching product metadata:', error);
+    console.error(`Error fetching product metadata for ${slug}:`, error);
   }
-  
-  // Fallback metadata if product fetch fails
+
+  // Fallback metadata
   return {
     title: 'Product | Saltfields Brewing',
-    description: 'Shop our merchandise from Saltfields Brewing.'
+    description: 'Explore exclusive merchandise from Saltfields Brewing. High-quality apparel and accessories inspired by Japanese Rice Lager.',
+    openGraph: {
+        title: 'Product | Saltfields Brewing',
+        description: 'Explore exclusive merchandise from Saltfields Brewing.',
+        url: `https://saltfieldsbrewing.com/shop/${slug}`,
+        images: ['/og-image.jpg'], // Simplified to an array of URL strings
+        // type: 'product', // Temporarily commented out for debugging
+        siteName: 'Saltfields Brewing',
+    },
+    // Twitter metadata removed
+    // twitter: {
+    //     card: 'summary_large_image',
+    //     title: 'Product | Saltfields Brewing',
+    //     description: 'Explore exclusive merchandise from Saltfields Brewing.',
+    //     images: ['/twitter-image.jpg'],
+    // },
   };
+}
+
+function ProductJsonLd({ productData }) {
+  if (!productData) return null;
+
+  const { title, description, images, id, price, variants, slug } = productData;
+  const productUrl = `https://saltfieldsbrewing.com/shop/${slug}`; // Updated domain
+
+  // Determine availability: product is available if any variant is available
+  const isAvailable = variants && variants.some(variant => variant.available);
+  const availability = isAvailable ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock';
+
+  // Assuming price comes from the main product data which is minVariantPrice
+  // Shopify also provides currencyCode with the price object
+  const currencyCode = productData.priceRange?.minVariantPrice?.currencyCode || 'USD'; 
+
+  const schema = {
+    '@context': 'https://schema.org/',
+    '@type': 'Product',
+    name: title,
+    image: images || [],
+    description: description,
+    sku: id, // Using Shopify product ID as SKU
+    mpn: id, // Using Shopify product ID as MPN
+    brand: {
+      '@type': 'Brand',
+      name: 'Saltfields Brewing',
+    },
+    offers: {
+      '@type': 'Offer',
+      url: productUrl,
+      priceCurrency: currencyCode,
+      price: price, // This is minVariantPrice.amount
+      itemCondition: 'https://schema.org/NewCondition',
+      availability: availability,
+      // priceValidUntil: "2025-12-31" // Optional: Can extend validity
+    },
+    // TODO: Consider adding aggregateRating if you have product reviews
+    // "aggregateRating": {
+    //   "@type": "AggregateRating",
+    //   "ratingValue": "4.5",
+    //   "reviewCount": "10"
+    // },
+    // TODO: If variants are significantly different (e.g. different products rather than just size/color)
+    // you might list them as individualOffer under an AggregateOffer or as separate Product entities.
+    // For simple variants (size/color of the same item), the main product offer is often sufficient.
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  );
 }
 
 export default async function ProductPageRoute({ params }) {
@@ -45,27 +124,16 @@ export default async function ProductPageRoute({ params }) {
     // If we successfully got data from Shopify, use it
     if (shopifyProduct) {
       return (
-        <Suspense fallback={<LoadingProductPage />}>
-          <ProductPage initialProduct={shopifyProduct} />
-        </Suspense>
+        <>
+          <ProductJsonLd productData={shopifyProduct} />
+          <Suspense fallback={<LoadingProductPage />}>
+            <ProductPage initialProduct={shopifyProduct} />
+          </Suspense>
+        </>
       );
     }
-    
-    // If Shopify data fetch failed, fall back to sample data
-    // Use proper image paths that exist in the public folder
-    const productImages = {
-      'team-tshirt': {
-        black: '/images/10.jpg',
-        white: '/images/11.jpg',
-        brown: '/images/12.jpg'
-      },
-      // Add other products as needed
-      'default': {
-        black: '/images/10.jpg',
-        white: '/images/11.jpg',
-        brown: '/images/12.jpg'
-      }
-    };
+
+
     
     // Get images for this product (default to first product if slug not found)
     const images = productImages[slug] || productImages['default'];
@@ -75,7 +143,7 @@ export default async function ProductPageRoute({ params }) {
       id: slug || 'team-tshirt',
       title: "TEAM T-SHIRT",
       slug: slug,
-      description: "Our classic team t-shirt features the Saltfields logo on the front chest. Made from 100% organic cotton for maximum comfort and durability. This shirt is perfect for casual wear, supporting your favorite brewery, or attending one of our events.",
+      description: "Our classic team t-shirt features the Saltfields Brewing logo on the front chest. Made from 100% organic cotton for maximum comfort and durability. This shirt is perfect for casual wear, supporting your favorite brewery, or attending one of our events.", // Updated brand name
       price: 50.00,
       images: Object.values(images),
       colors: [
@@ -102,9 +170,12 @@ export default async function ProductPageRoute({ params }) {
     };
 
     return (
-      <Suspense fallback={<LoadingProductPage />}>
-        <ProductPage initialProduct={sampleProduct} />
-      </Suspense>
+      <>
+        <ProductJsonLd productData={sampleProduct} />
+        <Suspense fallback={<LoadingProductPage />}>
+          <ProductPage initialProduct={sampleProduct} />
+        </Suspense>
+      </>
     );
   } catch (error) {
     console.error('Error loading product:', error);

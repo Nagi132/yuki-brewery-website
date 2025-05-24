@@ -94,7 +94,7 @@ export default function Footer() {
                   <FaInstagram size={20} />
                 </Link>
                 <Link
-                  href="mailto:hello@saltfields.com"
+                  href="mailto:yumi@saltfields.com"
                   className="text-gray-600 hover:text-black transition-colors"
                   aria-label="Email"
                 >
