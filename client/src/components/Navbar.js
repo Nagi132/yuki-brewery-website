@@ -126,6 +126,10 @@ export default function Navbar() {
           {/* Right Links - Desktop */}
           <div className="hidden md:flex items-center h-full -mr-4">
             {/* CARRY SALTFIELDS link */}
+            <NavLink href="/find-us">
+              FIND US
+            </NavLink>
+            {/* CARRY SALTFIELDS link */}
             <NavLink href="/carry">
               CARRY SALTFIELDS
             </NavLink>
@@ -174,6 +178,7 @@ export default function Navbar() {
               <MobileNavLink href="/beer">BEER</MobileNavLink>
               <MobileNavLink href="/events">EVENTS</MobileNavLink>
               <MobileNavLink href="/shop">SHOP</MobileNavLink>
+              <MobileNavLink href="/find-us">FIND US</MobileNavLink>
               <MobileNavLink href="/carry">CARRY SALTFIELDS</MobileNavLink>
             </div>
 

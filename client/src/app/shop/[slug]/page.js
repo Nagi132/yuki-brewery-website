@@ -49,13 +49,6 @@ export async function generateMetadata({ params }) {
         // type: 'product', // Temporarily commented out for debugging
         siteName: 'Saltfields Brewing',
     },
-    // Twitter metadata removed
-    // twitter: {
-    //     card: 'summary_large_image',
-    //     title: 'Product | Saltfields Brewing',
-    //     description: 'Explore exclusive merchandise from Saltfields Brewing.',
-    //     images: ['/twitter-image.jpg'],
-    // },
   };
 }
 
@@ -94,15 +87,6 @@ function ProductJsonLd({ productData }) {
       availability: availability,
       // priceValidUntil: "2025-12-31" // Optional: Can extend validity
     },
-    // TODO: Consider adding aggregateRating if you have product reviews
-    // "aggregateRating": {
-    //   "@type": "AggregateRating",
-    //   "ratingValue": "4.5",
-    //   "reviewCount": "10"
-    // },
-    // TODO: If variants are significantly different (e.g. different products rather than just size/color)
-    // you might list them as individualOffer under an AggregateOffer or as separate Product entities.
-    // For simple variants (size/color of the same item), the main product offer is often sufficient.
   };
 
   return (

@@ -123,7 +123,7 @@ async function CategoryProducts({ productType }) {
     );
   }
   
-  return <ProductGrid products={products} />;
+  return <ProductGrid products={products} showHeroes={false} />;
 }
 
 export default async function CategoryPage({ params }) {
@@ -139,7 +139,7 @@ export default async function CategoryPage({ params }) {
         <div className="mb-6">
           <Link href="/shop" className="flex items-center text-zinc-600 hover:text-zinc-800 transition-colors">
             <FaArrowLeft className="mr-2" size={14} />
-            Back to Collections
+            Back to Shop
           </Link>
         </div>
         

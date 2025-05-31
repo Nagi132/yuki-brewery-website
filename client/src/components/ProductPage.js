@@ -341,6 +341,7 @@ export default function ProductPage({ initialProduct }) {
                     alt={product.title}
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
+                    quality={90}
                     className="object-contain"
                     priority
                   />
@@ -369,6 +370,7 @@ export default function ProductPage({ initialProduct }) {
                             alt={`${product.title} - image ${index + 1}`}
                             fill
                             sizes="(max-width: 768px) 20vw, 96px"
+                            quality={90}
                             className="object-contain"
                           />
                         </button>

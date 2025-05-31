@@ -22,73 +22,99 @@ const shopifyClient = new GraphQLClient(
   }
 );
 
-// Fetch all products for the shop page
+// Fetch all products for the shop page with pagination support
 export async function getAllProducts() {
   if (!storeDomain || !accessToken) {
     console.error('Shopify API credentials not configured');
     return []; // Return empty array if not configured
   }
 
-  const query = `
-    {
-      products(first: 24) {
-        edges {
-          node {
-            id
-            title
-            handle
-            description
-            productType
-            tags
-            priceRange {
-              minVariantPrice {
-                amount
-                currencyCode
-              }
+  let allProducts = [];
+  let hasNextPage = true;
+  let cursor = null;
+
+  try {
+    while (hasNextPage) {
+      const query = `
+        {
+          products(first: 50${cursor ? `, after: "${cursor}"` : ''}) {
+            pageInfo {
+              hasNextPage
+              endCursor
             }
-            images(first: 2) {
-              edges {
-                node {
-                  url
-                  altText
+            edges {
+              node {
+                id
+                title
+                handle
+                description
+                productType
+                tags
+                priceRange {
+                  minVariantPrice {
+                    amount
+                    currencyCode
+                  }
+                }
+                images(first: 2) {
+                  edges {
+                    node {
+                      url
+                      altText
+                    }
+                  }
                 }
               }
             }
           }
         }
+      `;
+
+      const data = await shopifyClient.request(query);
+      
+      // Check if data has the expected structure
+      if (!data?.products?.edges) {
+        console.error('Unexpected Shopify API response format:', data);
+        break;
+      }
+
+      // Transform and add the current batch of products
+      const products = data.products.edges.map(({ node }) => {
+        // Get front and back images if available
+        const images = node.images?.edges?.map(edge => edge.node.url) || [];
+        
+        return {
+          id: node.id,
+          title: node.title || 'Product',
+          slug: node.handle || 'product',
+          price: parseFloat(node.priceRange?.minVariantPrice?.amount || 0),
+          frontImage: images[0] || '/images/placeholder.jpg',
+          backImage: images[1] || null, // Back image (optional)
+          description: node.description || '',
+          productType: node.productType,
+          tags: node.tags
+        };
+      });
+
+      allProducts = [...allProducts, ...products];
+
+      // Update pagination info
+      hasNextPage = data.products.pageInfo.hasNextPage;
+      cursor = data.products.pageInfo.endCursor;
+
+      // Safety check to prevent infinite loops
+      if (allProducts.length > 1000) {
+        console.warn('Fetched over 1000 products, stopping pagination to prevent excessive API calls');
+        break;
       }
     }
-  `;
 
-  try {
-    const data = await shopifyClient.request(query);
-    
-    // Check if data has the expected structure
-    if (!data?.products?.edges) {
-      console.error('Unexpected Shopify API response format:', data);
-      return [];
-    }
-    
-    // Transform the data for your components
-    return data.products.edges.map(({ node }) => {
-      // Get front and back images if available
-      const images = node.images?.edges?.map(edge => edge.node.url) || [];
-      
-      return {
-        id: node.id,
-        title: node.title || 'Product',
-        slug: node.handle || 'product',
-        price: parseFloat(node.priceRange?.minVariantPrice?.amount || 0),
-        frontImage: images[0] || '/images/placeholder.jpg',
-        backImage: images[1] || null, // Back image (optional)
-        description: node.description || '',
-        productType: node.productType,
-        tags: node.tags
-      };
-    });
+    console.log(`Successfully fetched ${allProducts.length} products from Shopify`);
+    return allProducts;
+
   } catch (error) {
     console.error('Error fetching Shopify products:', error);
-    return []; // Return empty array on error
+    return allProducts; // Return whatever we've fetched so far
   }
 }
 
@@ -267,4 +293,266 @@ function getColorHex(colorName) {
   }
   
   return '#CCCCCC'; // Default gray if no match found
+}
+
+// Fetch the most recent upcoming event from a specific blog
+export async function getUpcomingEvent(blogHandle) {
+  if (!blogHandle) {
+    return null;
+  }
+
+  if (!storeDomain || !accessToken) {
+    return null;
+  }
+
+  const now = new Date();
+
+  const query = `
+    query GetUpcomingEvents($blogHandle: String!) {
+      blogByHandle(handle: $blogHandle) {
+        articles(first: 50, sortKey: PUBLISHED_AT, reverse: true) { 
+          edges {
+            node {
+              title
+              handle
+              contentHtml
+              publishedAt
+              image {
+                url
+                altText
+              }
+              eventDate: metafield(namespace: "custom", key: "event_date") {
+                value
+              }
+              eventTime: metafield(namespace: "custom", key: "event_time") {
+                value
+              }
+              eventLocationName: metafield(namespace: "custom", key: "event_location_name") {
+                value
+              }
+              eventLocationAddress: metafield(namespace: "custom", key: "event_location_address") {
+                value
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  try {
+    const variables = { blogHandle };
+    const data = await shopifyClient.request(query, variables);
+
+    if (!data?.blogByHandle?.articles?.edges?.length) {
+      return null;
+    }
+
+    const allArticles = data.blogByHandle.articles.edges.map(edge => edge.node);
+
+    const upcomingEventsFiltered = allArticles
+      .filter(article => {
+        if (!article.eventDate?.value) {
+          return false;
+        }
+        const eventDateValue = new Date(article.eventDate.value);
+        if (isNaN(eventDateValue.getTime())) {
+          return false;
+        }
+        const isFutureOrToday = eventDateValue >= now;
+        return isFutureOrToday;
+      });
+    
+    const upcomingEventsSorted = upcomingEventsFiltered.sort((a, b) => new Date(a.eventDate.value) - new Date(b.eventDate.value));
+
+    if (!upcomingEventsSorted.length) {
+      return null;
+    }
+
+    const eventNode = upcomingEventsSorted[0];
+
+    const formattedDate = eventNode.eventDate?.value
+      ? new Date(eventNode.eventDate.value).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          weekday: 'long',
+        }).toUpperCase()
+      : 'Date TBD';
+
+    const timeDetails = eventNode.eventTime?.value || 'Time TBD';
+
+    return {
+      title: eventNode.title || 'Upcoming Event',
+      slug: eventNode.handle,
+      descriptionHtml: eventNode.contentHtml,
+      imageUrl: eventNode.image?.url || '/images/placeholder.jpg',
+      imageAlt: eventNode.image?.altText || eventNode.title || 'Event image',
+      date: formattedDate,
+      time: timeDetails,
+      locationName: eventNode.eventLocationName?.value || 'Location TBD',
+      locationAddress: eventNode.eventLocationAddress?.value || '',
+      rawEventDate: eventNode.eventDate?.value,
+      rawEventTime: eventNode.eventTime?.value,
+      publishedAt: eventNode.publishedAt,
+    };
+
+  } catch (error) {
+    return null;
+  }
+}
+
+// Fetch past events from a specific blog
+export async function getPastEvents(blogHandle, { limit = 5 } = {}) {
+  if (!blogHandle) {
+    return [];
+  }
+
+  if (!storeDomain || !accessToken) {
+    return [];
+  }
+
+  const now = new Date();
+
+  const query = `
+    query GetPastEvents($blogHandle: String!) {
+      blogByHandle(handle: $blogHandle) {
+        articles(first: 25, sortKey: PUBLISHED_AT, reverse: true) { 
+          edges {
+            node {
+              id
+              title
+              handle
+              publishedAt
+              image {
+                url
+                altText
+              }
+              eventDate: metafield(namespace: "custom", key: "event_date") {
+                value
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  try {
+    const variables = { blogHandle };
+    const data = await shopifyClient.request(query, variables);
+
+    if (!data?.blogByHandle?.articles?.edges?.length) {
+      return [];
+    }
+
+    const allArticles = data.blogByHandle.articles.edges.map(edge => edge.node);
+    
+    const pastEventsFilteredAndSorted = allArticles
+      .filter(article => {
+        if (!article.eventDate?.value) {
+          return false;
+        }
+        const eventDateValue = new Date(article.eventDate.value);
+        if (isNaN(eventDateValue.getTime())) {
+          return false;
+        }
+        const isPast = eventDateValue < now;
+        return isPast;
+      })
+      .sort((a, b) => new Date(b.eventDate.value) - new Date(a.eventDate.value))
+      .slice(0, limit);
+
+    if (!pastEventsFilteredAndSorted.length) {
+      return [];
+    }
+
+    return pastEventsFilteredAndSorted.map(eventNode => ({
+      id: eventNode.id,
+      title: eventNode.title || 'Past Event',
+      slug: eventNode.handle,
+      imageUrl: eventNode.image?.url || '/images/placeholder.jpg',
+      imageAlt: eventNode.image?.altText || eventNode.title || 'Event image',
+      rawEventDate: eventNode.eventDate?.value, 
+    }));
+
+  } catch (error) {
+    return [];
+  }
+}
+
+// Fetch a single event (article) by its handle
+export async function getEventByHandle(handle) {
+  if (!handle) {
+    return null;
+  }
+
+  if (!storeDomain || !accessToken) {
+    return null;
+  }
+
+  const query = `
+    query GetEventByHandle($handle: String!) {
+      blogByHandle(handle: "events") {
+        articleByHandle(handle: $handle) {
+          title
+          contentHtml
+          publishedAt
+          image {
+            url
+            altText
+          }
+          eventDate: metafield(namespace: "custom", key: "event_date") {
+            value
+          }
+          eventTime: metafield(namespace: "custom", key: "event_time") {
+            value
+          }
+          eventLocationName: metafield(namespace: "custom", key: "event_location_name") {
+            value
+          }
+          eventLocationAddress: metafield(namespace: "custom", key: "event_location_address") {
+            value
+          }
+        }
+      }
+    }
+  `;
+
+  try {
+    const variables = { handle };
+    const data = await shopifyClient.request(query, variables);
+    const eventNode = data?.blogByHandle?.articleByHandle;
+
+    if (!eventNode) {
+      return null;
+    }
+
+    const formattedDate = eventNode.eventDate?.value
+      ? new Date(eventNode.eventDate.value).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          weekday: 'long',
+        }).toUpperCase()
+      : 'Date TBD';
+
+    const timeDetails = eventNode.eventTime?.value || 'Time TBD';
+
+    return {
+      title: eventNode.title || 'Event Details',
+      descriptionHtml: eventNode.contentHtml, 
+      imageUrl: eventNode.image?.url || '/images/placeholder.jpg',
+      imageAlt: eventNode.image?.altText || eventNode.title || 'Event image',
+      date: formattedDate,
+      time: timeDetails,
+      locationName: eventNode.eventLocationName?.value || 'Location TBD',
+      locationAddress: eventNode.eventLocationAddress?.value || '',
+      rawEventDate: eventNode.eventDate?.value,
+      publishedAt: eventNode.publishedAt,
+    };
+
+  } catch (error) {
+    return null;
+  }
 }

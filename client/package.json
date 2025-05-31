@@ -19,6 +19,7 @@
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "@react-google-maps/api": "^2.20.6",
+    "@tailwindcss/line-clamp": "^0.4.4",
     "dotenv": "^16.4.7",
     "framer-motion": "^12.6.0",
     "graphql": "^16.10.0",

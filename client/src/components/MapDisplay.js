@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useState, useEffect } from 'react';
-import { GoogleMap, LoadScript, MarkerF, InfoWindowF } from '@react-google-maps/api';
+import { GoogleMap, useLoadScript, MarkerF, InfoWindowF } from '@react-google-maps/api';
 
 const LIBRARIES = ['marker', 'places'];
 
@@ -138,6 +138,12 @@ export default function MapDisplay() {
   const [mapInstance, setMapInstance] = useState(null);
   const [imageLoading, setImageLoading] = useState(true);
 
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: API_KEY,
+    libraries: LIBRARIES,
+    version: "beta"
+  });
+
   useEffect(() => {
     if (activeMarker && activeMarker.photoUrl) {
       setImageLoading(true);
@@ -225,8 +231,16 @@ export default function MapDisplay() {
   const mapOptions = {
     disableDefaultUI: true,
     zoomControl: true,
-    mapId: MAP_ID
+    //mapId: MAP_ID
   };
+
+  if (loadError) {
+    return (
+      <div className="w-full h-full flex items-center justify-center bg-red-100 text-red-700 p-4 rounded-lg">
+        <p>Error loading Google Maps: {loadError.message}</p>
+      </div>
+    );
+  }
 
   if (!API_KEY) {
     return (
@@ -235,33 +249,55 @@ export default function MapDisplay() {
       </div>
     );
   }
-   if (!MAP_ID && API_KEY) {
+
+  if (!isLoaded) {
+    return (
+      <div className="w-full h-full flex items-center justify-center bg-gray-100 p-4 rounded-lg">
+        <div className="flex items-center space-x-2">
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+          <p className="text-gray-600">Loading map...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!MAP_ID && API_KEY) {
     console.warn("NEXT_PUBLIC_GOOGLE_MAP_ID is not set in environment variables. This is recommended for using new map features and required for Advanced Markers if you migrate MarkerF in the future.");
   }
 
 
   const getMarkerIcon = (isAvailable) => {
-    if (typeof window === 'undefined') {
-      return isAvailable ? undefined : "http://maps.google.com/mapfiles/ms/icons/grey.png";
-    }
-    if (!window.google || !window.google.maps) {
-      return isAvailable ? undefined : "http://maps.google.com/mapfiles/ms/icons/grey.png";
-    }
-    if (isAvailable) {
+    if (typeof window === 'undefined' || !window.google || !window.google.maps) {
       return undefined;
     }
-    return {
-      url: "http://maps.google.com/mapfiles/ms/icons/grey.png",
-      scaledSize: new window.google.maps.Size(32, 32),
+
+    // Create custom beer emoji markers
+    const createBeerMarker = (available) => {
+      const emoji = available ? '🍺' : '🥃'; // Beer mug for available, whiskey glass for unavailable
+      const bgColor = available ? '#FFD700' : '#808080'; // Gold background for available, grey for unavailable
+      const borderColor = available ? '#FFA500' : '#696969'; // Orange border for available, dim grey for unavailable
+      
+      const svg = `
+        <svg width="40" height="40" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20" cy="20" r="18" fill="${bgColor}" stroke="${borderColor}" stroke-width="2"/>
+          <text x="20" y="26" font-size="20" text-anchor="middle" font-family="Arial">${emoji}</text>
+        </svg>
+      `;
+      
+      const dataUrl = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+      
+      return {
+        url: dataUrl,
+        scaledSize: new window.google.maps.Size(40, 40),
+        anchor: new window.google.maps.Point(20, 20),
+      };
     };
+
+    return createBeerMarker(isAvailable);
   };
 
   return (
-    <LoadScript
-      googleMapsApiKey={API_KEY}
-      libraries={LIBRARIES}
-      version="beta"
-    >
+    <>
       <style>{infoWindowStyle}</style>
       <GoogleMap
         mapContainerStyle={containerStyle}
@@ -404,6 +440,6 @@ export default function MapDisplay() {
           </MarkerF>
         ))}
       </GoogleMap>
-    </LoadScript>
+    </>
   );
 }

@@ -33,7 +33,7 @@ export default function ReturnsPage() {
           </p>
           
           <p>
-            2. Contact Customer Service: Email our team at returns@saltfields.com with your order number, description of the issue, 
+            2. Contact Customer Service: Email our team at yumi@saltfields.com with your order number, description of the issue, 
             photos of the damaged/defective item, and your contact information.
           </p>
           

@@ -7,14 +7,20 @@ export default async function sitemap() {
     { url: `${URL}/`, lastModified: new Date(), changeFrequency: 'yearly', priority: 1 },
     { url: `${URL}/shop`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
     { url: `${URL}/find-us`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
-    // Add other static pages like /about, /contact, /events-page if you have them
-    // Example: { url: `${URL}/about`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${URL}/about`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${URL}/beer`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${URL}/events`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.6 },
+    { url: `${URL}/carry`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${URL}/contact`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${URL}/privacy`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.3 },
+    { url: `${URL}/terms`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.3 },
+    { url: `${URL}/returns`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.3 },
+    // Note: cart and thank-you pages are excluded as they shouldn't be indexed
   ];
 
   let productRoutes = [];
   try {
-    // IMPORTANT: Ensure getAllProducts can fetch ALL product slugs/handles for a complete sitemap.
-    // You may need to modify it to handle pagination if you have many products.
+    // Fetch all products using the updated getAllProducts function with pagination
     const products = await getAllProducts(); 
     productRoutes = products.map((product) => ({
       url: `${URL}/shop/${product.slug}`, 

@@ -65,7 +65,7 @@ export default function EventCarousel3D({ events }) {
                   alt={event.imageAlt}
                   fill
                   sizes="(max-width: 640px) 80vw, (max-width: 1024px) 45vw, 370px"
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  className="object-cover"
                 />
               </div>
               <h3 className="mt-4 text-md sm:text-lg font-normal text-zinc-800 group-hover:text-black transition-colors duration-300 px-2">
@@ -78,13 +78,13 @@ export default function EventCarousel3D({ events }) {
       
       {/* Custom Navigation Arrows - Plain Chevrons */}
       <button 
-        className="swiper-button-prev-custom absolute left-[-10px] sm:left-[-15px] top-1/2 transform -translate-y-1/2 z-10 transition-opacity hover:opacity-70 focus:outline-none"
+        className="swiper-button-prev-custom absolute left-[-10px] sm:left-[-30px] top-1/2 transform -translate-y-1/2 z-10 transition-opacity hover:opacity-70 focus:outline-none"
         aria-label="Scroll left"
       >
         <FiChevronLeft className="text-zinc-800 hover:text-black" size={30} />
       </button>
       <button 
-        className="swiper-button-next-custom absolute right-[-10px] sm:right-[-15px] top-1/2 transform -translate-y-1/2 z-10 transition-opacity hover:opacity-70 focus:outline-none"
+        className="swiper-button-next-custom absolute right-[-10px] sm:right-[-30px] top-1/2 transform -translate-y-1/2 z-10 transition-opacity hover:opacity-70 focus:outline-none"
         aria-label="Scroll right"
       >
         <FiChevronRight className="text-zinc-800 hover:text-black" size={30} />
