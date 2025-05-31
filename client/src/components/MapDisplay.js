@@ -23,7 +23,6 @@ const initialMarkersData = [
     position: { lat: 40.72361724705993, lng: -73.95083615424822 },
     address: "615 Manhattan Ave, Brooklyn, NY 11222",
     beers: "Focus on boutique beers",
-    isAvailable: true,
     placeId: "ChIJlaFjTURZwokRvsN6V805OEk"
   },
   {
@@ -32,7 +31,6 @@ const initialMarkersData = [
     position: { lat: 40.72566648674992, lng: -73.99272326003553 },
     address: "5 Bleecker St, New York, NY 10012",
     beers: "Various craft beers",
-    isAvailable: true,
     placeId: "ChIJx-bMHr1ZwokRd3i_y7F3VlE"
   },
   {
@@ -41,7 +39,6 @@ const initialMarkersData = [
     position: { lat: 40.70940775351219, lng: -73.95392782023777 },
     address: "330 S 3rd St, Brooklyn, NY 11211, USA",
     beers: "Various craft beers",
-    isAvailable: false,
     placeId: "ChIJ3xYJKABbwokRjhgU1mfahJk"
   },
   {
@@ -50,7 +47,6 @@ const initialMarkersData = [
     position: { lat: 40.71272204784484,  lng: -73.94870800051152 },
     address: "150 Ainslie St, Brooklyn, NY 11211, USA",
     beers: "Various craft beers",
-    isAvailable: true,
     placeId: "ChIJ2YwyMVhZwokRE47dTb7x1fo"
   },
   {
@@ -59,25 +55,14 @@ const initialMarkersData = [
     position: { lat: 40.730107617858906,  lng: -73.95970007537935 },
     address: "29 Greenpoint Ave, Brooklyn, NY 11222, USA",
     beers: "n/a",
-    isAvailable: true,
     placeId: "ChIJ8ZshVyFZwokRqQFLjNmfWmE"
   },
   {
     id: 7,
-    name: "SSAW",
-    position: { lat: 40.70940775351219, lng: -73.95392782023777 },
-    address: "330 S 3rd St, Brooklyn, NY 11211, USA",
-    beers: "Various craft beers",
-    isAvailable: false,
-    placeId: "ChIJ3xYJKABbwokRjhgU1mfahJk"
-  },
-  {
-    id: 0,
     name: "Monarch Izakaya Restaurant",
     position: { lat: 40.71621958487424,  lng: -73.9622926888718 },
     address: "146 Metropolitan Ave, Brooklyn, NY 11249, USA",
     beers: "n/a",
-    isAvailable: false,
     placeId: "ChIJ6_M75OhZwokRiuRfFsoX7K8"
   },
   // {
@@ -137,12 +122,89 @@ export default function MapDisplay() {
   const [activeMarker, setActiveMarker] = useState(null);
   const [mapInstance, setMapInstance] = useState(null);
   const [imageLoading, setImageLoading] = useState(true);
+  const [markerIcons, setMarkerIcons] = useState({ default: null });
 
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: API_KEY,
     libraries: LIBRARIES,
     version: "beta"
   });
+
+  // Pre-generate marker icons when component mounts
+  useEffect(() => {
+    const createMarkerIcon = () => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const canvasWidth = 100; 
+      const canvasHeight = 150; 
+      canvas.width = canvasWidth;
+      canvas.height = canvasHeight;
+
+      // Load and draw the can icon (no circle background)
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      
+      img.onload = () => {
+        // 3 times the previous size - up to 300 pixels
+        const maxIconSize = 220;
+        let iconWidth = img.width;
+        let iconHeight = img.height;
+        
+        // Scale to fit within maxIconSize while maintaining aspect ratio
+        if (iconWidth > iconHeight) {
+          if (iconWidth > maxIconSize) {
+            iconHeight = (iconHeight * maxIconSize) / iconWidth;
+            iconWidth = maxIconSize;
+          }
+        } else {
+          if (iconHeight > maxIconSize) {
+            iconWidth = (iconWidth * maxIconSize) / iconHeight;
+            iconHeight = maxIconSize;
+          }
+        }
+        
+        // Center the can both horizontally and vertically
+        const x = (canvasWidth - iconWidth) / 2;
+        const y = (canvasHeight - iconHeight) / 2;
+        
+        ctx.drawImage(img, x, y, iconWidth, iconHeight);
+        
+        // Convert canvas to data URL and update state
+        const dataUrl = canvas.toDataURL('image/png');
+        
+        setMarkerIcons({
+          default: {
+            url: dataUrl,
+            scaledSize: typeof window !== 'undefined' && window.google ? new window.google.maps.Size(canvasWidth, canvasHeight) : undefined,
+            anchor: typeof window !== 'undefined' && window.google ? new window.google.maps.Point(canvasWidth / 2, canvasHeight / 2) : undefined,
+          }
+        });
+      };
+      
+      img.onerror = (error) => {
+        // Fallback to a simple colored circle if image fails to load
+        ctx.beginPath();
+        ctx.arc(canvasWidth / 2, canvasHeight / 2, 20, 0, 2 * Math.PI);
+        ctx.fillStyle = '#808080';
+        ctx.fill();
+        
+        const dataUrl = canvas.toDataURL('image/png');
+        setMarkerIcons({
+          default: {
+            url: dataUrl,
+            scaledSize: typeof window !== 'undefined' && window.google ? new window.google.maps.Size(canvasWidth, canvasHeight) : undefined,
+            anchor: typeof window !== 'undefined' && window.google ? new window.google.maps.Point(canvasWidth / 2, canvasHeight / 2) : undefined,
+          }
+        });
+      };
+      
+      img.src = '/images/Saltfields_brewing_can_icon.webp';
+    };
+
+    if (isLoaded) {
+      createMarkerIcon();
+    }
+  }, [isLoaded]);
 
   useEffect(() => {
     if (activeMarker && activeMarker.photoUrl) {
@@ -265,37 +327,6 @@ export default function MapDisplay() {
     console.warn("NEXT_PUBLIC_GOOGLE_MAP_ID is not set in environment variables. This is recommended for using new map features and required for Advanced Markers if you migrate MarkerF in the future.");
   }
 
-
-  const getMarkerIcon = (isAvailable) => {
-    if (typeof window === 'undefined' || !window.google || !window.google.maps) {
-      return undefined;
-    }
-
-    // Create custom beer emoji markers
-    const createBeerMarker = (available) => {
-      const emoji = available ? '🍺' : '🥃'; // Beer mug for available, whiskey glass for unavailable
-      const bgColor = available ? '#FFD700' : '#808080'; // Gold background for available, grey for unavailable
-      const borderColor = available ? '#FFA500' : '#696969'; // Orange border for available, dim grey for unavailable
-      
-      const svg = `
-        <svg width="40" height="40" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="20" cy="20" r="18" fill="${bgColor}" stroke="${borderColor}" stroke-width="2"/>
-          <text x="20" y="26" font-size="20" text-anchor="middle" font-family="Arial">${emoji}</text>
-        </svg>
-      `;
-      
-      const dataUrl = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
-      
-      return {
-        url: dataUrl,
-        scaledSize: new window.google.maps.Size(40, 40),
-        anchor: new window.google.maps.Point(20, 20),
-      };
-    };
-
-    return createBeerMarker(isAvailable);
-  };
-
   return (
     <>
       <style>{infoWindowStyle}</style>
@@ -306,139 +337,133 @@ export default function MapDisplay() {
         options={mapOptions}
         onLoad={handleMapLoad}
       >
-        {initialMarkersData.map((marker) => (
-          <MarkerF
-            key={marker.id}
-            position={marker.position}
-            onClick={() => handleMarkerClick(marker)}
-            icon={getMarkerIcon(marker.isAvailable)}
-          >
-            {activeMarker && activeMarker.id === marker.id && (
-              <InfoWindowF
-                position={marker.position}
-                onCloseClick={handleInfoWindowClose}
-                options={{ pixelOffset: typeof window !== 'undefined' && window.google ? new window.google.maps.Size(0, -35) : undefined }}
-              >
-                <div className="w-max max-w-[280px] sm:max-w-xs bg-white rounded-lg shadow-lg overflow-hidden">
-                  {activeMarker.photoUrl && (
-                    <div className="relative w-full h-40 bg-gray-200">
-                      {imageLoading && (
-                        <div className="absolute inset-0 bg-gray-300 animate-pulse rounded-t-lg"></div>
-                      )}
-                      <img
-                        src={activeMarker.photoUrl}
-                        alt={activeMarker.fetchedName || activeMarker.name}
-                        className={`w-full h-full object-cover rounded-t-lg transition-opacity duration-300 ${imageLoading ? 'opacity-0' : 'opacity-100'}`}
-                        onLoad={() => setImageLoading(false)}
-                        onError={() => {
-                          console.warn(`Failed to load image: ${activeMarker.photoUrl}`);
-                          setImageLoading(false);
-                        }}
-                      />
-                       <button
-                        onClick={handleInfoWindowClose}
-                        className="absolute top-2 right-2 bg-black bg-opacity-60 hover:bg-opacity-80 rounded-full w-7 h-7 flex items-center justify-center transition-all duration-150 z-10"
-                        aria-label="Close"
-                      >
-                        <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                      </button>
-                    </div>
-                  )}
-                  {!activeMarker.photoUrl && (
-                     <div className="relative h-8">
-                       <button
+        {initialMarkersData.map((marker, index) => {
+          return (
+            <MarkerF
+              key={`marker-${marker.id}-${marker.name}-${index}`}
+              position={marker.position}
+              onClick={() => handleMarkerClick(marker)}
+              icon={markerIcons.default}
+              title={`${marker.name} (ID: ${marker.id})`}
+              zIndex={1000 + index}
+            >
+              {activeMarker && activeMarker.id === marker.id && (
+                <InfoWindowF
+                  position={marker.position}
+                  onCloseClick={handleInfoWindowClose}
+                  options={{ pixelOffset: typeof window !== 'undefined' && window.google ? new window.google.maps.Size(0, 10) : undefined }}
+                >
+                  <div className="w-max max-w-[280px] sm:max-w-xs bg-white rounded-lg shadow-lg overflow-hidden">
+                    {activeMarker.photoUrl && (
+                      <div className="relative w-full h-40 bg-gray-200">
+                        {imageLoading && (
+                          <div className="absolute inset-0 bg-gray-300 animate-pulse rounded-t-lg"></div>
+                        )}
+                        <img
+                          src={activeMarker.photoUrl}
+                          alt={activeMarker.fetchedName || activeMarker.name}
+                          className={`w-full h-full object-cover rounded-t-lg transition-opacity duration-300 ${imageLoading ? 'opacity-0' : 'opacity-100'}`}
+                          onLoad={() => setImageLoading(false)}
+                          onError={() => {
+                            console.warn(`Failed to load image: ${activeMarker.photoUrl}`);
+                            setImageLoading(false);
+                          }}
+                        />
+                         <button
                           onClick={handleInfoWindowClose}
-                          className="absolute top-2 right-2 bg-gray-500 bg-opacity-50 hover:bg-opacity-70 rounded-full w-7 h-7 flex items-center justify-center transition-all duration-150 z-10"
+                          className="absolute top-2 right-2 bg-black bg-opacity-60 hover:bg-opacity-80 rounded-full w-7 h-7 flex items-center justify-center transition-all duration-150 z-10"
                           aria-label="Close"
                         >
                           <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                           </svg>
                         </button>
-                     </div>
-                  )}
-
-                  <div className={`p-3 space-y-1.5 ${!activeMarker.photoUrl ? 'pt-0' : ''}`}>
-                    <h4 className="text-base font-semibold text-gray-900 truncate" title={activeMarker.fetchedName || activeMarker.name}>
-                      {activeMarker.fetchedName || activeMarker.name}
-                    </h4>
-                    <p className="text-xs text-gray-600 truncate" title={activeMarker.address}>{activeMarker.address}</p>
-
-                    {activeMarker.rating !== undefined && activeMarker.rating !== null && (
-                      <div className="flex items-center">
-                        {[...Array(5)].map((_, i) => (
-                          <StarIcon key={i} filled={i < Math.round(activeMarker.rating)} />
-                        ))}
-                        <span className="ml-1.5 text-xs text-gray-500">{activeMarker.rating.toFixed(1)}</span>
                       </div>
                     )}
-                    
-                    {activeMarker.businessStatus === 'OPERATIONAL' && typeof activeMarker.isOpen === 'boolean' && (
-                      <div className="flex items-center">
-                        {activeMarker.isOpen ? (
-                          <svg className="w-3.5 h-3.5 text-green-600 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                          </svg>
-                        ) : (
-                          <svg className="w-3.5 h-3.5 text-red-600 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                             <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                          </svg>
-                        )}
-                        <span className={`text-xs font-medium ${activeMarker.isOpen ? 'text-green-700' : 'text-red-700'}`}>
-                          {activeMarker.isOpen ? 'Open now' : 'Currently closed'}
-                        </span>
-                      </div>
+                    {!activeMarker.photoUrl && (
+                       <div className="relative h-8">
+                         <button
+                            onClick={handleInfoWindowClose}
+                            className="absolute top-2 right-2 bg-gray-500 bg-opacity-50 hover:bg-opacity-70 rounded-full w-7 h-7 flex items-center justify-center transition-all duration-150 z-10"
+                            aria-label="Close"
+                          >
+                            <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          </button>
+                       </div>
                     )}
-                     {activeMarker.businessStatus && activeMarker.businessStatus !== 'OPERATIONAL' && (
+
+                    <div className={`p-3 space-y-1.5 ${!activeMarker.photoUrl ? 'pt-0' : ''}`}>
+                      <h4 className="text-base font-semibold text-gray-900 truncate" title={activeMarker.fetchedName || activeMarker.name}>
+                        {activeMarker.fetchedName || activeMarker.name}
+                      </h4>
+                      <p className="text-xs text-gray-600 truncate" title={activeMarker.address}>{activeMarker.address}</p>
+
+                      {activeMarker.rating !== undefined && activeMarker.rating !== null && (
                         <div className="flex items-center">
-                           <svg className="w-3.5 h-3.5 text-orange-600 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                           </svg>
-                           <span className="text-xs font-medium text-orange-700">
-                            {activeMarker.businessStatus.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, l => l.toUpperCase())}
-                           </span>
+                          {[...Array(5)].map((_, i) => (
+                            <StarIcon key={i} filled={i < Math.round(activeMarker.rating)} />
+                          ))}
+                          <span className="ml-1.5 text-xs text-gray-500">{activeMarker.rating.toFixed(1)}</span>
                         </div>
-                     )}
+                      )}
+                      
+                      {activeMarker.businessStatus === 'OPERATIONAL' && typeof activeMarker.isOpen === 'boolean' && (
+                        <div className="flex items-center">
+                          {activeMarker.isOpen ? (
+                            <svg className="w-3.5 h-3.5 text-green-600 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                            </svg>
+                          ) : (
+                            <svg className="w-3.5 h-3.5 text-red-600 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                            </svg>
+                          )}
+                          <span className={`text-xs font-medium ${activeMarker.isOpen ? 'text-green-700' : 'text-red-700'}`}>
+                            {activeMarker.isOpen ? 'Open now' : 'Currently closed'}
+                          </span>
+                        </div>
+                      )}
+                       {activeMarker.businessStatus && activeMarker.businessStatus !== 'OPERATIONAL' && (
+                          <div className="flex items-center">
+                             <svg className="w-3.5 h-3.5 text-orange-600 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                             </svg>
+                             <span className="text-xs font-medium text-orange-700">
+                              {activeMarker.businessStatus.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, l => l.toUpperCase())}
+                             </span>
+                          </div>
+                       )}
 
-                    <p className="text-xs text-gray-500 italic truncate" title={activeMarker.beers}>{activeMarker.beers}</p>
+                      <p className="text-xs text-gray-500 italic truncate" title={activeMarker.beers}>{activeMarker.beers}</p>
 
-                    {!activeMarker.isAvailable &&
-                      <div className="pt-1">
-                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
-                          <svg className="w-3.5 h-3.5 mr-1 text-orange-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 6a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 6zm0 9a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
-                          </svg>
-                          Currently Sold Out
-                        </span>
-                      </div>}
-
-                    <div className="flex justify-between items-center text-xs border-t border-gray-200 pt-2.5 -mt-px">
-                      <div className="flex-1">
-                        {activeMarker.website && (
-                          <a href={activeMarker.website} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-500 hover:underline transition-colors">
-                            Website
+                      <div className="flex justify-between items-center text-xs border-t border-gray-200 pt-2.5 -mt-px">
+                        <div className="flex-1">
+                          {activeMarker.website && (
+                            <a href={activeMarker.website} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-500 hover:underline transition-colors">
+                              Website
+                            </a>
+                          )}
+                        </div>
+                        <div className="flex-1 text-right">
+                          <a
+                            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(activeMarker.address)}&query_place_id=${activeMarker.placeId || ''}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:text-blue-500 hover:underline transition-colors"
+                          >
+                            View on Maps
                           </a>
-                        )}
-                      </div>
-                      <div className="flex-1 text-right">
-                        <a
-                          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(activeMarker.address)}&query_place_id=${activeMarker.placeId || ''}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-600 hover:text-blue-500 hover:underline transition-colors"
-                        >
-                          View on Maps
-                        </a>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </InfoWindowF>
-            )}
-          </MarkerF>
-        ))}
+                </InfoWindowF>
+              )}
+            </MarkerF>
+          );
+        })}
       </GoogleMap>
     </>
   );

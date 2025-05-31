@@ -13,26 +13,24 @@ const HERO_IMAGES = [
     imageUrl: '/images/hoodies_front.webp',
     alt: 'Saltfields Brewing Heritage',
     categoryTitle: 'TEAM HOODIES',
-    linkTo: '/shop/category/Hoodies' // Link to hoodie category
+    linkTo: '/shop/category/Hoodies'
   },
   {
-    id: 'hero-2', 
-    imageUrl: '/images/placeholder.svg',
+    id: 'hero-2',
+    imageUrl: '/images/t-shirts_front.webp',
     alt: 'Brewing Process',
-    title: 'Artisanal Process',
-    subtitle: 'From Grain to Glass',
-    categoryTitle: 'Team T-Shirt',
-    linkTo: '/shop/category/T-Shirts' // Link to t-shirt category
+    categoryTitle: 'TEAM TEE\'s',
+    linkTo: '/shop/category/T-Shirts'
   },
-  {
-    id: 'hero-3',
-    imageUrl: '/images/placeholder.svg',
-    alt: 'Saltfields Experience',
-    title: 'More Than Beer',
-    subtitle: 'A Lifestyle Brand',
-    categoryTitle: 'All Products',
-    linkTo: '/shop' // Link to main shop page
-  }
+  // {
+  //   id: 'hero-3',
+  //   imageUrl: '/images/placeholder.svg',
+  //   alt: 'Saltfields Experience',
+  //   title: 'More Than Beer',
+  //   subtitle: 'A Lifestyle Brand',
+  //   categoryTitle: 'All Products',
+  //   linkTo: '/shop' // Link to main shop page
+  // }
 ];
 
 // Component for large promotional images
@@ -46,13 +44,13 @@ const HeroImageCard = ({ heroImage }) => {
   }
 
   return (
-    <div 
+    <div
       className="col-span-2 relative overflow-hidden pb-8 sm:py-32"
       // Added min-h for mobile to ensure it occupies space
       // For `grid-auto-rows: auto`, this might be critical if content height is minimal.
-      style={{ gridRow: 'span 2', minHeight: '300px' }} 
+      style={{ gridRow: 'span 2', minHeight: '300px' }}
     >
-      <Link 
+      <Link
         href={heroImage.linkTo}
         className="block relative h-full cursor-pointer group"
       >
@@ -65,7 +63,7 @@ const HeroImageCard = ({ heroImage }) => {
                 alt={heroImage.alt}
                 fill
                 className="object-cover"
-                sizes="(max-width: 767px) 100vw, (max-width: 1023px) 66vw, 50vw" 
+                sizes="(max-width: 767px) 100vw, (max-width: 1023px) 66vw, 50vw"
                 quality={90}
                 onError={(e) => {
                   console.error(`Error loading hero image: ${heroImage.imageUrl}`, e);
@@ -76,7 +74,7 @@ const HeroImageCard = ({ heroImage }) => {
               </div>
             </div>
           </div>
-          
+
           {/* Title section underneath with black line */}
           <div className="px-2 sm:px-3 pb-2 sm:pb-3 flex-shrink-0">
             <div className="border-t border-black pt-3">
@@ -129,7 +127,7 @@ export default function ProductGrid({ products, showHeroes = true }) {
   const createMixedGridItems = () => {
     const gridItems = [];
     let heroIndex = 0;
-    
+
     products.forEach((product, index) => {
       gridItems.push({
         type: 'product',
@@ -156,7 +154,7 @@ export default function ProductGrid({ products, showHeroes = true }) {
         }
       }
     });
-    
+
     return gridItems;
   };
 
@@ -167,25 +165,25 @@ export default function ProductGrid({ products, showHeroes = true }) {
       {gridItems.map((item) => {
         if (item.type === 'hero') {
           return (
-            <HeroImageCard 
+            <HeroImageCard
               key={item.key}
               heroImage={item.data}
             />
           );
         }
-        
+
         const product = item.data;
         const colors = product.colors || [];
         const isPriorityProduct = product.originalProductIndex < 2;
 
         return (
           // Outermost div for each product item - ensure it fills grid cell height
-          <div key={item.key} className="flex flex-col w-full h-full min-h-0"> 
-            
+          <div key={item.key} className="flex flex-col w-full h-full min-h-0">
+
             {/* Mobile view */}
             <div className="w-full block sm:hidden flex flex-col h-full">
-              <Link 
-                href={`/shop/${product.slug}`} 
+              <Link
+                href={`/shop/${product.slug}`}
                 className="block overflow-hidden w-full rounded-md flex-1"
                 onMouseEnter={() => setHoveredProduct(product.id)}
                 onMouseLeave={() => setHoveredProduct(null)}
@@ -206,7 +204,7 @@ export default function ProductGrid({ products, showHeroes = true }) {
               <div className="flex flex-col flex-shrink-0 mt-2 h-20">
                 <div className="flex justify-between items-baseline w-full h-12">
                   <div className="flex-1 pr-2">
-                    <h3 className="text-xs uppercase tracking-wide font-medium leading-tight line-clamp-2">{product.title}</h3> 
+                    <h3 className="text-xs uppercase tracking-wide font-medium leading-tight line-clamp-2">{product.title}</h3>
                   </div>
                   <div className="flex-shrink-0">
                     <span className="text-xs font-medium">${typeof product.price === 'number' ? product.price.toFixed(0) : product.price}</span>
@@ -214,26 +212,26 @@ export default function ProductGrid({ products, showHeroes = true }) {
                 </div>
                 <div className="flex space-x-1.5 mt-1.5 w-full h-6 items-center">
                   {colors.length > 0 && colors.slice(0, 4).map((color, colorIndex) => (
-                    <ColorSwatch 
+                    <ColorSwatch
                       key={colorIndex}
-                      color={typeof color === 'string' ? color : color.value || 'black'} 
+                      color={typeof color === 'string' ? color : color.value || 'black'}
                       isSelected={false}
-                      onClick={() => {}} 
+                      onClick={() => { }}
                     />
                   ))}
                 </div>
               </div>
             </div>
-            
+
             {/* Medium screen view */}
             <div className="hidden sm:block lg:hidden w-full flex flex-col h-full">
-              <Link 
-                href={`/shop/${product.slug}`} 
+              <Link
+                href={`/shop/${product.slug}`}
                 className="block flex-1"
                 onMouseEnter={() => setHoveredProduct(product.id)}
                 onMouseLeave={() => setHoveredProduct(null)}
               >
-                <div 
+                <div
                   className="relative w-full mx-auto aspect-[5/6] overflow-hidden rounded-md"
                   style={{ maxWidth: `${productImageMaxWidth}px` }}
                 >
@@ -241,10 +239,9 @@ export default function ProductGrid({ products, showHeroes = true }) {
                     src={product.frontImage || '/images/placeholder.jpg'}
                     alt={product.title}
                     fill
-                    className={`object-contain transition-opacity duration-500 ${
-                      hoveredProduct === product.id && product.backImage ? 'opacity-0' : 'opacity-100'
-                    }`}
-                    sizes="(max-width: 1023px) 33vw, 25vw" 
+                    className={`object-contain transition-opacity duration-500 ${hoveredProduct === product.id && product.backImage ? 'opacity-0' : 'opacity-100'
+                      }`}
+                    sizes="(max-width: 1023px) 33vw, 25vw"
                     quality={90}
                     priority={isPriorityProduct}
                   />
@@ -253,9 +250,8 @@ export default function ProductGrid({ products, showHeroes = true }) {
                       src={product.backImage}
                       alt={`${product.title} - alternate view`}
                       fill
-                      className={`object-contain absolute top-0 left-0 transition-opacity duration-500 ${
-                        hoveredProduct === product.id ? 'opacity-100' : 'opacity-0'
-                      }`}
+                      className={`object-contain absolute top-0 left-0 transition-opacity duration-500 ${hoveredProduct === product.id ? 'opacity-100' : 'opacity-0'
+                        }`}
                       sizes="(max-width: 1023px) 33vw, 25vw"
                       quality={90}
                     />
@@ -263,7 +259,7 @@ export default function ProductGrid({ products, showHeroes = true }) {
                 </div>
               </Link>
               {/* Product Info section - consistent height container */}
-              <div 
+              <div
                 className="flex flex-col flex-shrink-0 mt-2 mx-auto h-20"
                 style={{ maxWidth: `${productImageMaxWidth}px` }}
               >
@@ -277,26 +273,26 @@ export default function ProductGrid({ products, showHeroes = true }) {
                 </div>
                 <div className="flex space-x-1.5 mt-1.5 w-full h-6 items-center">
                   {colors.length > 0 && colors.map((color, colorIndex) => (
-                    <ColorSwatch 
+                    <ColorSwatch
                       key={colorIndex}
-                      color={typeof color === 'string' ? color : color.value || 'black'} 
+                      color={typeof color === 'string' ? color : color.value || 'black'}
                       isSelected={false}
-                      onClick={() => {}} 
+                      onClick={() => { }}
                     />
                   ))}
                 </div>
               </div>
             </div>
-            
+
             {/* Desktop view */}
             <div className="hidden lg:block w-full flex flex-col h-full">
-              <Link 
-                href={`/shop/${product.slug}`} 
+              <Link
+                href={`/shop/${product.slug}`}
                 className="block flex-1"
                 onMouseEnter={() => setHoveredProduct(product.id)}
                 onMouseLeave={() => setHoveredProduct(null)}
               >
-                <div 
+                <div
                   className="relative w-full mx-auto aspect-[5/6] overflow-hidden rounded-md"
                   style={{ maxWidth: `${productImageMaxWidth}px` }}
                 >
@@ -304,10 +300,9 @@ export default function ProductGrid({ products, showHeroes = true }) {
                     src={product.frontImage || '/images/placeholder.jpg'}
                     alt={product.title}
                     fill
-                    className={`object-contain transition-opacity duration-500 ${
-                      hoveredProduct === product.id && product.backImage ? 'opacity-0' : 'opacity-100'
-                    }`}
-                    sizes={`${productImageMaxWidth}px`} 
+                    className={`object-contain transition-opacity duration-500 ${hoveredProduct === product.id && product.backImage ? 'opacity-0' : 'opacity-100'
+                      }`}
+                    sizes={`${productImageMaxWidth}px`}
                     quality={90}
                     priority={isPriorityProduct}
                   />
@@ -316,9 +311,8 @@ export default function ProductGrid({ products, showHeroes = true }) {
                       src={product.backImage}
                       alt={`${product.title} - alternate view`}
                       fill
-                      className={`object-contain absolute top-0 left-0 transition-opacity duration-500 ${
-                        hoveredProduct === product.id ? 'opacity-100' : 'opacity-0'
-                      }`}
+                      className={`object-contain absolute top-0 left-0 transition-opacity duration-500 ${hoveredProduct === product.id ? 'opacity-100' : 'opacity-0'
+                        }`}
                       sizes={`${productImageMaxWidth}px`}
                       quality={90}
                     />
@@ -326,7 +320,7 @@ export default function ProductGrid({ products, showHeroes = true }) {
                 </div>
               </Link>
               {/* Product Info section - consistent height container */}
-              <div 
+              <div
                 className="flex flex-col flex-shrink-0 mt-2 mx-auto h-20"
                 style={{ maxWidth: `${productImageMaxWidth}px` }}
               >
@@ -340,11 +334,11 @@ export default function ProductGrid({ products, showHeroes = true }) {
                 </div>
                 <div className="flex space-x-1.5 mt-1.5 w-full h-6 items-center">
                   {colors.length > 0 && colors.map((color, colorIndex) => (
-                    <ColorSwatch 
+                    <ColorSwatch
                       key={colorIndex}
-                      color={typeof color === 'string' ? color : color.value || 'black'} 
+                      color={typeof color === 'string' ? color : color.value || 'black'}
                       isSelected={false}
-                      onClick={() => {}} 
+                      onClick={() => { }}
                     />
                   ))}
                 </div>

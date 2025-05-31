@@ -61,7 +61,7 @@ export default function HeroSection() {
                             transform: `translateY(${scrollPosition * 0.15}px)`,
                         }}
                     >
-                        <source src="/videos/30sec_11mb_1080p.mp4" type="video/mp4" />
+                        <source src="/videos/Saltfields_Brewing_Video_30sec_ver.mp4" type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>
                     
