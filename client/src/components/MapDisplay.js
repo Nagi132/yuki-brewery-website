@@ -1,14 +1,10 @@
 "use client";
 
 import React, { useCallback, useState, useEffect } from 'react';
+import Image from 'next/image';
 import { GoogleMap, useLoadScript, MarkerF, InfoWindowF } from '@react-google-maps/api';
 import { loadLocationData } from '@/utils/locationDataProcessor';
-// Import high-quality map pin icons from react-icons
-import { IoLocationSharp, IoLocation, IoPin } from 'react-icons/io5';
-import { MdLocationPin, MdPlace, MdPinDrop } from 'react-icons/md';
-import { FaMapMarkerAlt, FaMapMarker, FaMapPin } from 'react-icons/fa';
-import { HiLocationMarker } from 'react-icons/hi';
-import { TbMapPin, TbMapPinFilled } from 'react-icons/tb';
+
 
 const LIBRARIES = ['marker', 'places'];
 
@@ -516,24 +512,7 @@ const StarIcon = ({ filled, className = "w-3.5 h-3.5" }) => (
   </svg>
 );
 
-// Create SVG data URL from React icon components
-const createSVGMarkerIcon = (IconComponent, color = '#4F46E5', size = 32) => {
-  // Create SVG string with the icon
-  const svgString = `
-    <svg width="${size}" height="${size}" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
-          <feDropShadow dx="1" dy="2" stdDeviation="2" flood-color="rgba(0,0,0,0.3)"/>
-        </filter>
-      </defs>
-      <g filter="url(#shadow)">
-        ${IconComponent}
-      </g>
-    </svg>
-  `;
-
-  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svgString)}`;
-};
+// High-quality SVG marker icons with brewery style focus
 
 // Define multiple marker icon options
 const MARKER_ICONS = {
@@ -559,43 +538,42 @@ const MARKER_ICONS = {
   }
 };
 
-// Create the marker icon with the selected style
-const createMarkerIcon = (style = 'classic', size = 32, isActive = false) => {
+// Create smooth animated marker icons using size-based scaling for Google Maps
+const createMarkerIcon = (style = 'classic', baseSize = 32, state = 'default') => {
   const iconData = MARKER_ICONS[style];
-  const scale = isActive ? 1.2 : 1;
-  const opacity = isActive ? 0.9 : 1;
+  let fillColor = iconData.color;
+  let actualSize = baseSize;
+  
+  // Calculate actual sizes for smooth scaling effect
+  if (state === 'active') {
+    fillColor = '#4F46E5'; // Blue for active
+    actualSize = baseSize; // Keep same size, just change color
+  } else if (state === 'hover') {
+    actualSize = Math.round(baseSize * 1.1); // 10% larger for hover
+  } else if (state === 'click') {
+    actualSize = Math.round(baseSize * 1.25); // 25% larger for click
+  }
+
+  // Replace color in SVG with current state color
+  const styledSvg = iconData.svg.replace(/fill="[^"]*"/, `fill="${fillColor}"`);
 
   const svgString = `
-    <svg width="${size}" height="${size}" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <svg width="${actualSize}" height="${actualSize}" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <style>
-          .pin-static {
-            transform: scale(${scale});
-            opacity: ${opacity};
-            transform-origin: center bottom;
-            transition: transform 0.2s ease-out, opacity 0.2s ease-out;
-          }
-          .pin-click {
-            animation: clickBounce 0.3s ease-out;
-            transform-origin: center bottom;
-          }
-          @keyframes clickBounce {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.3); }
-            100% { transform: scale(1.1); }
-          }
-        </style>
+        <filter id="shadow-${state}" x="-50%" y="-50%" width="200%" height="200%">
+          <feDropShadow dx="0" dy="${state === 'hover' ? '3' : '2'}" stdDeviation="${state === 'hover' ? '4' : '3'}" flood-color="rgba(0,0,0,0.3)" flood-opacity="${state === 'hover' ? '0.6' : '0.5'}"/>
+        </filter>
       </defs>
-      <g class="pin-static">
-        ${iconData.svg}
+      <g filter="url(#shadow-${state})">
+        ${styledSvg}
       </g>
     </svg>
   `;
 
   return {
     url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svgString)}`,
-    scaledSize: typeof window !== 'undefined' && window.google ? new window.google.maps.Size(size, size) : undefined,
-    anchor: typeof window !== 'undefined' && window.google ? new window.google.maps.Point(size / 2, size) : undefined,
+    scaledSize: typeof window !== 'undefined' && window.google ? new window.google.maps.Size(actualSize, actualSize) : undefined,
+    anchor: typeof window !== 'undefined' && window.google ? new window.google.maps.Point(actualSize / 2, actualSize) : undefined,
   };
 };
 
@@ -603,9 +581,11 @@ export default function MapDisplay() {
   const [activeMarker, setActiveMarker] = useState(null);
   const [mapInstance, setMapInstance] = useState(null);
   const [imageLoading, setImageLoading] = useState(true);
-  const [markerIcons, setMarkerIcons] = useState({ default: null, active: null });
+  const [markerIcons, setMarkerIcons] = useState({ default: null, hover: null, active: null, click: null });
   const [markersData, setMarkersData] = useState(initialMarkersData);
   const [clickedMarkerId, setClickedMarkerId] = useState(null);
+  const [hoveredMarkerId, setHoveredMarkerId] = useState(null);
+  const [transitioningMarkers, setTransitioningMarkers] = useState(new Set());
 
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: API_KEY,
@@ -630,8 +610,10 @@ export default function MapDisplay() {
       const iconSize = 36; // Back to original size
 
       setMarkerIcons({
-        default: createMarkerIcon(iconStyle, iconSize, false),
-        active: createMarkerIcon(iconStyle, iconSize, true)
+        default: createMarkerIcon(iconStyle, iconSize, 'default'),
+        hover: createMarkerIcon(iconStyle, iconSize, 'hover'),
+        active: createMarkerIcon(iconStyle, iconSize, 'active'),
+        click: createMarkerIcon(iconStyle, iconSize, 'click')
       });
     }
   }, [isLoaded]);
@@ -724,6 +706,44 @@ export default function MapDisplay() {
     setActiveMarker(null);
   };
 
+  // Smooth hover handlers with transitions
+  const handleMarkerHover = useCallback((markerId) => {
+    if (!transitioningMarkers.has(markerId)) {
+      setHoveredMarkerId(markerId);
+    }
+  }, [transitioningMarkers]);
+
+  const handleMarkerLeave = useCallback((markerId) => {
+    if (!transitioningMarkers.has(markerId)) {
+      setHoveredMarkerId(null);
+    }
+  }, [transitioningMarkers]);
+
+  // Enhanced click handler with smooth animations
+  const handleMarkerClickWithAnimation = useCallback(async (marker) => {
+    // Add to transitioning set to prevent hover conflicts
+    setTransitioningMarkers(prev => new Set(prev).add(marker.id));
+    
+    // Clear any existing hover state
+    setHoveredMarkerId(null);
+    
+    // Trigger click animation
+    setClickedMarkerId(marker.id);
+    
+    // Wait for click animation to complete
+    setTimeout(() => {
+      setClickedMarkerId(null);
+      setTransitioningMarkers(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(marker.id);
+        return newSet;
+      });
+    }, 200); // Shorter duration for smoother feel
+    
+    // Call the original click handler
+    handleMarkerClick(marker);
+  }, [handleMarkerClick]);
+
   const mapOptions = {
     disableDefaultUI: true,
     zoomControl: true,
@@ -772,20 +792,32 @@ export default function MapDisplay() {
         onLoad={handleMapLoad}
       >
         {markersData.map((marker, index) => {
+          // Determine which icon to use based on state priority: click > active > hover > default
+          let currentIcon = markerIcons.default;
+          if (clickedMarkerId === marker.id) {
+            currentIcon = markerIcons.click; // Click animation (scale 1.25)
+          } else if (activeMarker && activeMarker.id === marker.id) {
+            currentIcon = markerIcons.active; // Active state (blue color)
+          } else if (hoveredMarkerId === marker.id) {
+            currentIcon = markerIcons.hover; // Hover state (scale 1.1)
+          }
+
           return (
             <MarkerF
               key={`marker-${marker.id}-${marker.name}-${index}`}
               position={marker.position}
-              onClick={() => handleMarkerClick(marker)}
-              icon={
-                activeMarker && activeMarker.id === marker.id
-                  ? markerIcons.active
-                  : markerIcons.default
-              }
+              onClick={() => handleMarkerClickWithAnimation(marker)}
+              onMouseOver={() => handleMarkerHover(marker.id)}
+              onMouseOut={() => handleMarkerLeave(marker.id)}
+              icon={currentIcon}
               title={`${marker.name} (ID: ${marker.id})`}
               zIndex={
-                activeMarker && activeMarker.id === marker.id
+                clickedMarkerId === marker.id
+                  ? 3000 + index // Highest priority for click animation
+                  : activeMarker && activeMarker.id === marker.id
                   ? 2000 + index
+                  : hoveredMarkerId === marker.id
+                  ? 1500 + index
                   : 1000 + index
               }
             >
@@ -801,10 +833,12 @@ export default function MapDisplay() {
                         {imageLoading && (
                           <div className="absolute inset-0 bg-gray-300 animate-pulse rounded-t-lg"></div>
                         )}
-                        <img
+                        <Image
                           src={activeMarker.photoUrl}
                           alt={activeMarker.fetchedName || activeMarker.name}
-                          className={`w-full h-full object-cover rounded-t-lg transition-opacity duration-300 ${imageLoading ? 'opacity-0' : 'opacity-100'}`}
+                          fill
+                          sizes="280px"
+                          className={`object-cover rounded-t-lg transition-opacity duration-300 ${imageLoading ? 'opacity-0' : 'opacity-100'}`}
                           onLoad={() => setImageLoading(false)}
                           onError={() => {
                             console.warn(`Failed to load image: ${activeMarker.photoUrl}`);

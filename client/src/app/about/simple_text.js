@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import Image from 'next/image';
 
 export default function SimpleText() {
     return (
@@ -9,11 +10,13 @@ export default function SimpleText() {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
                     {/* Left side - Image */}
                     <div className="flex justify-center lg:justify-end">
-                        <div className="w-full max-w-md">
-                            <img
+                        <div className="w-full max-w-md relative aspect-square">
+                            <Image
                                 src="/images/Saltfields_About.webp"
                                 alt="Saltfields Brewing"
-                                className="w-full h-auto"
+                                fill
+                                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 448px"
+                                className="object-contain"
                             />
                         </div>
                     </div>

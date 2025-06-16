@@ -2,6 +2,7 @@
 // Product page that properly retrieves data from Shopify and handles async params
 
 import { Suspense } from 'react';
+import Link from 'next/link';
 import ProductPage from '@/components/ProductPage';
 import LoadingProductPage from './loading';
 import { getProductByHandle } from '@/lib/shopify';
@@ -170,9 +171,9 @@ export default async function ProductPageRoute({ params }) {
         <div className="text-center bg-white p-8 rounded-lg shadow-sm max-w-md mx-auto">
           <h1 className="text-2xl font-bold mb-4 text-zinc-900">Something went wrong</h1>
           <p className="mb-6 text-zinc-700">There was an error loading this product.</p>
-          <a href="/shop" className="inline-block bg-black text-white px-6 py-3 rounded">
+          <Link href="/shop" className="inline-block bg-black text-white px-6 py-3 rounded">
             Return to shop
-          </a>
+          </Link>
         </div>
       </div>
     );

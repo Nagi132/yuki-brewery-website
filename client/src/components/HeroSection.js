@@ -41,7 +41,7 @@ export default function HeroSection() {
         }, 8000);
 
         return () => clearTimeout(fallbackTimer);
-    }, []);
+    }, [isLoaded]);
 
     return (
         <div className="relative w-full h-[80vh] md:h-[80vh] lg:h-[100vh] overflow-hidden bg-off-white">

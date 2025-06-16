@@ -16,7 +16,7 @@ export default function ThankYouPage() {
       clearCart();
       setHasCleared(true);
     }
-  }, [hasCleared]); // Only depend on hasCleared, not clearCart
+  }, [hasCleared, clearCart]); // Include clearCart dependency
 
   return (
     <div className="min-h-screen bg-off-white py-16 px-4">
