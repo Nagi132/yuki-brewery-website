@@ -129,10 +129,10 @@ export default function Navbar() {
             <NavLink href="/find-us">
               FIND US
             </NavLink>
-            {/* CARRY SALTFIELDS link */}
-            <NavLink href="/carry">
+            {/* CARRY SALTFIELDS link - TEMPORARILY DISABLED */}
+            {/* <NavLink href="/carry">
               CARRY SALTFIELDS
-            </NavLink>
+            </NavLink> */}
 
             {/* Cart link */}
             <NavLink href="/cart">
@@ -179,7 +179,8 @@ export default function Navbar() {
               <MobileNavLink href="/events">EVENTS</MobileNavLink>
               <MobileNavLink href="/shop">SHOP</MobileNavLink>
               <MobileNavLink href="/find-us">FIND US</MobileNavLink>
-              <MobileNavLink href="/carry">CARRY SALTFIELDS</MobileNavLink>
+              {/* TEMPORARILY DISABLED */}
+              {/* <MobileNavLink href="/carry">CARRY SALTFIELDS</MobileNavLink> */}
             </div>
 
             {/* Footer area */}
