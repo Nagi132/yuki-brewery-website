@@ -176,7 +176,7 @@ function formatCart(shopifyCart) {
     const returnUrl = `${appUrl}/thank-you`;
     checkoutUrl = `${checkoutUrl}${separator}return_to=${encodeURIComponent(returnUrl)}`;
     
-    console.log('Checkout URL with redirect:', checkoutUrl);
+    // Checkout URL configured with redirect
   }
   
   return {

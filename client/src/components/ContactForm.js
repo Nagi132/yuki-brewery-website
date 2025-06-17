@@ -138,7 +138,7 @@ export default function ContactForm({
                 publicKey
             );
 
-            console.log('Email sent successfully:', result.text);
+            // Email sent successfully
 
             // Remove the recaptcha input we added
             formElement.removeChild(recaptchaInput);

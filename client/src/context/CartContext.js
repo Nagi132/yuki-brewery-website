@@ -63,7 +63,7 @@ export function CartProvider({ children }) {
       }
       
       const data = await response.json();
-      console.log('Shopify cart created successfully:', data.cart);
+      // Shopify cart created successfully
       return data.cart;
     } catch (err) {
       console.error('Error creating Shopify cart:', err);
@@ -118,10 +118,10 @@ export function CartProvider({ children }) {
         if (shopifyCart) {
           updatedCart.id = shopifyCart.id;
           updatedCart.checkoutUrl = shopifyCart.checkoutUrl;
-          console.log('Saved checkout URL:', shopifyCart.checkoutUrl);
+          // Saved checkout URL
         }
       } catch (shopifyErr) {
-        console.warn('Using local cart only:', shopifyErr);
+        // Using local cart only - Shopify API unavailable
       }
       
       // Update cart state
@@ -216,7 +216,7 @@ export function CartProvider({ children }) {
       
       // Check if we already have a checkout URL
       if (cart.checkoutUrl) {
-        console.log('Using existing checkout URL:', cart.checkoutUrl);
+        // Using existing checkout URL
         window.location.href = cart.checkoutUrl;
         return;
       }
@@ -225,7 +225,7 @@ export function CartProvider({ children }) {
       const shopifyCart = await createShopifyCart();
       
       if (shopifyCart && shopifyCart.checkoutUrl) {
-        console.log('Redirecting to checkout URL:', shopifyCart.checkoutUrl);
+        // Redirecting to checkout URL
         
         // Save the checkout URL to our cart
         const updatedCart = { ...cart, checkoutUrl: shopifyCart.checkoutUrl };

@@ -25,7 +25,7 @@ const shopifyClient = new GraphQLClient(
 // Fetch all products for the shop page with pagination support
 export async function getAllProducts() {
   if (!storeDomain || !accessToken) {
-    console.error('Shopify API credentials not configured');
+    // Shopify API credentials not configured - returning empty array
     return []; // Return empty array if not configured
   }
 
@@ -74,7 +74,7 @@ export async function getAllProducts() {
       
       // Check if data has the expected structure
       if (!data?.products?.edges) {
-        console.error('Unexpected Shopify API response format:', data);
+        console.error('Unexpected Shopify API response format');
         break;
       }
 
@@ -104,12 +104,12 @@ export async function getAllProducts() {
 
       // Safety check to prevent infinite loops
       if (allProducts.length > 1000) {
-        console.warn('Fetched over 1000 products, stopping pagination to prevent excessive API calls');
+        // Stopping pagination after 1000 products to prevent excessive API calls
         break;
       }
     }
 
-    console.log(`Successfully fetched ${allProducts.length} products from Shopify`);
+    // Successfully fetched products from Shopify
     return allProducts;
 
   } catch (error) {
@@ -121,12 +121,12 @@ export async function getAllProducts() {
 // Fetch a single product by handle (slug) with all variant details
 export async function getProductByHandle(handle) {
   if (!handle) {
-    console.error('No handle provided to getProductByHandle');
+    // No handle provided to getProductByHandle
     return null;
   }
 
   if (!storeDomain || !accessToken) {
-    console.error('Shopify API credentials not configured');
+    // Shopify API credentials not configured
     return null;
   }
 
@@ -189,7 +189,7 @@ export async function getProductByHandle(handle) {
     const data = await shopifyClient.request(query);
     
     if (!data?.product) {
-      console.warn(`Product not found with handle: ${handle}`);
+      // Product not found with handle
       return null;
     }
     
@@ -245,7 +245,7 @@ export async function getProductByHandle(handle) {
       }))
     };
   } catch (error) {
-    console.error(`Error fetching product with handle ${handle}:`, error);
+    console.error('Error fetching product:', error);
     return null;
   }
 }

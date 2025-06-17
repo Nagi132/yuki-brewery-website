@@ -29,7 +29,7 @@ export default function NewsletterForm() {
       });
       
       const data = await response.json();
-      console.log('API Response:', response.status, data);
+      // API response received
       
       if (response.ok) {
         setStatus('success');

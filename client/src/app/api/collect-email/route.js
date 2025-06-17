@@ -58,7 +58,7 @@ export async function POST(request) {
     // Write to file
     fs.writeFileSync(filePath, JSON.stringify(subscribers, null, 2));
     
-    console.log(`New subscriber: ${email}`);
+    // New subscriber added
     
     return NextResponse.json({
       success: true,

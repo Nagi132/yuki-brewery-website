@@ -8,7 +8,7 @@ export async function POST(request) {
     try {
       const body = await request.json();
       email = body.email;
-      console.log("Received email for subscription:", email);
+      // Email received for subscription
     } catch (parseError) {
       console.error('Error parsing request body:', parseError);
       return NextResponse.json(
@@ -28,8 +28,7 @@ export async function POST(request) {
     const shopifyDomain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN;
     const adminAccessToken = process.env.SHOPIFY_ADMIN_API_ACCESS_TOKEN;
     
-    console.log('Shopify Domain:', shopifyDomain);
-    console.log('Admin API Token available:', !!adminAccessToken);
+    // Checking Shopify credentials
     
     if (!shopifyDomain || !adminAccessToken) {
       console.error('Missing Shopify credentials');
@@ -41,7 +40,7 @@ export async function POST(request) {
 
     // First, check if the customer already exists
     try {
-      console.log(`Searching for existing customer with email: ${email}`);
+      // Searching for existing customer
       const searchResponse = await fetch(
         `https://${shopifyDomain}/admin/api/2023-07/customers/search.json?query=email:${encodeURIComponent(email)}`,
         {
@@ -52,12 +51,12 @@ export async function POST(request) {
       );
       
       const searchData = await searchResponse.json();
-      console.log('Search response:', JSON.stringify(searchData));
+      // Customer search completed
       
       if (searchData.customers && searchData.customers.length > 0) {
         // Customer exists, update their marketing preferences
         const customerId = searchData.customers[0].id;
-        console.log(`Customer exists with ID: ${customerId}, updating marketing preferences`);
+        // Customer exists, updating marketing preferences
         
         const updateResponse = await fetch(
           `https://${shopifyDomain}/admin/api/2023-07/customers/${customerId}.json`,
@@ -83,7 +82,7 @@ export async function POST(request) {
         );
         
         const updateData = await updateResponse.json();
-        console.log('Update response:', JSON.stringify(updateData));
+        // Customer marketing preferences updated
         
         return NextResponse.json({
           success: true, 
@@ -91,7 +90,7 @@ export async function POST(request) {
         });
       } else {
         // Customer doesn't exist, create a new one
-        console.log('Customer does not exist, creating new customer');
+        // Creating new customer
         
         const createResponse = await fetch(
           `https://${shopifyDomain}/admin/api/2023-07/customers.json`,
@@ -117,7 +116,7 @@ export async function POST(request) {
         );
         
         const createData = await createResponse.json();
-        console.log('Create response:', JSON.stringify(createData));
+        // Customer creation completed
         
         if (createResponse.ok) {
           return NextResponse.json({

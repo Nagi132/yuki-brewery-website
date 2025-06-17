@@ -41,13 +41,6 @@ export const metadata = {
       'max-snippet': -1,
     },
   },
-  // Twitter metadata removed as Saltfields Brewing uses Instagram primarily
-  // twitter: {
-  //   card: 'summary_large_image',
-  //   title: 'Saltfields Brewing - Authentic Japanese Rice Lager & Merchandise',
-  //   description: 'Explore Saltfields Brewing for authentic Japanese Rice Lager and stylish brewery merchandise.',
-  //   images: ['/twitter-image.jpg'], 
-  // },
   icons: {
     icon: [
       { url: '/favicon_io/favicon.ico', type: 'image/x-icon' },
@@ -55,24 +48,14 @@ export const metadata = {
       { url: '/favicon_io/favicon-32x32.png', type: 'image/png', sizes: '32x32' },
     ],
     apple: [
-      { url: '/favicon_io/apple-touch-icon.png', type: 'image/png' }, // Default Apple touch icon
-      // You can add more sizes if provided by favicon_io for apple, e.g.:
-      // { url: '/favicon_io/apple-touch-icon-180x180.png', type: 'image/png', sizes: '180x180' },
+      { url: '/favicon_io/apple-touch-icon.png', type: 'image/png' },
     ],
     other: [
       { rel: 'icon', url: '/favicon_io/android-chrome-192x192.png', type: 'image/png', sizes: '192x192' },
       { rel: 'icon', url: '/favicon_io/android-chrome-512x512.png', type: 'image/png', sizes: '512x512' },
-      { rel: 'manifest', url: '/favicon_io/site.webmanifest' }, 
+      { rel: 'manifest', url: '/favicon_io/site.webmanifest' },
     ],
   },
-  // Verification for Google Search Console, etc.
-  // verification: {
-  //   google: 'your-google-site-verification-code',
-  //   yandex: 'your-yandex-verification-code',
-  //   other: {
-  //     me: ['my-email@example.com', 'my-link-to-profile.com/me'],
-  //   },
-  // }
 };
 
 const organizationSchema = {
@@ -80,27 +63,11 @@ const organizationSchema = {
   '@type': 'Brewery', // Or 'Organization' if preferred, Brewery fits well
   name: 'Saltfields Brewing',
   url: 'https://saltfieldsbrewing.com',
-  logo: 'https://saltfieldsbrewing.com/images/saltfields-logo.png', // IMPORTANT: Replace with your actual logo URL
+  logo: 'https://saltfieldsbrewing.com/images/saltfields-logo.png',
   description: 'Saltfields Brewing specializes in authentic Japanese Rice Lager and offers a range of unique brewery-themed merchandise.',
   sameAs: [
     'https://www.instagram.com/saltfieldsbrewing/',
-    // Add other social media links here if you have them (e.g., Facebook, LinkedIn)
   ],
-  // If you had a physical address for the brewery (even if not public-facing for retail):
-  // "address": {
-  //   "@type": "PostalAddress",
-  //   "streetAddress": "123 Brewery Lane",
-  //   "addressLocality": "City",
-  //   "addressRegion": "StateAbbreviation",
-  //   "postalCode": "ZipCode",
-  //   "addressCountry": "US"
-  // },
-  // If you have a general contact phone number:
-  // "contactPoint": {
-  //   "@type": "ContactPoint",
-  //   "telephone": "+1-XXX-XXX-XXXX",
-  //   "contactType": "Customer Service" // or "Sales", "Technical Support" etc.
-  // }
 };
 
 export default function RootLayout({ children }) {
