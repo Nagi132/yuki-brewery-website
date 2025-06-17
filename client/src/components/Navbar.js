@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import { FaInstagram } from 'react-icons/fa';
+import CartIcon from './CartIcon';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -94,6 +95,7 @@ export default function Navbar() {
             <NavLink href="/beer">BEER</NavLink>
             <NavLink href="/events">EVENTS</NavLink>
             <NavLink href="/shop">SHOP</NavLink>
+            <NavLink href="/find-us">FIND US</NavLink>
           </div>
 
           {/* Mobile Menu Text Button */}
@@ -126,27 +128,34 @@ export default function Navbar() {
           {/* Right Links - Desktop */}
           <div className="hidden md:flex items-center h-full -mr-4">
             {/* CARRY SALTFIELDS link */}
-            <NavLink href="/find-us">
-              FIND US
-            </NavLink>
+
             {/* CARRY SALTFIELDS link - TEMPORARILY DISABLED */}
             {/* <NavLink href="/carry">
               CARRY SALTFIELDS
             </NavLink> */}
 
             {/* Cart link */}
-            <NavLink href="/cart">
+            {/* <NavLink href="/cart">
               CART ({cartCount})
-            </NavLink>
+            </NavLink> */}
+            <Link href="/cart" className="group relative h-full flex items-center px-4 xl:px-6">
+              <span className="absolute inset-0 bg-black opacity-0 transition-opacity duration-200 group-hover:opacity-100"></span>
+              <div className="relative z-10">
+                <CartIcon />
+              </div>
+            </Link>
           </div>
 
           {/* Mobile Cart Text */}
           <div className="md:hidden mr-1">
-            <Link
+            {/* <Link
               href="/cart"
               className="text-black tracking-wide"
             >
               <span>CART</span><span className="ml-1">({cartCount})</span>
+            </Link> */}
+            <Link href="/cart" className="text-black">
+              <CartIcon />
             </Link>
           </div>
         </div>
