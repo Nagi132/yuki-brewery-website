@@ -41,6 +41,12 @@ export default function PrivacyPolicy() {
             We use cookies to provide you with a better experience. A cookie is a small file which is placed on your computer's hard drive. The cookie helps analyze web traffic or lets you know when you visit a particular site. Cookies allow web applications to respond to you as an individual.
           </p>
           
+          <p className="font-medium mt-10 mb-4">Third-Party Services:</p>
+          
+          <p>
+            This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy" className="text-blue-600 hover:underline">Privacy Policy</a> and <a href="https://policies.google.com/terms" className="text-blue-600 hover:underline">Terms of Service</a> apply.
+          </p>
+          
           <p>
             Our website may contain links to other websites of interest. However, once you have used these links to leave our site, you should note that we do not have any control over that other website. Therefore, we cannot be responsible for the protection and privacy of any information which you provide whilst visiting such sites.
           </p>

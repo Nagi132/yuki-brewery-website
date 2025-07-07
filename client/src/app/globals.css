@@ -101,3 +101,8 @@ h1 {
 .break-words {
   overflow-wrap: break-word;
 }
+
+/* Hide reCAPTCHA badge */
+.grecaptcha-badge {
+  visibility: hidden;
+}
