@@ -74,6 +74,11 @@ export default function Footer() {
                   EVENTS
                 </Link>
               </div>
+              <div>
+                <Link href="/find-us" className="hover:text-black transition-colors">
+                  FIND US
+                </Link>
+              </div>
               {/* <div>
                 <Link href="/carry" className="hover:text-black transition-colors">
                   CARRY SALTFIELDS
@@ -107,7 +112,7 @@ export default function Footer() {
             <div>
               <p className="font-medium tracking-wider mb-2">NEWSLETTER</p>
               <p className="text-sm mb-4 text-gray-700">Stay updated with new releases and events.</p>
-              
+
               {/* Replace the old form with our new component */}
               <NewsletterForm />
             </div>
