@@ -74,11 +74,11 @@ export default function Footer() {
                   EVENTS
                 </Link>
               </div>
-              <div>
+              {/* <div>
                 <Link href="/carry" className="hover:text-black transition-colors">
                   CARRY SALTFIELDS
                 </Link>
-              </div>
+              </div> */}
             </div>
 
             {/* Social Links */}
