@@ -8,7 +8,7 @@ export default function TermsOfService() {
   return (
     <main className="min-h-screen bg-white py-16 px-4">
       <div className="container mx-auto max-w-3xl">
-        <h1 className="text-4xl font-medium text-center mb-16">Terms of Service</h1>
+        <h1 className="text-3xl font-medium text-center mb-16">Terms of Service</h1>
         
         <div className="space-y-6">
           <p>
@@ -83,7 +83,7 @@ export default function TermsOfService() {
           </p>
 
           <p className="mt-10">
-            Please contact us with any questions or concerns at yumi@saltfields.com.
+            Please contact us with any questions or concerns at info@saltfieldsbrewing.com.
           </p>
         </div>
         

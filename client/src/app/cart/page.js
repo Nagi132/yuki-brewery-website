@@ -50,7 +50,7 @@ export default function CartPage() {
         <div className="container mx-auto max-w-4xl">
           <h1 className="text-3xl font-normal mb-8 text-center">Your Cart</h1>
           <div className="bg-off-white p-8 shadow-sm text-center">
-            <p className="text-xl mb-6">Your cart is empty</p>
+            <p className="text-lg mb-6">Your cart is empty</p>
             <Link href="/shop" className="inline-block bg-black text-white px-6 py-3">
               Continue Shopping
             </Link>
@@ -84,7 +84,7 @@ export default function CartPage() {
               {cart.lines.map((item) => (
                 <div key={item.id} className="p-6 flex flex-col sm:flex-row gap-4">
                   {/* Product Image */}
-                  <div className="w-full sm:w-24 h-24 bg-gray-50 relative flex-shrink-0">
+                  <div className="w-full sm:w-[100px] h-20 relative flex-shrink-0 overflow-hidden">
                     {item.image ? (
                       <Image
                         src={item.image}

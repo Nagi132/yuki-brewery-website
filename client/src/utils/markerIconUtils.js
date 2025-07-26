@@ -2,11 +2,11 @@
 export const MARKER_ICONS = {
   classic: {
     svg: `<path fill="COLOR_PLACEHOLDER" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>`,
-    color: '#4F46E5' // Indigo
+    color: '#FFCC00' // Indigo
   },
   modern: {
     svg: `<path fill="COLOR_PLACEHOLDER" d="M12 2C8.14 2 5 5.14 5 9c0 7 7 13 7 13s7-6 7-13c0-3.86-3.14-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>`,
-    color: '#DC2626' // Red
+    color: '#FFCC00' // Red
   },
   elegant: {
     svg: `<path fill="COLOR_PLACEHOLDER" d="M12 2C8.14 2 5 5.14 5 9c0 7 7 13 7 13s7-6 7-13c0-3.86-3.14-7-7-7z"/><circle fill="white" cx="12" cy="9" r="2"/>`,
@@ -23,18 +23,20 @@ export const MARKER_ICONS = {
 };
 
 // Create smooth animated marker icons using size-based scaling for Google Maps
-export const createMarkerIcon = (style = 'classic', baseSize = 32, state = 'default') => {
+export const createMarkerIcon = (style = 'modern', baseSize = 32, state = 'default') => {
   const iconData = MARKER_ICONS[style];
   let fillColor = iconData.color;
   let actualSize = baseSize;
   
   // Calculate actual sizes for smooth scaling effect
   if (state === 'active') {
-    fillColor = '#4F46E5'; // Blue for active
+    fillColor = '#e6a429'; // Yellow for active (same as hover)
     actualSize = baseSize; // Keep same size, just change color
   } else if (state === 'hover') {
+    fillColor = '#e6a429'; // Yellow for hover
     actualSize = Math.round(baseSize * 1.1); // 10% larger for hover
   } else if (state === 'click') {
+    fillColor = '#e6a429'; // Yellow for click (maintain color during transition)
     actualSize = Math.round(baseSize * 1.25); // 25% larger for click
   }
 

@@ -90,7 +90,7 @@ export default function Navbar() {
       <div className="w-full px-4 md:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Left Links - Desktop */}
-          <div className="hidden md:flex items-center h-full space-x-0 -ml-4">
+          <div className="hidden md:flex items-center h-full space-x-0 ml-1 text-xs">
             <NavLink href="/about">ABOUT</NavLink>
             <NavLink href="/beer">BEER</NavLink>
             <NavLink href="/events">EVENTS</NavLink>

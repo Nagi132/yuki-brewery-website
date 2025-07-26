@@ -144,7 +144,7 @@ export default async function CategoryPage({ params }) {
         </div>
         
         {/* Category title */}
-        <h1 className="text-4xl font-normal mb-8">{decodedType}</h1>
+        <h1 className="text-3xl font-normal mb-8">{decodedType}</h1>
         
         {/* Products for this category */}
         <Suspense fallback={<LoadingProductGrid />}>

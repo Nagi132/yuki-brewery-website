@@ -542,7 +542,7 @@ export default function ProductPage({ initialProduct }) {
 
                 {expandShipping && (
                   <div className="mt-4 text-sm">
-                    <p>Free Domestic Shipping on orders over $150. A full refund or exchange is available within 14 days of purchase, but only if the item is defective or damaged. <Link href="/returns" className="hover:underline">Learn more</Link></p>
+                    <p>Free Domestic Shipping on orders over $150. A full refund or exchange is available within 7 days of purchase, but only if the item is defective or damaged. <Link href="/returns" className="hover:underline">Learn more</Link></p>
 
                     <div className="mt-4 space-y-4">
                       <div className="flex items-start">

@@ -29,7 +29,7 @@ export default function RiceLagerPage() {
   return (
     <main className="min-h-screen bg-off-white  md:pt-6">
       <div className="container mx-auto px-4 py-8 max-w-6xl">
-        <div className="bg-white p-8 shadow-sm rounded-lg">
+        <div className="bg-white p-8 shadow-sm">
           {/* Rice Lager Beer Section */}
           <div className="flex flex-col md:flex-row gap-1 mx-auto mt-8">
             {/* Beer Image with Custom Rotation */}
@@ -39,7 +39,7 @@ export default function RiceLagerPage() {
                 <div className="relative aspect-[3/4] w-full">
                   <button
                     onClick={() => rotateImage('next')}
-                    className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-white/70 rounded-full hover:bg-white transition-colors"
+                    className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-white/70 hover:bg-white transition-colors"
                     aria-label="Next image"
                   >
                     <svg fill="#000000" height="24px" width="24px" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 330.002 330.002">
@@ -70,7 +70,7 @@ export default function RiceLagerPage() {
                   {/* Right Arrow */}
                   <button
                     onClick={() => rotateImage('prev')}
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-white/70 rounded-full hover:bg-white transition-colors"
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-white/70 hover:bg-white transition-colors"
                     aria-label="Previous image"
                   >
                     <svg fill="#000000" height="24px" width="24px" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 330.002 330.002">
@@ -136,7 +136,7 @@ export default function RiceLagerPage() {
                     >
                       {/* Beer Title */}
                       <div className="mb-6">
-                        <h1 className="text-3xl font-normal tracking-wide mb-1">
+                        <h1 className="text-2xl font-normal tracking-wide mb-1">
                           <span className="text-base font-normal opacity-80">SALTFIELDS</span> RICE LAGER
                         </h1>
                         <div className="w-11/12 h-0.5 bg-black md:w-3/4"></div>
@@ -144,7 +144,7 @@ export default function RiceLagerPage() {
 
                       {/* Beer Specs */}
                       <div className="mb-8 space-y-1 text-sm">
-                        <p><span className="font-medium">"NODOGOSHI"</span> Supremely Dry and Delicious</p>
+                        <p><span className="font-bold">"NODOGOSHI"</span> Supremely Dry and Delicious</p>
                         <p>Brewed with Rice and Koji</p>
                         <p>1 Pint 4.7% ALC/VOL</p>
                       </div>
@@ -178,7 +178,7 @@ export default function RiceLagerPage() {
                     >
                       {/* Story Title */}
                       <div className="mb-6">
-                        <h1 className="text-3xl font-normal tracking-wide mb-1">
+                        <h1 className="text-2xl font-normal tracking-wide mb-1">
                           The Story Behind the Label
                         </h1>
                       </div>

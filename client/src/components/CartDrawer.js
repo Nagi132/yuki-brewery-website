@@ -170,7 +170,7 @@ export default function CartDrawer({ isOpen, onClose }) {
               <div className="space-y-4 mb-6">
                 {cart.lines.map((item) => (
                   <div key={item.id} className="flex border-b pb-4">
-                    <div className="w-20 h-20 flex-shrink-0 bg-gray-100 relative">
+                    <div className="w-20 h-16 flex-shrink-0 relative overflow-hidden">
                       {item.image ? (
                         <Image
                           src={item.image}

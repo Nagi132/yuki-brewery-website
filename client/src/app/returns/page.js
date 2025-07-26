@@ -8,7 +8,7 @@ export default function ReturnsPage() {
   return (
     <main className="min-h-screen bg-white py-16 px-4 mt-8">
       <div className="container mx-auto max-w-3xl">
-        <h1 className="text-4xl font-medium text-center mb-16">Returns Policy</h1>
+        <h1 className="text-3xl font-medium text-center mb-16">Returns Policy</h1>
         
         <div className="space-y-6">
           <p>
@@ -17,7 +17,7 @@ export default function ReturnsPage() {
 
           <p className="font-medium mt-10 mb-4">Return Eligibility</p>
           <p>
-            To be eligible for a return, your item must be defective or damaged upon arrival. Returns must be requested within 14 days of the purchase date. 
+            To be eligible for a return, your item must be defective or damaged upon arrival. Returns must be requested within 7 days of the purchase date. 
             Original packaging should be included when possible, and proof of purchase is required for all returns.
           </p>
 
@@ -33,7 +33,7 @@ export default function ReturnsPage() {
           </p>
           
           <p>
-            2. Contact Customer Service: Email our team at yumi@saltfields.com with your order number, description of the issue, 
+            2. Contact Customer Service: Email our team at info@saltfieldsbrewing.com with your order number, description of the issue, 
             photos of the damaged/defective item, and your contact information.
           </p>
           
@@ -75,7 +75,7 @@ export default function ReturnsPage() {
 
           <p className="font-medium mt-10 mb-4">Contact Us</p>
           <p>
-            If you have any questions about our returns policy, please contact us at yumi@saltfields.com.
+            If you have any questions about our returns policy, please contact us at info@saltfieldsbrewing.com.
           </p>
         </div>
         

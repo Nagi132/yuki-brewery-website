@@ -29,7 +29,7 @@ export default function ThankYouPage() {
             
             <h1 className="text-3xl font-bold mb-4">Thank You for Your Order!</h1>
             
-            <p className="text-lg text-gray-700 mb-6">
+            <p className="text-sm text-gray-700 mb-6">
               Your order has been successfully placed. A confirmation email will be sent shortly.
             </p>
           </div>
@@ -68,8 +68,8 @@ export default function ThankYouPage() {
             <div className="text-center text-sm text-gray-500 mt-6">
               <p>
                 If you have any questions about your order, please contact us at{' '}
-                <a href="mailto:yumi@saltfields.com" className="text-amber-500 hover:underline">
-                  yumi@saltfields.com
+                <a href="mailto:info@saltfieldsbrewing.com" className="text-amber-500 hover:underline">
+                  info@saltfieldsbrewing.com
                 </a>
               </p>
             </div>

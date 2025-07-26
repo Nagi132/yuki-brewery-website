@@ -32,8 +32,8 @@ export default async function EventsPage() {
     return (
       <main className="min-h-screen bg-off-white relative py-16 px-4 flex flex-col items-center">
         <div className="text-center mb-12 w-full max-w-6xl">
-          <h1 className="text-3xl font-normal tracking-wide text-zinc-900 mb-4">EVENTS</h1>
-          <p className="text-zinc-700 text-lg">
+          <h1 className="text-2xl font-normal tracking-wide mb-4">EVENTS</h1>
+          <p className="text-zinc-700 text-xs">
             No upcoming events at the moment. Sign up to our newsletter to stay up to date!
           </p>
         </div>
@@ -41,7 +41,7 @@ export default async function EventsPage() {
         {pastEvents && pastEvents.length > 0 && (
           <div className="w-full max-w-6xl pt-12 mt-12 border-t border-zinc-200">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-normal tracking-wide text-zinc-900">PAST EVENTS</h2>
+              <h1 className="text-2xl font-normal tracking-wide">PAST EVENTS</h1>
             </div>
             <EventCarousel3D events={pastEvents} />
           </div>
@@ -56,13 +56,13 @@ export default async function EventsPage() {
         <div className="container mx-auto max-w-6xl">
           {/* Header for Upcoming Event */}
           <div className="text-center mb-12 mt-8">
-            <h1 className="text-4xl font-normal tracking-wide text-zinc-900 mb-4">UPCOMING EVENT</h1>
+            <h1 className="text-3xl font-normal tracking-wide mb-4">UPCOMING EVENT</h1>
           </div>
 
           {/* Upcoming Event Section */}
           <div className="mb-16">
             <div className="flex flex-col items-center justify-center">
-              <div className="relative aspect-[3/4] w-full max-w-2xl overflow-hidden shadow-xl">
+              <div className="relative aspect-[5/4] w-full max-w-2xl overflow-hidden shadow-xl">
                 <Image
                   src={upcomingEvent.imageUrl}
                   alt={upcomingEvent.imageAlt}
@@ -113,7 +113,7 @@ export default async function EventsPage() {
           {pastEvents && pastEvents.length > 0 && (
             <div className="pt-16 border-t border-zinc-200">
               <div className="text-center mb-12">
-                <h1 className="text-3xl font-normal tracking-wide text-zinc-900">PAST EVENTS</h1>
+                <h1 className="text-2xl font-normal tracking-wide">PAST EVENTS</h1>
               </div>
               <EventCarousel3D events={pastEvents} />
             </div>

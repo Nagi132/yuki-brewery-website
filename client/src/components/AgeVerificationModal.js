@@ -61,9 +61,8 @@ export default function AgeVerificationModal() {
             
             <h2 className="text-2xl font-bold text-center mb-6">Age Verification</h2>
             
-            <p className="text-center mb-8">
-              You must be of legal drinking age to enter this site.
-              Are you 21 years of age or older?
+            <p className="text-center mb-8 text-sm">
+              Are you old enough to drink?
             </p>
             
             <div className="flex justify-center space-x-4">

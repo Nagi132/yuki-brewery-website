@@ -44,12 +44,12 @@ export default async function SingleEventPage({ params }) {
 
                 <div className="container mx-auto max-w-6xl">
                     <div className="text-center mb-12 mt-4">
-                        <h1 className="text-4xl font-normal tracking-wide text-zinc-900 mb-4">{event.title}</h1>
+                        <h1 className="text-3xl font-normal tracking-wide text-zinc-900 mb-4">{event.title}</h1>
                     </div>
 
                     {event.imageUrl && event.imageUrl !== '/images/placeholder.jpg' && (
                         <div className="flex flex-col items-center justify-center mb-16">
-                            <div className="relative aspect-[3/4] w-full max-w-2xl rounded-lg overflow-hidden shadow-xl">
+                            <div className="relative aspect-[4/5] w-full max-w-2xl overflow-hidden shadow-xl">
                                 <Image
                                     src={event.imageUrl}
                                     alt={event.imageAlt}

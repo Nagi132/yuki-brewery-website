@@ -52,8 +52,8 @@ export default function Footer() {
           {/* Right Column - Menu, Social, and Newsletter */}
           <div>
             {/* Menu Section */}
-            <p className="font-medium tracking-wider mb-3">MENU</p>
-            <div className="space-y-2 text-gray-700 mb-4">
+            <p className="font-medium tracking-wider mb-5 ">MENU</p>
+            <div className="space-y-4 text-gray-700 mb-4 text-xs">
               <div>
                 <Link href="/about" className="hover:text-black transition-colors">
                   ABOUT
@@ -98,13 +98,13 @@ export default function Footer() {
                 >
                   <FaInstagram size={20} />
                 </Link>
-                <Link
-                  href="mailto:yumi@saltfields.com"
+                {/* <Link
+                  href="mailto:info@saltfieldsbrewing.com"
                   className="text-gray-600 hover:text-black transition-colors"
                   aria-label="Email"
                 >
                   <FaEnvelope size={20} />
-                </Link>
+                </Link> */}
               </div>
             </div>
 

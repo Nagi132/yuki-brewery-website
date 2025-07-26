@@ -4,7 +4,6 @@ export const LIBRARIES = ['marker', 'places'];
 export const containerStyle = {
   width: '100%',
   height: '100%',
-  borderRadius: '0.5rem',
 };
 
 export const defaultCenter = {
@@ -15,6 +14,14 @@ export const defaultCenter = {
 export const mapOptions = {
   disableDefaultUI: true,
   zoomControl: true,
+  styles: [
+    {
+      "stylers": [
+        { "saturation": -100 },
+        { "lightness": 0 }
+      ]
+    }
+  ]
 };
 
 // Updated with all 38 restaurants from Google Places API extraction

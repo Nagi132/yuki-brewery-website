@@ -117,7 +117,7 @@ export default function ProductGrid({ products, showHeroes = true }) {
   if (!products || products.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-lg text-zinc-700">No products found.</p>
+        <p className="text-lg text-black">No products found.</p>
       </div>
     );
   }
@@ -181,7 +181,7 @@ export default function ProductGrid({ products, showHeroes = true }) {
           <div key={item.key} className="flex flex-col w-full h-full min-h-0">
 
             {/* Mobile view */}
-            <div className="w-full block sm:hidden flex flex-col h-full">
+            <div className="w-full flex flex-col h-full sm:hidden">
               <Link
                 href={`/shop/${product.slug}`}
                 className="block overflow-hidden w-full rounded-md flex-1"
@@ -202,13 +202,9 @@ export default function ProductGrid({ products, showHeroes = true }) {
               </Link>
               {/* Product Info section - consistent height container */}
               <div className="flex flex-col flex-shrink-0 mt-2 h-20">
-                <div className="flex justify-between items-baseline w-full h-12">
-                  <div className="flex-1 pr-2">
-                    <h3 className="text-xs uppercase tracking-wide font-medium leading-tight line-clamp-2">{product.title}</h3>
-                  </div>
-                  <div className="flex-shrink-0">
-                    <span className="text-xs font-medium">${typeof product.price === 'number' ? product.price.toFixed(0) : product.price}</span>
-                  </div>
+                <div className="w-full h-12">
+                  <h3 className="text-xs uppercase tracking-wide font-medium leading-tight line-clamp-2 mb-1">{product.title}</h3>
+                  <span className="text-xs font-medium text-black">${typeof product.price === 'number' ? product.price.toFixed(2) : product.price}</span>
                 </div>
                 <div className="flex space-x-1.5 mt-1.5 w-full h-6 items-center">
                   {colors.length > 0 && colors.slice(0, 4).map((color, colorIndex) => (
@@ -224,7 +220,7 @@ export default function ProductGrid({ products, showHeroes = true }) {
             </div>
 
             {/* Medium screen view */}
-            <div className="hidden sm:block lg:hidden w-full flex flex-col h-full">
+            <div className="hidden sm:flex lg:hidden w-full flex-col h-full">
               <Link
                 href={`/shop/${product.slug}`}
                 className="block flex-1"
@@ -260,16 +256,12 @@ export default function ProductGrid({ products, showHeroes = true }) {
               </Link>
               {/* Product Info section - consistent height container */}
               <div
-                className="flex flex-col flex-shrink-0 mt-2 mx-auto h-20"
+                className="flex flex-col flex-shrink-0 mt-2 h-20"
                 style={{ maxWidth: `${productImageMaxWidth}px` }}
               >
-                <div className="flex justify-between items-baseline w-full h-12">
-                  <div className="flex-1 pr-2">
-                    <h3 className="text-xs uppercase tracking-wide font-medium leading-tight line-clamp-2">{product.title}</h3>
-                  </div>
-                  <div className="flex-shrink-0">
-                    <span className="text-xs font-medium">${typeof product.price === 'number' ? product.price.toFixed(2) : product.price}</span>
-                  </div>
+                <div className="w-full h-12">
+                  <h3 className="text-xs uppercase tracking-wide font-medium leading-tight line-clamp-2 mb-1">{product.title}</h3>
+                  <span className="text-xs font-medium text-black">${typeof product.price === 'number' ? product.price.toFixed(2) : product.price}</span>
                 </div>
                 <div className="flex space-x-1.5 mt-1.5 w-full h-6 items-center">
                   {colors.length > 0 && colors.map((color, colorIndex) => (
@@ -285,7 +277,7 @@ export default function ProductGrid({ products, showHeroes = true }) {
             </div>
 
             {/* Desktop view */}
-            <div className="hidden lg:block w-full flex flex-col h-full">
+            <div className="hidden lg:flex w-full flex-col h-full">
               <Link
                 href={`/shop/${product.slug}`}
                 className="block flex-1"
@@ -321,16 +313,12 @@ export default function ProductGrid({ products, showHeroes = true }) {
               </Link>
               {/* Product Info section - consistent height container */}
               <div
-                className="flex flex-col flex-shrink-0 mt-2 mx-auto h-20"
+                className="flex flex-col flex-shrink-0 mt-2 h-20"
                 style={{ maxWidth: `${productImageMaxWidth}px` }}
               >
-                <div className="flex justify-between items-baseline w-full h-12">
-                  <div className="flex-1 pr-2">
-                    <h3 className="text-xs uppercase tracking-wide font-medium leading-tight line-clamp-2">{product.title}</h3>
-                  </div>
-                  <div className="flex-shrink-0">
-                    <span className="text-xs font-medium">${typeof product.price === 'number' ? product.price.toFixed(2) : product.price}</span>
-                  </div>
+                <div className="w-full h-12">
+                  <h3 className="text-xs uppercase tracking-wide font-medium leading-tight line-clamp-2">{product.title}</h3>
+                  <span className="text-xs font-medium text-black">${typeof product.price === 'number' ? product.price.toFixed(2) : product.price}</span>
                 </div>
                 <div className="flex space-x-1.5 mt-1.5 w-full h-6 items-center">
                   {colors.length > 0 && colors.map((color, colorIndex) => (
