@@ -56,7 +56,7 @@ export default async function EventsPage() {
         <div className="container mx-auto max-w-6xl">
           {/* Header for Upcoming Event */}
           <div className="text-center mb-12 mt-8">
-            <h1 className="text-3xl font-normal tracking-wide mb-4">UPCOMING EVENT</h1>
+            <h1 className="text-2xl font-normal tracking-wide mb-4">UPCOMING EVENT</h1>
           </div>
 
           {/* Upcoming Event Section */}

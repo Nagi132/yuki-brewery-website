@@ -65,6 +65,18 @@ export default function HeroSection() {
                         Your browser does not support the video tag.
                     </video>
                     
+                    {/* Watch Full Version Link */}
+                    <div className="absolute top-6 left-6 z-10">
+                        <a
+                            href="https://youtu.be/XbGs_qK2PQA?si=b-hz8uDTf0AGC-cA"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center px-2 py-2 bg-white/10 backdrop-blur-sm text-white md:text-[10px] text-[10px] font-medium rounded-md hover:bg-black/80 transition-all duration-200"
+                        >
+                            WATCH FULL VER.
+                        </a>
+                    </div>
+                    
                     {/* Animated Loader */}
                     {!isLoaded && (
                         <div className="absolute inset-0 bg-off-white flex flex-col items-center justify-center">

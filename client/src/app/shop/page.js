@@ -50,7 +50,7 @@ export default function ShopPage() {
   return (
     <div className="min-h-screen bg-off-white">
       <div className="max-w-8xl mx-auto px-4 lg:px-6 xl:px-8 py-12">
-        <h1 className="text-3xl font-normal text-center mb-20 mt-10">Shop All Products</h1>
+        <h1 className="text-2xl font-normal text-center mb-20 mt-10">Shop All Products</h1>
         
         <Suspense fallback={<LoadingProducts />}>
           <ProductsDisplay />

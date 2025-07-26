@@ -27,7 +27,7 @@ export default function ThankYouPage() {
               <FaCheckCircle className="text-green-500" size={60} />
             </div>
             
-            <h1 className="text-3xl font-bold mb-4">Thank You for Your Order!</h1>
+            <h1 className="text-2xl font-bold mb-4">Thank You for Your Order!</h1>
             
             <p className="text-sm text-gray-700 mb-6">
               Your order has been successfully placed. A confirmation email will be sent shortly.

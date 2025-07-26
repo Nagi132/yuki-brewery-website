@@ -98,7 +98,7 @@ export default async function SingleEventPage({ params }) {
                     {otherEvents && otherEvents.length > 0 && (
                         <div className="pt-16 mt-16 border-t border-zinc-200">
                             <div className="text-center mb-12">
-                                <h1 className="text-3xl font-normal tracking-wide text-zinc-900">MORE EVENTS</h1>
+                                <h1 className="text-2xl font-normal tracking-wide">MORE EVENTS</h1>
                             </div>
                             <EventCarousel3D events={otherEvents} />
                         </div>
