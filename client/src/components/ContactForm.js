@@ -177,14 +177,6 @@ export default function ContactForm({
         }
     };
 
-    // If form was submitted and hideAfterSubmit is true, show only success message
-    if (status.submitted && hideAfterSubmit) {
-        return (
-            <div className={`p-4 bg-green-50 border border-green-200 rounded-md text-green-700 ${className}`}>
-                {successMessage}
-            </div>
-        );
-    }
 
     // Common input style based on variant - with custom override option
     const getInputClass = (isTextarea = false) => {
@@ -233,18 +225,6 @@ export default function ContactForm({
 
     return (
         <div className={className}>
-            {status.submitted && !hideAfterSubmit && (
-                <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-md text-green-700">
-                    {successMessage}
-                </div>
-            )}
-
-            {status.error && (
-                <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md text-red-700">
-                    {status.error}
-                </div>
-            )}
-
             <form
                 ref={formRef}
                 onSubmit={handleSubmit}
