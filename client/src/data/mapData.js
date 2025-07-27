@@ -34,20 +34,18 @@ export const initialMarkersData = [
       "lng": -73.9917547
     },
     "address": "116 Eldridge St, New York, NY 10002, USA",
-    "beers": "Various craft beers",
     "placeId": "ChIJldB8qZNZwokRYwDAq_cgDro"
   },
-  {
-    "id": 2,
-    "name": "Shuya",
-    "position": {
-      "lat": 40.7460834,
-      "lng": -73.9775784
-    },
-    "address": "517 3rd Ave, New York, NY 10016, USA",
-    "beers": "Various craft beers",
-    "placeId": "ChIJl1mCTwBZwokR2pxwHafrjJE"
-  },
+  // {
+  //   "id": 2,
+  //   "name": "Shuya",
+  //   "position": {
+  //     "lat": 40.7460834,
+  //     "lng": -73.9775784
+  //   },
+  //   "address": "517 3rd Ave, New York, NY 10016, USA",
+  //   "placeId": "ChIJl1mCTwBZwokR2pxwHafrjJE"
+  // },
   {
     "id": 3,
     "name": "Cafe O'Te by HOUSE Brooklyn",
@@ -56,20 +54,18 @@ export const initialMarkersData = [
       "lng": -73.9539175
     },
     "address": "38 Norman Ave, Brooklyn, NY 11222, USA",
-    "beers": "Various craft beers",
     "placeId": "ChIJ417z_aJZwokROPV2Oz3myKg"
   },
-  {
-    "id": 4,
-    "name": "TabeTomo",
-    "position": {
-      "lat": 40.7269404,
-      "lng": -73.9831557
-    },
-    "address": "131 Avenue A, New York, NY 10009, USA",
-    "beers": "Various craft beers",
-    "placeId": "ChIJMcrE97VZwokR6_VTjbNC-MI"
-  },
+  // {
+  //   "id": 4,
+  //   "name": "TabeTomo",
+  //   "position": {
+  //     "lat": 40.7269404,
+  //     "lng": -73.9831557
+  //   },
+  //   "address": "131 Avenue A, New York, NY 10009, USA",
+  //   "placeId": "ChIJMcrE97VZwokR6_VTjbNC-MI"
+  // },
   {
     "id": 5,
     "name": "Rule of Thirds",
@@ -78,7 +74,6 @@ export const initialMarkersData = [
       "lng": -73.9552327
     },
     "address": "171 Banker St, Brooklyn, NY 11222, USA",
-    "beers": "Various craft beers",
     "placeId": "ChIJaQRXYuRZwokRHjAN5MkBizY"
   },
   {
@@ -89,7 +84,6 @@ export const initialMarkersData = [
       "lng": -73.9480531
     },
     "address": "10-15 43rd Ave, Long Island City, NY 11101, USA",
-    "beers": "Various craft beers",
     "placeId": "ChIJL0xJb_ZZwokRfmKufMDAycE"
   },
   {
@@ -100,7 +94,6 @@ export const initialMarkersData = [
       "lng": -73.96096039999999
     },
     "address": "26 Putnam Ave, Brooklyn, NY 11238, USA",
-    "beers": "Various craft beers",
     "placeId": "ChIJid6BdwBbwokRe3HVRa9K1VE"
   },
   {
@@ -111,7 +104,6 @@ export const initialMarkersData = [
       "lng": -73.9942796
     },
     "address": "196 Elizabeth St, New York, NY 10012, USA",
-    "beers": "Various craft beers",
     "placeId": "ChIJW5IvBIZZwokRVaV7E-M6m8M"
   },
   {
@@ -132,7 +124,6 @@ export const initialMarkersData = [
       "lng": -73.96838300000002
     },
     "address": "226 E 53rd St BSMT w, New York, NY 10022, USA",
-    "beers": "Various craft beers",
     "placeId": "ChIJN0u8egBZwokRCM2XbebokuQ"
   },
   {
@@ -143,7 +134,6 @@ export const initialMarkersData = [
       "lng": -73.98560379999999
     },
     "address": "224 E 10th St, New York, NY 10003, USA",
-    "beers": "Various craft beers",
     "placeId": "ChIJZyhu1alZwokRDu4FC-wriY4"
   },
   {
@@ -154,7 +144,6 @@ export const initialMarkersData = [
       "lng": -73.9104028
     },
     "address": "584 Seneca Ave, Queens, NY 11385, USA",
-    "beers": "Various craft beers",
     "placeId": "ChIJl-QwDnxdwokRUoS7oTlwK0Q"
   },
   {
@@ -165,7 +154,6 @@ export const initialMarkersData = [
       "lng": -74.0076845
     },
     "address": "20 Warren St, New York, NY 10007, USA",
-    "beers": "Various craft beers",
     "placeId": "ChIJyRIhC_dbwokRqGoh89KPQME"
   },
   {
@@ -176,7 +164,6 @@ export const initialMarkersData = [
       "lng": -73.9427596
     },
     "address": "428 Humboldt St, Brooklyn, NY 11211, USA",
-    "beers": "Various craft beers",
     "placeId": "ChIJCbecnoVZwokRiMxQmAt9pxk"
   },
   {
@@ -187,7 +174,6 @@ export const initialMarkersData = [
       "lng": -73.9536504
     },
     "address": "50 Norman Ave, Brooklyn, NY 11222, USA",
-    "beers": "Various craft beers",
     "placeId": "ChIJYe9rSINZwokRw_36I8jEHzM"
   },
   {
@@ -198,7 +184,6 @@ export const initialMarkersData = [
       "lng": -73.99243299999999
     },
     "address": "282 Grand St, New York, NY 10002, USA",
-    "beers": "Various craft beers",
     "placeId": "ChIJxx06i8dZwokRMgAg7mEIwSw"
   },
   {
@@ -209,7 +194,6 @@ export const initialMarkersData = [
       "lng": -73.9768496
     },
     "address": "440 Bergen St, Brooklyn, NY 11217, USA",
-    "beers": "Various craft beers",
     "placeId": "ChIJBavgoa5bwokRmG1fmugGzlE"
   },
   {
@@ -220,7 +204,6 @@ export const initialMarkersData = [
       "lng": -74.0010896
     },
     "address": "128 W Houston St, New York, NY 10012, USA",
-    "beers": "Various craft beers",
     "placeId": "ChIJRy7Z-I1ZwokRQm17a6QDJ6E"
   },
   {
@@ -231,7 +214,6 @@ export const initialMarkersData = [
       "lng": -73.98734
     },
     "address": "326 E 6th St, New York, NY 10003, USA",
-    "beers": "Various craft beers",
     "placeId": "ChIJKWfvx5xZwokRpeSAmKP10Sg"
   },
   {
@@ -242,7 +224,6 @@ export const initialMarkersData = [
       "lng": -73.9906333
     },
     "address": "36 W 26th St, New York, NY 10010, USA",
-    "beers": "Various craft beers",
     "placeId": "ChIJtSiEHwBZwokRvaIX7do3E7Y"
   },
   {
@@ -253,7 +234,6 @@ export const initialMarkersData = [
       "lng": -73.9845225
     },
     "address": "13 W 36th St., New York, NY 10018, USA",
-    "beers": "Various craft beers",
     "placeId": "ChIJBwGziqlZwokRb3MTH3xUt0Y"
   },
   {
@@ -264,7 +244,6 @@ export const initialMarkersData = [
       "lng": -73.99270179999999
     },
     "address": "5 Bleecker St, New York, NY 10012, USA",
-    "beers": "Various craft beers",
     "placeId": "ChIJx-bMHr1ZwokRd3i_y7F3VlE"
   },
   {
@@ -275,7 +254,6 @@ export const initialMarkersData = [
       "lng": -73.9831229
     },
     "address": "199 E 3rd St, New York, NY 10009, USA",
-    "beers": "Various craft beers",
     "placeId": "ChIJ8-YKf4JZwokR8E9EvXIGnhI"
   },
   {
@@ -286,7 +264,6 @@ export const initialMarkersData = [
       "lng": -73.9717038
     },
     "address": "547 Columbus Ave, New York, NY 10024, USA",
-    "beers": "Various craft beers",
     "placeId": "ChIJ3S2hi5RZwokR62FzBraqmQ0"
   },
   {
@@ -297,7 +274,6 @@ export const initialMarkersData = [
       "lng": -73.92734399999999
     },
     "address": "33-19 36th Ave, Long Island City, NY 11106, USA",
-    "beers": "Various craft beers",
     "placeId": "ChIJI24tFJtfwokRG-LlfsXYTDA"
   },
   {
@@ -308,7 +284,6 @@ export const initialMarkersData = [
       "lng": -73.923926
     },
     "address": "40-05 Queens Blvd, Sunnyside, NY 11104, USA",
-    "beers": "Various craft beers",
     "placeId": "ChIJmbusst5fwokRG7J7eIN55AU"
   },
   {
@@ -319,7 +294,6 @@ export const initialMarkersData = [
       "lng": -73.9552533
     },
     "address": "5-35 51st Ave, Long Island City, NY 11101, USA",
-    "beers": "Various craft beers",
     "placeId": "ChIJP196UmFZwokR9HJCzWGczA4"
   },
   {
@@ -330,7 +304,6 @@ export const initialMarkersData = [
       "lng": -73.957911
     },
     "address": "78 Greenpoint Ave, Brooklyn, NY 11222, USA",
-    "beers": "Various craft beers",
     "placeId": "ChIJQVgaRkBZwokRXAw3-NTM6hw"
   },
   {
@@ -341,7 +314,6 @@ export const initialMarkersData = [
       "lng": -73.9280254
     },
     "address": "156 Knickerbocker Ave, Brooklyn, NY 11237, USA",
-    "beers": "Various craft beers",
     "placeId": "ChIJF-b7DGRdwokRQ86k2XAopKk"
   },
   {
@@ -352,7 +324,6 @@ export const initialMarkersData = [
       "lng": -73.9622605
     },
     "address": "146 Metropolitan Ave, Brooklyn, NY 11249, USA",
-    "beers": "Various craft beers",
     "placeId": "ChIJ6_M75OhZwokRiuRfFsoX7K8"
   },
   {
@@ -363,7 +334,6 @@ export const initialMarkersData = [
       "lng": -73.9616957
     },
     "address": "109 N 3rd St, Brooklyn, NY 11249, USA",
-    "beers": "Various craft beers",
     "placeId": "ChIJVQw7S69ZwokRxkRkuFLa494"
   },
   {
@@ -374,7 +344,6 @@ export const initialMarkersData = [
       "lng": -73.95963569999999
     },
     "address": "29 Greenpoint Ave, Brooklyn, NY 11222, USA",
-    "beers": "Various craft beers",
     "placeId": "ChIJ8ZshVyFZwokRqQFLjNmfWmE"
   },
   {
@@ -385,7 +354,6 @@ export const initialMarkersData = [
       "lng": -73.95397609999999
     },
     "address": "330 S 3rd St, Brooklyn, NY 11211, USA",
-    "beers": "Various craft beers",
     "placeId": "ChIJ3xYJKABbwokRjhgU1mfahJk"
   },
   {
@@ -396,7 +364,6 @@ export const initialMarkersData = [
       "lng": -73.9507986
     },
     "address": "615 Manhattan Ave, Brooklyn, NY 11222, USA",
-    "beers": "Various craft beers",
     "placeId": "ChIJlaFjTURZwokRvsN6V805OEk"
   },
   {
@@ -407,7 +374,6 @@ export const initialMarkersData = [
       "lng": -74.0074793
     },
     "address": "34 34th St, Brooklyn, NY 11232, USA",
-    "beers": "Various craft beers",
     "placeId": "ChIJnxaggMBawokRt7fWu0tvGBY"
   },
   {
@@ -418,7 +384,6 @@ export const initialMarkersData = [
       "lng": -73.99825770000001
     },
     "address": "500 Smith St, Brooklyn, NY 11231, USA",
-    "beers": "Various craft beers",
     "placeId": "ChIJHzJT8c9bwokRyBhYdoeZIE8"
   },
   {
@@ -461,4 +426,220 @@ export const initialMarkersData = [
     "address": "1 Pennsylvania Plaza LIRR Concourse #115, New York, NY 10119, USA",
     "placeId": "ChIJFya9D-pZwokRAqPOcznC7P4"
   },
+  {
+    "id": 43,
+    "name": "Hirohisa",
+    "position": {
+      "lat": 40.72527274421582,
+      "lng": -74.0016895458655
+    },
+    "address": "73 Thompson St, New York, NY 10012, USA",
+    "placeId": "ChIJXW6IXYxZwokR-i9saEWMIBY"
+  },
+  {
+    "id": 44,
+    "name": "Golden Diner",
+    "position": {
+      "lat": 40.7130508843339,
+      "lng": -73.99204116934523
+    },
+    "address": "123 Madison St, New York, NY 10002, USA",
+    "placeId": "ChIJ1-mW-LhbwokR7Ryv5ha-gzc"
+  },
+  {
+    "id": 45,
+    "name": "The Hidden Pearl",
+    "position": {
+      "lat": 40.72515896096801,
+      "lng": -73.94708699484435
+    },
+    "address": "621 Manhattan Ave, Brooklyn, NY 11222, USA",
+    "placeId": "ChIJJyB9luFZwokRk1FkDq_anas"
+  },
+  {
+    "id": 46,
+    "name": "Tokyo Record Bar",
+    "position": {
+      "lat": 40.73158569141085,
+      "lng": -73.9961425738106
+    },
+    "address": "127 MacDougal St, New York, NY 10012, USA",
+    "placeId": "ChIJn2fZe5FZwokRKCC3Aw6ldPk"
+  },
+  {
+    "id": 47,
+    "name": "Untable",
+    "position": {
+      "lat": 40.684714716833746,
+      "lng": -73.99750911028806
+    },
+    "address": "529 Henry St, Brooklyn, NY 11231, USA",
+    "placeId": "ChIJ_zbudV1bwokRyxgi4zQEn0Y"
+  },
+  {
+    "id": 48,
+    "name": "ODRE",
+    "position": {
+      "lat": 40.7284883368163,
+      "lng": -73.98407451425986
+    },
+    "address": "199 2nd Ave, New York, NY 10003, USA",
+    "placeId": "ChIJA4qq2sNZwokRYPPHJ7jwTAc"
+  },
+  {
+    "id": 49,
+    "name": "Nhà Mình",
+    "position": {
+      "lat": 40.69779192181233,
+      "lng": -73.90312828067621
+    },
+    "address": "9-15 Wyckoff Ave, Ridgewood, NY 11385, USA",
+    "placeId": "ChIJyX92Bk1ZwokRwPSDXroWAdI"
+  },
+  {
+    "id": 50,
+    "name": "Demo",
+    "position": {
+      "lat": 40.731130665139375,
+      "lng": -74.0025250319596
+    },
+    "address": "34 Carmine St, New York, NY 10014, USA",
+    "placeId": "ChIJebeXnYRZwokRRFXk3Mc8Gjw"
+  },
+  {
+    "id": 51,
+    "name": "Land to Sea",
+    "position": {
+      "lat": 40.71797644820796,
+      "lng": -73.94520593088485
+    },
+    "address": "402 Graham Ave, Brooklyn, NY 11211, USA",
+    "placeId": "ChIJDeMIF1xZwokRoII7oV2s-HE"
+  },
+  {
+    "id": 52,
+    "name": "Suzume",
+    "position": {
+      "lat": 40.71439840256815,
+      "lng": -73.94572091500419
+    },
+    "address": "545 Lorimer St, Brooklyn, NY 11211, USA",
+    "placeId": "ChIJ7RscS1hZwokRyH3c7IILpOY"
+  },
+  {
+    "id": 53,
+    "name": "Salt + Charcoal",
+    "position": {
+      "lat": 40.71584398467501,
+      "lng": -73.95696555106437
+    },
+    "address": "171 Grand St, Brooklyn, NY 11249, USA",
+    "placeId": "ChIJYUlOWWBZwokRiO-JUciJ0uE"
+  },
+  {
+    "id": 54,
+    "name": "Alphabet City Beer Co.",
+    "position": {
+      "lat": 40.72488667804415,
+      "lng": -73.97530499655686
+    },
+    "address": "96 Loisaida Ave, New York, NY 10009, USA",
+    "placeId": "ChIJWaWbwHlZwokRj1wHkvB84zE"
+  },
+  {
+    "id": 55,
+    "name": "Dr. Clark",
+    "position": {
+      "lat": 40.71700768713831,
+      "lng": -73.99957292401928
+    },
+    "address": "104 Bayard St, New York, NY 10013, USA",
+    "placeId": "ChIJZ8gT131bwokR1WN1vD7LW4g"
+  },
+  {
+    "id": 56,
+    "name": "Hana Makgeolli Brewery & Tasting Room",
+    "position": {
+      "lat": 40.7378171507356,
+      "lng": -73.9519031388252
+    },
+    "address": "201 Dupont St, Brooklyn, NY 11222, USA",
+    "placeId": "ChIJp6bCwWBZwokRN8YBvhBsW3I"
+  },
+  {
+    "id": 57,
+    "name": "Sushi Beauu",
+    "position": {
+      "lat": 40.749936339633884,
+      "lng": -73.98585127745208
+    },
+    "address": "Empire State Building, 15 W 33rd St, New York, NY 10118, USA",
+    "placeId": "ChIJt7y8ZZlZwokRCtnrZY-TxXc"
+  },
+  {
+    "id": 58,
+    "name": "Beer Street South",
+    "position": {
+      "lat": 40.681753907445454,
+      "lng": -73.96471034998964
+    },
+    "address": "550 Vanderbilt Ave, Brooklyn, NY 11238, USA",
+    "placeId": "ChIJEVFkpFtbwokR5ItXs2oJnvk"
+  },
+  {
+    "id": 59,
+    "name": "750 Myrtle Diner",
+    "position": {
+      "lat": 40.69551647326225,
+      "lng": -73.9466637066466
+    },
+    "address": "750 Myrtle Ave, Brooklyn, NY 11205, USA",
+    "placeId": "ChIJ5Vg2buxbwokR4lYR1LbF7S4"
+  },
+  {
+    "id": 60,
+    "name": "Lai Rai",
+    "position": {
+      "lat": 40.718352541776255,
+      "lng": -73.99386826157145
+    },
+    "address": "76 Forsyth St, New York, NY 10002, USA",
+    "placeId": "ChIJu72rPwBZwokRb_yHiC2rVIM"
+  },
+  //   "id": 61,
+  //   "name": "",
+  //   "position": {
+  //     "lat": 
+  //     "lng": 
+  //   },
+  //   "address": "",
+  //   "placeId": ""
+  // },
+  //   "id": 62,
+  //   "name": "",
+  //   "position": {
+  //     "lat": 
+  //     "lng": 
+  //   },
+  //   "address": "",
+  //   "placeId": ""
+  // },
+  //   "id": 63,
+  //   "name": "",
+  //   "position": {
+  //     "lat": 
+  //     "lng": 
+  //   },
+  //   "address": "",
+  //   "placeId": ""
+  // },
+  //   "id": 64,
+  //   "name": "",
+  //   "position": {
+  //     "lat": 
+  //     "lng": 
+  //   },
+  //   "address": "",
+  //   "placeId": ""
+  // },
 ];

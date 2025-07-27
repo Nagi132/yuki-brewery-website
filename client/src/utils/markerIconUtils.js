@@ -45,14 +45,7 @@ export const createMarkerIcon = (style = 'modern', baseSize = 32, state = 'defau
 
   const svgString = `
     <svg width="${actualSize}" height="${actualSize}" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <filter id="shadow-${state}" x="-50%" y="-50%" width="200%" height="200%">
-          <feDropShadow dx="0" dy="${state === 'hover' ? '3' : '2'}" stdDeviation="${state === 'hover' ? '4' : '3'}" flood-color="rgba(0,0,0,0.3)" flood-opacity="${state === 'hover' ? '0.6' : '0.5'}"/>
-        </filter>
-      </defs>
-      <g filter="url(#shadow-${state})">
-        ${styledSvg}
-      </g>
+      ${styledSvg}
     </svg>
   `;
 

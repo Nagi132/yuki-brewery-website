@@ -23,7 +23,6 @@ export const processGoogleMapsCSV = (csvData) => {
                 lng: row.Longitude ? parseFloat(row.Longitude) : null
               },
               address: row.Address || row.Location || 'Address not available',
-              beers: row.Note || 'Various craft beers',
               placeId: row.PlaceId || `place_${index}`,
               url: row.URL || null,
               category: row.Category || 'Restaurant/Bar'

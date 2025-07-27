@@ -2,6 +2,12 @@ import { useCallback } from 'react';
 
 export function usePlacesAPI(mapInstance) {
   const handleMarkerClick = useCallback(async (markerData, setActiveMarker) => {
+    // Add null/undefined checks
+    if (!markerData) {
+      console.warn("No marker data provided");
+      return;
+    }
+
     const showMarkerDetailsAndPan = (details) => {
       setActiveMarker(details);
       if (mapInstance && details.position) {
@@ -16,7 +22,7 @@ export function usePlacesAPI(mapInstance) {
     }
 
     if (!markerData.placeId) {
-      console.warn(`No Place ID for ${markerData.name}. Showing basic info.`);
+      console.warn(`No Place ID for ${markerData.name || 'unknown location'}. Showing basic info.`);
       showMarkerDetailsAndPan(markerData);
       return;
     }

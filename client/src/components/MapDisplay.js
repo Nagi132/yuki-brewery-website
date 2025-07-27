@@ -1,3 +1,4 @@
+// client/src/components/MapDisplay.js
 "use client";
 
 import React, { useCallback, useState, useEffect } from 'react';
@@ -28,9 +29,20 @@ const infoWindowStyle = `
   .gm-style-iw-tc {
     display: none !important;
   }
+  
+  /* Smooth map transitions */
+  .gm-style > div {
+    transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1) !important;
+  }
 `;
 
-export default function MapDisplay() {
+export default function MapDisplay({ 
+  onMapLoad, 
+  activeRestaurant = null, 
+  setActiveRestaurant,
+  onMapPinClick,
+  onListItemClick
+}) {
   const [mapInstance, setMapInstance] = useState(null);
   const [markerIcons, setMarkerIcons] = useState({ 
     default: null, 
@@ -61,8 +73,26 @@ export default function MapDisplay() {
       const iconSize = 36;
       
       setMarkerIcons(generateMarkerIcons(iconStyle, iconSize));
+      
+      // Call the parent's onMapLoad callback if provided
+      if (onMapLoad) {
+        onMapLoad(mapInstance);
+      }
     }
-  }, [mapInstance]);
+  }, [mapInstance, onMapLoad]);
+
+  // Expose handleMarkerClick function to parent component
+  useEffect(() => {
+    if (onListItemClick && handleMarkerClick) {
+      // Create a bound function that already includes setActiveMarker
+      const boundHandleMarkerClick = (restaurant) => {
+        if (restaurant) {
+          handleMarkerClick(restaurant, setActiveMarker);
+        }
+      };
+      onListItemClick(boundHandleMarkerClick);
+    }
+  }, [onListItemClick, handleMarkerClick, setActiveMarker]);
 
   useEffect(() => {
     if (activeMarker && activeMarker.photoUrl) {
@@ -77,8 +107,16 @@ export default function MapDisplay() {
   const onMarkerClick = useCallback((marker) => {
     handleMarkerClickWithAnimation(marker, (markerData) => {
       handleMarkerClick(markerData, setActiveMarker);
+      // Also update the restaurant list selection
+      if (setActiveRestaurant) {
+        setActiveRestaurant(markerData);
+      }
+      // Trigger the map pin click callback for list scrolling
+      if (onMapPinClick) {
+        onMapPinClick(markerData);
+      }
     });
-  }, [handleMarkerClickWithAnimation, handleMarkerClick, setActiveMarker]);
+  }, [handleMarkerClickWithAnimation, handleMarkerClick, setActiveMarker, setActiveRestaurant, onMapPinClick]);
 
   const handleImageLoad = useCallback(() => {
     setImageLoading(false);
@@ -89,14 +127,20 @@ export default function MapDisplay() {
       <style>{infoWindowStyle}</style>
       <MapContainer onMapLoad={handleMapLoad}>
         {markersData.map((marker, index) => {
-          // Determine which icon to use based on state priority: click > active > hover > default
+          // Determine which icon to use based on state priority: click > active > list hover > map hover > default
           let currentIcon = markerIcons.default;
+          
+          // Check if this marker is highlighted from the restaurant list
+          const isListHighlighted = activeRestaurant && activeRestaurant.id === marker.id;
+          
           if (clickedMarkerId === marker.id) {
             currentIcon = markerIcons.click; // Click animation (scale 1.25)
           } else if (activeMarker && activeMarker.id === marker.id) {
-            currentIcon = markerIcons.active; // Active state (blue color)
+            currentIcon = markerIcons.active; // Active state (yellow color)
+          } else if (isListHighlighted) {
+            currentIcon = markerIcons.hover; // List hover state (highlighted)
           } else if (hoveredMarkerId === marker.id) {
-            currentIcon = markerIcons.hover; // Hover state (scale 1.1)
+            currentIcon = markerIcons.hover; // Map hover state (scale 1.1)
           }
 
           return (
