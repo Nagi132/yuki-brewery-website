@@ -5,6 +5,7 @@ import React, { useState, useCallback } from 'react';
 import MapDisplay from '@/components/MapDisplay'; 
 import RestaurantList from '@/components/RestaurantList';
 import { initialMarkersData } from '@/data/mapData';
+import { generateLocationSchema } from '@/utils/generateLocationSchema';
 
 export default function FindUsPage() {
   const [activeRestaurant, setActiveRestaurant] = useState(null); // For hover states
@@ -80,8 +81,17 @@ export default function FindUsPage() {
     setHandleMarkerClickFromMap(() => clickFunction);
   }, []);
 
+  // Generate dynamic JSON-LD schema for all locations
+  const locationSchema = generateLocationSchema(initialMarkersData);
+
   return (
-    <main className="bg-off-white">
+    <>
+      {/* Dynamic JSON-LD for restaurant locations */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(locationSchema) }}
+      />
+      <main className="bg-off-white">
       {/* Mobile: Stacked layout, Desktop: Side-by-side */}
       <div className="w-full h-[93vh] flex flex-col lg:flex-row">
         {/* Map Container - full width on mobile, flex-1 on desktop */}
@@ -107,6 +117,7 @@ export default function FindUsPage() {
           />
         </div>
       </div>
-    </main>
+      </main>
+    </>
   );
 }

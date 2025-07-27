@@ -25,7 +25,7 @@ export default function MapMarker({
       onMouseOver={() => onMarkerHover(marker.id)}
       onMouseOut={() => onMarkerLeave(marker.id)}
       icon={currentIcon}
-      title={`${marker.name} (ID: ${marker.id})`}
+      title={marker.name}
       zIndex={
         clickedMarkerId === marker.id
           ? 3000 + index // Highest priority for click animation
