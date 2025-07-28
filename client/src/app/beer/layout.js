@@ -1,10 +1,10 @@
 export const metadata = {
-  title: 'Our Beers - Saltfields Brewing',
-  description: 'Discover the signature Japanese Rice Lager and other craft beers from Saltfields Brewing. Learn about our brewing process and unique flavors.',
+  title: 'Beer',
+  description: 'Japanese Rice Lager. Crafted for authenticity with traditional brewing techniques and modern approach.',
   openGraph: {
-    title: 'Our Beers - Saltfields Brewing',
-    description: 'Explore the craft beer selection from Saltfields Brewing, featuring our flagship Japanese Rice Lager.',
-    url: 'https://saltfieldsbrewing.com/beer', // Assuming this is the correct URL slug for this page
+    title: 'Beer - Saltfields Brewing',
+    description: 'Japanese Rice Lager. Crafted for authenticity.',
+    url: 'https://saltfieldsbrewing.com/beer',
   },
 };
 

@@ -1,9 +1,9 @@
 export const metadata = {
-  title: 'Contact Saltfields Brewing',
-  description: 'Get in touch with Saltfields Brewing. Send us a message for inquiries, collaborations, or any questions you might have.',
+  title: 'Contact',
+  description: 'Get in touch with Saltfields Brewing. Questions, collaborations, or just want to chat about beer.',
   openGraph: {
     title: 'Contact Saltfields Brewing',
-    description: 'Reach out to the Saltfields Brewing team.',
+    description: 'Get in touch with us.',
     url: 'https://saltfieldsbrewing.com/contact',
   },
 };

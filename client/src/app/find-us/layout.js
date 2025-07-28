@@ -1,10 +1,10 @@
 export const metadata = {
-  title: 'Find Saltfields Brewing Beer - Locations & Stockists',
-  description: 'Discover where to find and enjoy Saltfields Brewing\'s authentic Japanese Rice Lager. Locate bars, restaurants, and retail partners near you.',
-  keywords: ['Saltfields Brewing locations', 'find Saltfields Brewing beer', 'Japanese Rice Lager stockists', 'beer finder', 'where to buy Saltfields Brewing'],
+  title: 'Find Our Beer',
+  description: 'Where to find Saltfields Brewing Japanese Rice Lager. Interactive map of bars, restaurants, and retailers.',
+  keywords: ['Saltfields Brewing locations', 'find Saltfields beer', 'Japanese Rice Lager', 'beer finder', 'where to buy'],
   openGraph: {
-    title: 'Find Saltfields Brewing Beer',
-    description: 'Locate stockists of Saltfields Brewing\'s Japanese Rice Lager.',
+    title: 'Find Our Beer',
+    description: 'Where to find Saltfields Brewing Japanese Rice Lager.',
     url: 'https://saltfieldsbrewing.com/find-us',
     images: [
       {

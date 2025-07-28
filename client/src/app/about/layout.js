@@ -1,9 +1,9 @@
 export const metadata = {
-  title: 'About Saltfields Brewing',
-  description: 'Learn the story behind Saltfields Brewing, our passion for Japanese Rice Lager, and our commitment to quality craft beer and street culture.',
+  title: 'About',
+  description: 'Our story, our lager, our culture. The philosophy behind Saltfields Brewing and Japanese Rice Lager craftsmanship.',
   openGraph: {
     title: 'About Saltfields Brewing',
-    description: 'Discover the mission, vision, and the team behind Saltfields Brewing.',
+    description: 'Our story, our lager, our culture.',
     url: 'https://saltfieldsbrewing.com/about',
   },
 };

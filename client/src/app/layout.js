@@ -9,14 +9,14 @@ import './globals.css';
 export const metadata = {
   metadataBase: new URL('https://saltfieldsbrewing.com'),
   title: {
-    default: 'Saltfields Brewing - Authentic Japanese Rice Lager & Merchandise',
+    default: 'Saltfields Brewing',
     template: '%s | Saltfields Brewing',
   },
-  description: 'Discover Saltfields Brewing, your home for authentic Japanese Rice Lager and unique brewery-themed merchandise including t-shirts, hoodies, hats, and stickers. Quality craft beer and apparel.',
+  description: 'Japanese Rice Lager and street culture merch. Authentic craft beer and apparel.',
   keywords: ['Saltfields Brewing', 'Japanese Rice Lager', 'craft beer', 'Japanese beer', 'brewery merchandise', 'lager', 'beer apparel', 'craft brewery'],
   openGraph: {
-    title: 'Saltfields Brewing - Authentic Japanese Rice Lager & Merchandise',
-    description: 'Experience the taste of Japanese Rice Lager and shop our exclusive merchandise collection at Saltfields Brewing.',
+    title: 'Saltfields Brewing',
+    description: 'Japanese Rice Lager and street culture merch.',
     url: 'https://saltfieldsbrewing.com',
     siteName: 'Saltfields Brewing',
     images: [
@@ -60,14 +60,34 @@ export const metadata = {
 
 const organizationSchema = {
   '@context': 'https://schema.org',
-  '@type': 'Brewery', // Or 'Organization' if preferred, Brewery fits well
+  '@type': 'Brewery',
   name: 'Saltfields Brewing',
   url: 'https://saltfieldsbrewing.com',
   logo: 'https://saltfieldsbrewing.com/images/saltfields-logo.png',
-  description: 'Saltfields Brewing specializes in authentic Japanese Rice Lager and offers a range of unique brewery-themed merchandise.',
+  description: 'Virtual brewery specializing in Japanese Rice Lager with street culture aesthetic.',
   sameAs: [
     'https://www.instagram.com/saltfieldsbrewing/',
   ],
+  // Virtual brewery properties
+  foundingDate: '2024',
+  breweryType: 'contract_brewing',
+  offers: {
+    '@type': 'Offer',
+    itemOffered: [
+      {
+        '@type': 'Product',
+        name: 'Japanese Rice Lager',
+        brand: 'Saltfields Brewing',
+        category: 'Beer'
+      },
+      {
+        '@type': 'Product',
+        name: 'Brewery Merchandise',
+        brand: 'Saltfields Brewing',
+        category: 'Apparel'
+      }
+    ]
+  }
 };
 
 export default function RootLayout({ children }) {

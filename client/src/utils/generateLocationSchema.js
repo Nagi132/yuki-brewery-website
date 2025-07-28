@@ -5,7 +5,7 @@ export function generateLocationSchema(locations) {
     '@type': 'LocalBusiness',
     '@id': `https://saltfieldsbrewing.com/find-us#location-${location.id}`,
     name: location.name,
-    description: `Find Saltfields Brewing Japanese Rice Lager at ${location.name}`,
+    description: `${location.name} serves Saltfields Brewing Japanese Rice Lager`,
     address: {
       '@type': 'PostalAddress',
       streetAddress: location.address.split(',')[0], // First part before comma
@@ -44,8 +44,8 @@ export function generateLocationSchema(locations) {
   const mainSchema = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    name: 'Saltfields Brewing Beer Locations',
-    description: 'Find restaurants, bars, and retailers serving Saltfields Brewing Japanese Rice Lager',
+    name: 'Where to Find Our Beer',
+    description: 'Restaurants, bars, and retailers serving Saltfields Brewing Japanese Rice Lager across NYC',
     numberOfItems: locations.length,
     itemListElement: locationSchemas.map((schema, index) => ({
       '@type': 'ListItem',
