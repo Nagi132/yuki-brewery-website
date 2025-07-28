@@ -17,6 +17,13 @@ const HERO_IMAGES = [
   },
   {
     id: 'hero-2',
+    imageUrl: '/images/t-shirts_back.webp',
+    alt: 'Brewing Process',
+    categoryTitle: 'TEAM TEE\'s',
+    linkTo: '/shop/category/T-Shirts'
+  },
+  {
+    id: 'hero-2',
     imageUrl: '/images/t-shirts_front.webp',
     alt: 'Brewing Process',
     categoryTitle: 'TEAM TEE\'s',
