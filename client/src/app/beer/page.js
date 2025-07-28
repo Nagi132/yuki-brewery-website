@@ -43,7 +43,7 @@ export default function RiceLagerPage() {
                     aria-label="Next image"
                   >
                     <svg fill="#000000" height="24px" width="24px" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 330.002 330.002">
-                      <path d="M96.75,155.997L209.25,6.001c4.972-6.628,14.372-7.97,21-3c6.628,4.971,7.971,14.373,3,21 l-105.75,140.997L233.25,306.001c4.971,6.627,3.627,16.03-3,21c-2.698,2.024-5.856,3.001-8.988,3.001 c-4.561,0-9.065-2.072-12.012-6.001l-112.5-150.004C92.75,168.664,92.75,161.33,96.75,155.997z"/>
+                      <path d="M96.75,155.997L209.25,6.001c4.972-6.628,14.372-7.97,21-3c6.628,4.971,7.971,14.373,3,21 l-105.75,140.997L233.25,306.001c4.971,6.627,3.627,16.03-3,21c-2.698,2.024-5.856,3.001-8.988,3.001 c-4.561,0-9.065-2.072-12.012-6.001l-112.5-150.004C92.75,168.664,92.75,161.33,96.75,155.997z" />
                     </svg>
                   </button>
 
@@ -74,7 +74,7 @@ export default function RiceLagerPage() {
                     aria-label="Previous image"
                   >
                     <svg fill="#000000" height="24px" width="24px" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 330.002 330.002">
-                      <path d="M233.252,155.997L120.752,6.001c-4.972-6.628-14.372-7.97-21-3c-6.628,4.971-7.971,14.373-3,21 l105.75,140.997L96.752,306.001c-4.971,6.627-3.627,16.03,3,21c2.698,2.024,5.856,3.001,8.988,3.001 c4.561,0,9.065-2.072,12.012-6.001l112.5-150.004C237.252,168.664,237.252,161.33,233.252,155.997z"/>
+                      <path d="M233.252,155.997L120.752,6.001c-4.972-6.628-14.372-7.97-21-3c-6.628,4.971-7.971,14.373-3,21 l105.75,140.997L96.752,306.001c-4.971,6.627-3.627,16.03,3,21c2.698,2.024,5.856,3.001,8.988,3.001 c4.561,0,9.065-2.072,12.012-6.001l112.5-150.004C237.252,168.664,237.252,161.33,233.252,155.997z" />
                     </svg>
                   </button>
                 </div>
@@ -103,8 +103,8 @@ export default function RiceLagerPage() {
                 >
                   THE BEER
                   {activeTab === 'beer' && (
-                    <motion.div 
-                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-white" 
+                    <motion.div
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-white"
                       layoutId="underline"
                     />
                   )}
@@ -115,8 +115,8 @@ export default function RiceLagerPage() {
                 >
                   THE STORY BEHIND THE LABEL
                   {activeTab === 'story' && (
-                    <motion.div 
-                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-white" 
+                    <motion.div
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-white"
                       layoutId="underline"
                     />
                   )}
@@ -158,10 +158,10 @@ export default function RiceLagerPage() {
                         <p className="text-justify text-sm">
                           We brew with Calrose rice, a grain first carried to American soil by Japanese hands, then lovingly refined over time. We, too, are travelers from Japan, drawn across the ocean by hope and purpose. In reverence to that journey, we chose this rice as the heart of our very first beer, a quiet tribute to our heritage and roots.
                         </p>
-
+                        {/* 
                         <p className="text-justify text-sm">
                           Noble hops Perle, Hallertau, and Tettnang provide a soft floral and spicy balance, while 34/70 German lager yeast ensures a crisp fermentation with high attenuation. The result is a brilliantly bright, supremely crushable lager beer.
-                        </p>
+                        </p> */}
 
                         <p className="text-justify text-sm">
                           Best enjoyed ice cold, this beer is perfect for hot beach days, late-night Izakaya sessions, and pairing with fresh seafood or crispy Karaage (Japanese fried chicken).
