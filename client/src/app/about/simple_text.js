@@ -5,13 +5,13 @@ import Image from 'next/image';
 
 export default function SimpleText() {
     return (
-        <div className="bg-off-white min-h-screen -mt-6">
-            <div className="flex justify-center px-6 py-16 md:py-20">
-                <div className="w-full max-w-6xl">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-0">
+        <div className="bg-off-white -mt-6">
+            <div className="flex justify-center px-6 py-8 md:py-12 lg:py-16">
+                <div className="w-full max-w-4xl md:max-w-lg lg:max-w-6xl">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8">
                         {/* Left side - Image */}
-                        <div className="flex justify-center lg:justify-start -mt-5 lg:mt-0 lg:-mr-5">
-                            <div className="w-[480px] h-[480px] lg:w-[580px] lg:h-[705px] relative">
+                        <div className="flex justify-center md:justify-start lg:justify-start -mt-5 md:mt-0 lg:mt-0 md:ml-0 lg:ml-7">
+                            <div className="w-[480px] h-[480px] md:w-[520px] md:h-[580px] lg:w-[580px] lg:h-[705px] relative">
                                 <Image
                                     src="/images/Saltfields_About.webp"
                                     alt="Saltfields Brewing"
@@ -23,7 +23,7 @@ export default function SimpleText() {
                         </div>
 
                         {/* Right side - Text */}
-                        <div className="pt-8 lg:pt-10 ">
+                        <div className="pt-8 md:pt-12 lg:pt-10 lg:pl-0">
                             {/* Heading */}
                             <div className="space-y-2">
                                 <h1 className="text-2xl md:text-2xl font-normal mb-5">
