@@ -90,7 +90,7 @@ export default function Navbar() {
       <div className="w-full px-4 md:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Left Links - Desktop */}
-          <div className="hidden md:flex items-center h-full space-x-0 ml-1 text-xs">
+          <div className="hidden lg:flex items-center h-full space-x-0 ml-1 text-xs">
             <NavLink href="/about">ABOUT</NavLink>
             <NavLink href="/beer">BEER</NavLink>
             <NavLink href="/events">EVENTS</NavLink>
@@ -99,7 +99,7 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Menu Text Button */}
-          <div className="md:hidden ml-1">
+          <div className="lg:hidden ml-1">
             <button
               onClick={() => setIsOpen(true)}
               className="text-black font-normal focus:outline-none menu-button"
@@ -126,7 +126,7 @@ export default function Navbar() {
           </div>
 
           {/* Right Links - Desktop */}
-          <div className="hidden md:flex items-center h-full -mr-4">
+          <div className="hidden lg:flex items-center h-full -mr-4">
             {/* CARRY SALTFIELDS link */}
 
             {/* CARRY SALTFIELDS link - TEMPORARILY DISABLED */}
@@ -147,7 +147,7 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Cart Text */}
-          <div className="md:hidden mr-1">
+          <div className="lg:hidden mr-1">
             {/* <Link
               href="/cart"
               className="text-black tracking-wide"
@@ -162,12 +162,12 @@ export default function Navbar() {
 
         {/* Overlay for background when menu is open */}
         {isOpen && (
-          <div className="md:hidden fixed inset-0 bg-black bg-opacity-25 z-40" />
+          <div className="lg:hidden fixed inset-0 bg-black bg-opacity-25 z-40" />
         )}
 
         {/* Mobile Menu Slide-in */}
         <div
-          className={`md:hidden fixed top-0 left-0 h-full w-3/4 max-w-xs bg-off-white z-50 mobile-menu transition-transform duration-700 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'
+          className={`lg:hidden fixed top-0 left-0 h-full w-3/4 max-w-xs bg-off-white z-50 mobile-menu transition-transform duration-700 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'
             }`}
         >
           <div className="h-full overflow-y-auto p-6 flex flex-col">
