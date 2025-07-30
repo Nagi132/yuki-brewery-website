@@ -116,7 +116,7 @@ export default function Navbar() {
                 <Image
                   src="/images/saltfields_logo.webp"
                   alt="Saltfields Brewing Logo"
-                  width={160}
+                  width={130}
                   height={48}
                   priority
                   className="cursor-pointer object-contain"
