@@ -94,15 +94,15 @@ export default function RestaurantList({
             {/* Borough Header */}
             <button
               onClick={() => toggleBorough(borough)}
-              className="w-full px-3 lg:px-4 py-2 lg:py-3 bg-gray-50 hover:bg-gray-100 transition-colors duration-100 flex items-center justify-between text-left border-b border-gray-200"
+              className="w-full px-3 lg:px-4 py-2 lg:py-3 bg-black hover:bg-gray-800 transition-colors duration-100 flex items-center justify-between text-left border-b border-gray-200"
             >
               <div>
-                <h3 className="font-medium text-gray-800 text-xs lg:text-sm">{borough}</h3>
-                <p className="text-xs text-gray-500">{boroughRestaurants.length} locations</p>
+                <h3 className="font-medium text-white text-xs lg:text-sm">{borough}</h3>
+                <p className="text-xs text-gray-300">{boroughRestaurants.length} locations</p>
               </div>
               {collapsedBoroughs.has(borough) ? 
-                <FaChevronDown className="w-2.5 h-2.5 lg:w-3 lg:h-3 text-gray-400" /> : 
-                <FaChevronUp className="w-2.5 h-2.5 lg:w-3 lg:h-3 text-gray-400" />
+                <FaChevronDown className="w-2.5 h-2.5 lg:w-3 lg:h-3 text-gray-300" /> : 
+                <FaChevronUp className="w-2.5 h-2.5 lg:w-3 lg:h-3 text-gray-300" />
               }
             </button>
 
@@ -112,9 +112,9 @@ export default function RestaurantList({
                 {boroughRestaurants.map((restaurant, index) => (
                   <div
                     key={restaurant.id}
-                    className={`p-3 lg:p-4 cursor-pointer transition-all duration-100 ease-out hover:bg-blue-50 hover:border-l-4 hover:border-l-blue-500 hover:pl-5 lg:hover:pl-6 ${
+                    className={`p-3 lg:p-4 cursor-pointer transition-all duration-100 ease-out hover:bg-[#e6a429]/10 hover:border-l-4 hover:border-l-[#e6a429] hover:pl-5 lg:hover:pl-6 ${
                       activeRestaurant?.id === restaurant.id 
-                        ? 'bg-blue-50 border-l-4 border-l-blue-500 pl-5 lg:pl-6' 
+                        ? 'bg-[#e6a429]/10 border-l-4 border-l-[#e6a429] pl-5 lg:pl-6' 
                         : ''
                     } ${index > 0 ? 'border-t border-gray-50' : ''}`}
                     onMouseEnter={() => onRestaurantHover?.(restaurant)}
