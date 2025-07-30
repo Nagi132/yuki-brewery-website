@@ -65,9 +65,9 @@ export default function RestaurantList({
     <div className="w-full lg:w-80 h-full bg-white shadow-lg border-t lg:border-t-0 lg:border-l border-gray-200 flex flex-col">
       {/* Header */}
       <div className="p-3 lg:p-4 border-b border-gray-200 bg-gray-50">
-        <h2 className="text-base lg:text-lg font-semibold text-gray-800 mb-2 lg:mb-3">
+        <h1 className="text-base lg:text-lg font-normal text-gray-800 mb-2 lg:mb-3">
           Find Saltfields Beer
-        </h2>
+        </h1>
         
         {/* Search Bar */}
         <div className="relative">
