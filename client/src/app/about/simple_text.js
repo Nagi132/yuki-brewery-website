@@ -10,15 +10,14 @@ export default function SimpleText() {
                 <div className="w-full max-w-4xl md:max-w-lg lg:max-w-6xl">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8">
                         {/* Left side - Image */}
-                        <div className="flex justify-center md:justify-start lg:justify-start -mt-5 md:mt-0 lg:mt-0 md:ml-0 lg:ml-7">
-                            <div className="w-[480px] h-[480px] md:w-[520px] md:h-[580px] lg:w-[580px] lg:h-[705px] relative">
-                                <Image
-                                    src="/images/Saltfields_About.webp"
-                                    alt="Saltfields Brewing"
-                                    fill
-                                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 448px"
-                                    className="object-contain"
-                                />
+                        <div className="flex justify-center md:justify-start lg:justify-start mt-5 md:mt-0 lg:mt-4 md:ml-0 lg:ml-20">
+                            <div className="w-[480px] h-[480px] md:w-[520px] md:h-[580px] lg:w-[480px] lg:h-[605px] relative">                              <Image
+                                src="/images/Saltfields_About.webp"
+                                alt="Saltfields Brewing"
+                                fill
+                                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 448px"
+                                className="object-contain"
+                            />
                             </div>
                         </div>
 
@@ -26,16 +25,16 @@ export default function SimpleText() {
                         <div className="pt-8 md:pt-12 lg:pt-10 lg:pl-0">
                             {/* Heading */}
                             <div className="space-y-2">
-                                <h1 className="text-2xl md:text-2xl font-normal mb-5">
+                                <h1 className="text-3xl md:text-2xl font-normal mb-5">
                                     Saltfields:
                                 </h1>
-                                <h1 className="text-base md:text-lg font-normal">
+                                <h1 className="text-xl font-normal">
                                     The First Japanese Craft Beer in New York
                                 </h1>
                             </div>
 
                             {/* Content paragraphs */}
-                            <div className="space-y-4 text-sm font-normal mt-10 max-w-lg">
+                            <div className="space-y-4 text-xs font-normal mt-10 max-w-md">
                                 <p className="text-justify">
                                     Yuki and Yumi are the husband-and-wife team behind Saltfields, the first Japanese craft beer company in New York.
                                 </p>
