@@ -25,7 +25,7 @@ export default function SimpleText() {
                         <div className="pt-8 md:pt-12 lg:pt-10 lg:pl-0">
                             {/* Heading */}
                             <div className="space-y-2">
-                                <h1 className="text-3xl md:text-2xl font-normal mb-5">
+                                <h1 className="text-3xl font-normal mb-5">
                                     Saltfields:
                                 </h1>
                                 <h1 className="text-xl font-normal">
