@@ -6,7 +6,7 @@ import Image from 'next/image';
 export default function SimpleText() {
     return (
         <div className="bg-off-white -mt-6">
-            <div className="flex justify-center px-6 py-8 md:py-12 lg:py-16">
+            <div className="flex justify-center px-6 py-8 md:py-12 lg:py-16 lg:pb-32">
                 <div className="w-full max-w-4xl md:max-w-lg lg:max-w-6xl">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8">
                         {/* Left side - Image */}
@@ -25,7 +25,7 @@ export default function SimpleText() {
                         <div className="pt-8 md:pt-12 lg:pt-10 lg:pl-0">
                             {/* Heading */}
                             <div className="space-y-2">
-                                <h1 className="text-3xl font-normal mb-5">
+                                <h1 className="text-[1.65rem] font-normal mb-5">
                                     Saltfields:
                                 </h1>
                                 <h1 className="text-xl font-normal">
