@@ -151,11 +151,11 @@ export default function RiceLagerPage() {
 
                       {/* Beer Description */}
                       <div className="space-y-4 max-w-xl">
-                        <p className="text-justify text-sm">
+                        <p className="text-justify text-xs">
                           Crisp, dry, and endlessly refreshing, this Japanese-inspired Rice Lager brings together tradition and innovation in every sip. Brewed with a base of German Pilsner malt, a blend of flaked rice and whole grain Calrose rice, and a touch of white Koji, this beer develops a delicate acidity that enhances its clean, snappy finish.
                         </p>
 
-                        <p className="text-justify text-sm">
+                        <p className="text-justify text-xs">
                           We brew with Calrose rice, a grain first carried to American soil by Japanese hands, then lovingly refined over time. We, too, are travelers from Japan, drawn across the ocean by hope and purpose. In reverence to that journey, we chose this rice as the heart of our very first beer, a quiet tribute to our heritage and roots.
                         </p>
                         {/* 
@@ -163,7 +163,7 @@ export default function RiceLagerPage() {
                           Noble hops Perle, Hallertau, and Tettnang provide a soft floral and spicy balance, while 34/70 German lager yeast ensures a crisp fermentation with high attenuation. The result is a brilliantly bright, supremely crushable lager beer.
                         </p> */}
 
-                        <p className="text-justify text-sm">
+                        <p className="text-justify text-xs">
                           Best enjoyed ice cold, this beer is perfect for hot beach days, late-night Izakaya sessions, and pairing with fresh seafood or crispy Karaage (Japanese fried chicken).
                         </p>
                       </div>
@@ -188,27 +188,27 @@ export default function RiceLagerPage() {
 
                       {/* Story Description */}
                       <div className="space-y-4 max-w-xl">
-                        <p className="text-justify text-sm">
+                        <p className="text-justify text-xs">
                           By blending the elegance of traditional Japanese calligraphy with the raw energy of New York street graffiti, we've created a bold new form of visual expression, one that bridges two distinct cultures and tells our story.
                         </p>
 
-                        <p className="text-justify text-sm">
+                        <p className="text-justify text-xs">
                           At the heart of this fusion is Yosemoji, a calligraphic style born in the Edo period. Known for its rich, ink-laden strokes and upward-slanting form, Yosemoji was traditionally used on theater posters and shop signs. Its purpose was more than aesthetic, it was symbolic.
                         </p>
 
-                        <p className="text-justify text-sm">
+                        <p className="text-justify text-xs">
                           Its bold, ink-laden strokes, written to minimize empty space, expressed a wish to fill seats. The upward angle expressed a wish to grow. Over time, Yosemoji became known as a lucky script, a style tied to prosperity and connection.
                         </p>
 
-                        <p className="text-justify text-sm">
+                        <p className="text-justify text-xs">
                           This spirit aligns with Saltfields Brewing's vision: to create a place where people gather, connect, and cultivate culture.
                         </p>
 
-                        <p className="text-justify text-sm">
+                        <p className="text-justify text-xs">
                           With <span className="italic">Yosemoji Graffiti</span>, we aim to establish a visual identity that is distinctly our own, one that echoes our roots in both Japan and New York. We hope to make this a signature style of Saltfields Brewing, leaving a lasting impression of the world we're building.
                         </p>
 
-                        <p className="text-justify text-sm">
+                        <p className="text-justify text-xs">
                           For our first label, we collaborated with a calligrapher friend to bring this vision to life. The result: a striking rendering of 米麦酒 (Rice Beer) in Yosemoji Graffiti, our tribute to tradition, reimagined.
                         </p>
                       </div>
